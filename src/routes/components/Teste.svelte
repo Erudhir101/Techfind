@@ -1,15 +1,23 @@
 <script>
-	import { slide } from 'svelte/transition';
 	const btn =
 		'border-none flex items-center justify-center bg-principal-5 hover:bg-principal-3 rounded-xl py-3 px-4 font-semibold cursor-pointer transition-colors duration-300 ease-in';
 	// Importação da logo
 	import logo from '$lib/images/logolaran.svg';
 
 	// Reatividade no Svelte para controlar o menu móvel
-	let isMenu = $state(false);
+	let isMobileMenuActive = $state(false);
 
-	// Reatividade no Svelte para controlar o menu móvel
+	// Função para alternar a visibilidade do menu móvel
+	function toggleMobileMenu() {
+		isMobileMenuActive = !isMobileMenuActive;
+	}
+
 	let isFormOpen = $state(false);
+
+	// Função para abrir e fechar o pop-up
+	function toggleForm() {
+		isFormOpen = !isFormOpen;
+	}
 
 	const list = [
 		{ name: 'início', href: '#home' },
@@ -20,44 +28,17 @@
 	];
 </script>
 
-<header class="p-8 sticky top-0 bg-principal-1 z-10">
-	<nav class="h-14 relative flex gap-4 items-center justify-between">
-		<img src={logo} alt="Logo Techfind" class="h-8 md:h-12" />
-		<ul class="hidden xl:flex xl:gap-4 xl:list-none">
+<header>
+	<nav id="navbar">
+		<img src={logo} alt="Logo Techfind" class="h-8 md:h-10 xl:h-14" />
+		<ul id="nav_list">
 			{#each list as item}
 				<li class="nav-item">
 					<a href={item.href} class="no-underline font-semibold">{item.name}</a>
 				</li>
 			{/each}
 		</ul>
-		{#if isMenu}
-			<div
-				class="absolute flex justify-around top-[5rem] left-[-2rem] w-screen pb-5 bg-principal-1"
-			>
-				<ul
-					transition:slide={{ duration: 300, axis: 'y' }}
-					class="flex flex-col items-center gap-4"
-				>
-					{#each list as item}
-						<li class="nav-item">
-							<a href={item.href} class="no-underline font-semibold">{item.name}</a>
-						</li>
-					{/each}
-				</ul>
-				<div
-					transition:slide={{ duration: 300, axis: 'y' }}
-					class="flex flex-col items-center gap-4"
-				>
-					<button id="login-btn" class={btn}>Login</button>
-					<button id="cadastro-btn" class={btn}>Cadastre-se</button>
-					<button class={btn}>
-						<!-- <a href="javascript:void(0)">Comece agora!</a> -->
-						<a href="/">Comece agora!</a>
-					</button>
-				</div>
-			</div>
-		{/if}
-		<div class="hidden xl:flex xl:gap-4 xl:items-center">
+		<div class="hidden h- xl:flex xl:gap-4 xl:items-center">
 			<button id="login-btn" class={btn}>Login</button>
 			<button id="cadastro-btn" class={btn}>Cadastre-se</button>
 			<button class={btn}>
@@ -65,22 +46,36 @@
 				<a href="/">Comece agora!</a>
 			</button>
 		</div>
+
 		<!-- Botão de menu móvel -->
-		<button aria-label="menu" class="xl:hidden" onclick={() => (isMenu = !isMenu)}>
-			<svg class="h-8 w-8 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M4 6h16M4 10h16M4 14h16M4 18h16"
-				/>
-			</svg>
+		<button aria-label="menu" class="hidden" onclick={toggleMobileMenu}>
+			<i class="fa-solid fa-bars"></i>
 		</button>
 	</nav>
 
+	<!-- Menu móvel visível condicionalmente -->
+	{#if isMobileMenuActive}
+		<div id="mobile_menu" class="active">
+			<ul id="mobile_nav_list">
+				{#each list as item}
+					<li class="nav-item active:text-black">
+						<a href={item.href} class="scroll-link">{item.name}</a>
+					</li>
+				{/each}
+			</ul>
+			<div class="mobile-btns">
+				<button id="login-btn-mobile" class="btn-default entrar"> Login </button>
+				<button id="cadastro-btn-mobile" class="btn-default"> Cadastre-se </button>
+				<button class="btn-default btn-contact">
+					<a href="/" target="_blank">Entre em contato</a>
+				</button>
+			</div>
+		</div>
+	{/if}
+
 	<!-- Estrutura do formulário de pop-up -->
 	{#if isFormOpen}
-		<div class="popup-overlay" aria-hidden="true" onclick={() => (isFormOpen = !isFormOpen)}></div>
+		<div class="popup-overlay" aria-hidden="true" onclick={toggleForm}></div>
 		<div class="popup-form">
 			<h2>Formulário de Contratação</h2>
 			<form>
@@ -143,12 +138,68 @@
 				<!-- Botão de envio -->
 				<button type="submit" class="submit-btn">Enviar</button>
 			</form>
-			<button class="close-btn" onclick={() => (isFormOpen = !isFormOpen)}>Fechar</button>
+			<button class="close-btn" onclick={toggleForm}>Fechar</button>
 		</div>
 	{/if}
 </header>
 
 <style>
+	header {
+		width: 100%;
+		height: 50px;
+		padding: 30px 30px;
+		position: sticky;
+		top: 0;
+		background-color: var(--color-primary-1);
+		z-index: 3;
+	}
+
+	#navbar {
+		width: 100%;
+		height: 50px;
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	#logo {
+		font-size: 2.5rem;
+		color: var(--color-primary-6);
+		height: 50px;
+	}
+
+	#nav_list {
+		display: flex;
+		gap: 1.5rem;
+		list-style: none;
+	}
+
+	.nav-item a {
+		text-decoration: none;
+		color: #1d1d1dad;
+		font-weight: 600;
+	}
+
+	.nav-item.active a {
+		color: var(--color-neutral-1);
+		border-bottom: 3px solid var(--color-primary-4);
+	}
+
+	#mobile_btn {
+		display: none;
+	}
+
+	#mobile_menu {
+		display: none;
+	}
+
+	#mobile_menu.active {
+		display: flex;
+		gap: 5rem;
+		align-items: center;
+		justify-content: center;
+	}
 	/* Efeito de desfoque no fundo */
 	.popup-overlay {
 		position: fixed;
@@ -241,4 +292,38 @@
 			grid-column: span 1;
 		}
 	}
+
+	/*@media screen and (max-width: 1200px) {
+		#nav_list,
+		#navbar .btn-default {
+			display: none;
+		}
+
+		#mobile_btn {
+			display: block;
+			border: none;
+			background-color: transparent;
+			font-size: 1.5rem;
+			cursor: pointer;
+		}
+
+		.mobile-btns {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 1rem;
+		}
+
+		#mobile_nav_list {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+			margin: 12px 0px;
+		}
+
+		#mobile_nav_list .nav-item {
+			list-style: none;
+			text-align: center;
+		}
+	}*/
 </style>
