@@ -14,22 +14,13 @@ html {
 	scroll-behavior: smooth;
 }
 
-body {
-	background-color: var(--color-primary-1);
-	width: 100vw;
-}
-
-section {
-	padding: 28px 8%;
-}
-
 .btn-default {
 	border: none;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: var(--color-primary-5);
 	border-radius: 12px;
+	background-color: var(--color-primary-5);
 	padding: 14px 16px;
 	font-weight: 600;
 	box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.1);
@@ -39,52 +30,4 @@ section {
 
 .btn-default:hover {
 	background-color: var(--color-primary-3);
-}
-
-.btn-contact a {
-	text-decoration: none;
-	color: var(--neutral-1);
-}
-.social-media-buttons {
-	display: flex;
-	gap: 18px;
-}
-
-.social-media-buttons a {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 45px;
-	height: 40px;
-	background-color: var(--color-neutral-0);
-	font-size: 1.25rem;
-	border-radius: 10px;
-	text-decoration: none;
-	color: var(--color-neutral-1);
-	box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.1);
-	transition: box-shadow 0.3s ease;
-}
-
-.social-media-buttons a:hover {
-	box-shadow: 0px 0px 12px 8px rgba(0, 0, 0, 0.1);
-}
-
-.section-title {
-	color: var(--color-primary-6);
-	font-size: 1.563rem;
-}
-
-.section-subtitle {
-	font-size: 2.1875rem;
-}
-
-.hidden {
-	display: hidden;
-	height: 100vh;
-}
-
-@media screen and (min-width: 664px) {
-	.hidden {
-		display: none;
-	}
 }

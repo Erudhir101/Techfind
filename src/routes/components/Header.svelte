@@ -1,57 +1,55 @@
 <script>
+	const btn =
+		'border-none flex items-center justify-center bg-principal-5 hover:bg-principal-3 rounded-xl py-3 px-4 font-semibold cursor-pointer transition-colors duration-300 ease-in';
 	// Importação da logo
 	import logo from '$lib/images/logolaran.svg';
 
 	// Reatividade no Svelte para controlar o menu móvel
-	let isMobileMenuActive = false;
+	let isMobileMenuActive = $state(false);
 
 	// Função para alternar a visibilidade do menu móvel
 	function toggleMobileMenu() {
 		isMobileMenuActive = !isMobileMenuActive;
 	}
 
-	let isFormOpen = false;
+	let isFormOpen = $state(false);
 
 	// Função para abrir e fechar o pop-up
 	function toggleForm() {
-	isFormOpen = !isFormOpen;
-}
+		isFormOpen = !isFormOpen;
+	}
 
+	const list = [
+		{ name: 'início', href: '#home' },
+		{ name: 'Vantagens', href: '#menu' },
+		{ name: 'Sobre nós', href: '#aboutus' },
+		{ name: 'Planos', href: '#planos' },
+		{ name: 'Suporte', href: '#support' }
+	];
 </script>
 
 <header>
 	<nav id="navbar">
-		<i class="logo">
-			<img src={logo} alt="Logo Techfind" id="logo" />
-		</i>
+		<img src={logo} alt="Logo Techfind" class="h-8 md:h-10 xl:h-14" />
 		<ul id="nav_list">
-			<li class="nav-item active">
-				<a href="#home" class="scroll-link">Início</a>
-			</li>
-			<li class="nav-item">
-				<a href="#menu" class="scroll-link">Vantagens</a>
-			</li>
-			<li class="nav-item">
-				<a href="#aboutus" class="scroll-link">Sobre nós</a>
-			</li>
-			<li class="nav-item">
-				<a href="#planos" class="scroll-link">Nossos Produtos</a>
-			</li>
-			<li class="nav-item">
-				<a href="#support" class="scroll-link">Suporte</a>
-			</li>
+			{#each list as item}
+				<li class="nav-item active:text-black">
+					<a href={item.href} class="scroll-link">{item.name}</a>
+				</li>
+			{/each}
 		</ul>
 
-		<div class="btn-list">
-			<button id="login-btn" class="btn-default entrar">Login</button>
-			<button id="cadastro-btn" class="btn-default">Cadastre-se</button>
-			<button class="btn-default btn-contact" on:click={toggleForm}>
-				<a href="javascript:void(0)">Comece agora!</a>
+		<div class="hidden h- xl:flex xl:gap-4 xl:items-center">
+			<button id="login-btn" class={btn}>Login</button>
+			<button id="cadastro-btn" class={btn}>Cadastre-se</button>
+			<button class={btn}>
+				<!-- <a href="javascript:void(0)">Comece agora!</a> -->
+				<a href="/">Comece agora!</a>
 			</button>
 		</div>
 
 		<!-- Botão de menu móvel -->
-		<button id="mobile_btn" on:click={toggleMobileMenu}>
+		<button aria-label="menu" class="hidden" onclick={toggleMobileMenu}>
 			<i class="fa-solid fa-bars"></i>
 		</button>
 	</nav>
@@ -60,96 +58,96 @@
 	{#if isMobileMenuActive}
 		<div id="mobile_menu" class="active">
 			<ul id="mobile_nav_list">
-				<li class="nav-item">
-					<a href="#home" class="scroll-link">Início</a>
-				</li>
-				<li class="nav-item">
-					<a href="#menu" class="scroll-link">Vantagens</a>
-				</li>
-				<li class="nav-item">
-					<a href="#aboutus" class="scroll-link">Sobre nós</a>
-				</li>
-				<li class="nav-item">
-					<a href="#planos" class="scroll-link">Nossos produtos</a>
-				</li>
-				<li class="nav-item">
-					<a href="#support" class="scroll-link">Suporte</a>
-				</li>
+				{#each list as item}
+					<li class="nav-item active:text-black">
+						<a href={item.href} class="scroll-link">{item.name}</a>
+					</li>
+				{/each}
 			</ul>
 			<div class="mobile-btns">
 				<button id="login-btn-mobile" class="btn-default entrar"> Login </button>
 				<button id="cadastro-btn-mobile" class="btn-default"> Cadastre-se </button>
 				<button class="btn-default btn-contact">
-					<a href="" target="_blank">Entre em contato</a>
+					<a href="/" target="_blank">Entre em contato</a>
 				</button>
 			</div>
 		</div>
 	{/if}
 
-<!-- Estrutura do formulário de pop-up -->
-{#if isFormOpen}
-	<div class="popup-overlay" on:click={toggleForm}></div>
-	<div class="popup-form">
-		<h2>Formulário de Contratação</h2>
-		<form>
-			<!-- Segmentação do negócio -->
-			<div class="form-group">
-				<label for="segment">Segmentação do Negócio:</label>
-				<input type="text" id="segment" name="segment" placeholder="Ex: E-commerce, SaaS, etc." />
-			</div>
+	<!-- Estrutura do formulário de pop-up -->
+	{#if isFormOpen}
+		<div class="popup-overlay" aria-hidden="true" onclick={toggleForm}></div>
+		<div class="popup-form">
+			<h2>Formulário de Contratação</h2>
+			<form>
+				<!-- Segmentação do negócio -->
+				<div class="form-group">
+					<label for="segment">Segmentação do Negócio:</label>
+					<input type="text" id="segment" name="segment" placeholder="Ex: E-commerce, SaaS, etc." />
+				</div>
 
-			<!-- Tipo de produto/serviço -->
-			<div class="form-group">
-				<label for="product">Tipo de Produto/Serviço:</label>
-				<input type="text" id="product" name="product" placeholder="Descreva o produto ou serviço desejado" />
-			</div>
+				<!-- Tipo de produto/serviço -->
+				<div class="form-group">
+					<label for="product">Tipo de Produto/Serviço:</label>
+					<input
+						type="text"
+						id="product"
+						name="product"
+						placeholder="Descreva o produto ou serviço desejado"
+					/>
+				</div>
 
-			<!-- Regime de contratação (dropdown) -->
-			<div class="form-group">
-				<label for="contract-regime">Regime de Contratação:</label>
-				<select id="contract-regime" name="contract-regime">
-					<option value="">Selecione o regime de contratação</option>
-					<option value="freelancer">Freelancer - Pessoa jurídica</option>
-					<option value="clt">Freelancer - CLT</option>
-					<option value="empresa">Empresa - Pessoa jurídica</option>
-				</select>
-			</div>
+				<!-- Regime de contratação (dropdown) -->
+				<div class="form-group">
+					<label for="contract-regime">Regime de Contratação:</label>
+					<select id="contract-regime" name="contract-regime">
+						<option value="">Selecione o regime de contratação</option>
+						<option value="freelancer">Freelancer - Pessoa jurídica</option>
+						<option value="clt">Freelancer - CLT</option>
+						<option value="empresa">Empresa - Pessoa jurídica</option>
+					</select>
+				</div>
 
-			<!-- Regime de trabalho (dropdown) -->
-			<div class="form-group">
-				<label for="work-regime">Regime de Trabalho:</label>
-				<select id="work-regime" name="work-regime">
-					<option value="">Selecione o regime de trabalho</option>
-					<option value="hibrido">Híbrido</option>
-					<option value="presencial">Presencial</option>
-					<option value="home-office">Home Office</option>
-				</select>
-			</div>
+				<!-- Regime de trabalho (dropdown) -->
+				<div class="form-group">
+					<label for="work-regime">Regime de Trabalho:</label>
+					<select id="work-regime" name="work-regime">
+						<option value="">Selecione o regime de trabalho</option>
+						<option value="hibrido">Híbrido</option>
+						<option value="presencial">Presencial</option>
+						<option value="home-office">Home Office</option>
+					</select>
+				</div>
 
-			<!-- Prazo de início -->
-			<div class="form-group">
-				<label for="start-date">Prazo de Início:</label>
-				<input type="date" id="start-date" name="start-date" />
-			</div>
+				<!-- Prazo de início -->
+				<div class="form-group">
+					<label for="start-date">Prazo de Início:</label>
+					<input type="date" id="start-date" name="start-date" />
+				</div>
 
-			<!-- Chatbox para explicação -->
-			<div class="form-group">
-				<label for="client-message">Descreva sua necessidade:</label>
-				<textarea id="client-message" name="client-message" rows="5" placeholder="Descreva com suas palavras o que você precisa..."></textarea>
-			</div>
+				<!-- Chatbox para explicação -->
+				<div class="form-group">
+					<label for="client-message">Descreva sua necessidade:</label>
+					<textarea
+						id="client-message"
+						name="client-message"
+						rows="5"
+						placeholder="Descreva com suas palavras o que você precisa..."
+					></textarea>
+				</div>
 
-			<!-- Botão de envio -->
-			<button type="submit" class="submit-btn">Enviar</button>
-		</form>
-		<button class="close-btn" on:click={toggleForm}>Fechar</button>
-	</div>
-{/if}
-
+				<!-- Botão de envio -->
+				<button type="submit" class="submit-btn">Enviar</button>
+			</form>
+			<button class="close-btn" onclick={toggleForm}>Fechar</button>
+		</div>
+	{/if}
 </header>
 
 <style>
 	header {
 		width: 100%;
+		height: 50px;
 		padding: 30px 30px;
 		position: sticky;
 		top: 0;
@@ -159,6 +157,7 @@
 
 	#navbar {
 		width: 100%;
+		height: 50px;
 		display: flex;
 		gap: 1rem;
 		align-items: center;
@@ -175,11 +174,6 @@
 		display: flex;
 		gap: 1.5rem;
 		list-style: none;
-	}
-
-	.btn-list {
-		display: flex;
-		gap: 1rem;
 	}
 
 	.nav-item a {
@@ -253,7 +247,9 @@
 	}
 
 	/* Dropdowns e outros inputs */
-	select, input, textarea {
+	select,
+	input,
+	textarea {
 		padding: 10px;
 		border: 1px solid #ccc;
 		border-radius: 5px;
@@ -297,7 +293,7 @@
 			grid-column: span 1;
 		}
 	}
-	
+
 	/*@media screen and (max-width: 1200px) {
 		#nav_list,
 		#navbar .btn-default {
