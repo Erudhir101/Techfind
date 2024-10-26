@@ -20,7 +20,7 @@
 	];
 </script>
 
-<header class="p-8 sticky top-0 bg-principal-1 z-10">
+<header class="p-8 sticky top-0 bg-principal-1 z-10 shadow-md">
 	<nav class="h-14 relative flex gap-4 items-center justify-between">
 		<img src={logo} alt="Logo Techfind" class="h-8 md:h-12" />
 		<ul class="hidden xl:flex xl:gap-4 xl:list-none">
@@ -32,7 +32,7 @@
 		</ul>
 		{#if isMenu}
 			<div
-				class="absolute flex justify-around top-[5rem] left-[-2rem] w-screen pb-5 bg-principal-1"
+				class="absolute flex justify-around top-[5rem] left-[-2rem] w-screen pb-5 bg-principal-1 shadow-md"
 			>
 				<ul
 					transition:slide={{ duration: 300, axis: 'y' }}

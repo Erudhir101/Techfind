@@ -1,9 +1,19 @@
 <script>
 	import '../app.css';
+	import About from './components/About.svelte';
+	import Footer from './components/Footer.svelte';
 	import Header from './components/Header.svelte';
-	import Teste from './components/Teste.svelte';
+	import Menu from './components/Menu.svelte';
+	import Planos from './components/Planos.svelte';
+	import Section from './components/Section.svelte';
+	import Support from './components/Support.svelte';
 </script>
 
-<!-- <Header /> -->
-<Teste />
+<Header />
+<Section />
+<Menu />
+<About />
+<Planos />
+<Support />
+<Footer />
 <!-- <slot /> -->
