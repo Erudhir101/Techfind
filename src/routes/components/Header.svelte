@@ -2,6 +2,7 @@
 	import { slide } from 'svelte/transition';
 	const btn =
 		'border-none flex items-center justify-center bg-principal-5 hover:bg-principal-3 rounded-xl py-3 px-4 font-semibold cursor-pointer transition-colors duration-300 ease-in';
+	let today = new Date().toISOString().split('T')[0];
 	// Importação da logo
 	import logo from '$lib/images/logolaran.svg';
 
@@ -10,6 +11,13 @@
 
 	// Reatividade no Svelte para controlar o menu móvel
 	let isFormOpen = $state(false);
+
+	function OpenCloseMenu() {
+		isMenu = !isMenu;
+	}
+	function OpenCloseForm() {
+		isFormOpen = !isFormOpen;
+	}
 
 	const list = [
 		{ name: 'início', href: '#home' },
@@ -50,7 +58,13 @@
 				>
 					<button id="login-btn" class={btn}>Login</button>
 					<button id="cadastro-btn" class={btn}>Cadastre-se</button>
-					<button class={btn}>
+					<button
+						class={btn}
+						onclick={() => {
+							OpenCloseMenu();
+							OpenCloseForm();
+						}}
+					>
 						<!-- <a href="javascript:void(0)">Comece agora!</a> -->
 						<a href="/">Comece agora!</a>
 					</button>
@@ -60,7 +74,7 @@
 		<div class="hidden xl:flex xl:gap-4 xl:items-center">
 			<button id="login-btn" class={btn}>Login</button>
 			<button id="cadastro-btn" class={btn}>Cadastre-se</button>
-			<button class={btn}>
+			<button class={btn} onclick={OpenCloseForm}>
 				<!-- <a href="javascript:void(0)">Comece agora!</a> -->
 				<a href="/">Comece agora!</a>
 			</button>
@@ -126,7 +140,7 @@
 				<!-- Prazo de início -->
 				<div class="form-group">
 					<label for="start-date">Prazo de Início:</label>
-					<input type="date" id="start-date" name="start-date" />
+					<input type="date" min={today} id="start-date" name="start-date" />
 				</div>
 
 				<!-- Chatbox para explicação -->
@@ -141,9 +155,20 @@
 				</div>
 
 				<!-- Botão de envio -->
-				<button type="submit" class="submit-btn">Enviar</button>
+				<button type="submit" class={`${btn} w-96 justify-self-center`}>Enviar</button>
 			</form>
-			<button class="close-btn" onclick={() => (isFormOpen = !isFormOpen)}>Fechar</button>
+			<button
+				aria-label="close"
+				class="absolute top-1.5 right-0 rounded-xl font-semibold cursor-pointer"
+				onclick={() => (isFormOpen = !isFormOpen)}
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" width="32" height="24" viewBox="0 0 384 512"
+					><path
+						fill="#101010"
+						d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z"
+					/></svg
+				>
+			</button>
 		</div>
 	{/if}
 </header>
@@ -163,29 +188,37 @@
 
 	/* Pop-up do formulário */
 	.popup-form {
-		position: fixed;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
+		position: relative;
+		margin: 0 auto;
 		background-color: white;
 		padding: 20px;
 		border-radius: 10px;
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 		z-index: 11;
-		width: 90%;
+		width: 100%;
 		max-width: 600px;
+		max-height: 98vh;
+		overflow-y: auto;
+		justify-content: space-between;
+	}
+
+	::webkit-scrollbar {
+		display: none;
 	}
 
 	.popup-form h2 {
 		margin-bottom: 15px;
 		text-align: center;
+		font-weight: bold;
+		font-size: 1.5rem;
 	}
 
 	/* Estilos de layout responsivo */
 	form {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 1fr;
 		grid-gap: 20px;
+		justify-items: stretch;
 	}
 
 	.form-group {
@@ -208,37 +241,7 @@
 
 	textarea {
 		resize: vertical;
-	}
-
-	.submit-btn {
-		grid-column: span 2;
-		background-color: var(--color-primary-1);
-		color: white;
-		padding: 10px 20px;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-		justify-self: center;
-	}
-
-	.close-btn {
-		background-color: transparent;
-		color: red;
-		border: none;
-		cursor: pointer;
-		margin-top: 10px;
-		text-align: center;
-		grid-column: span 2;
-	}
-
-	/* Alinhamento responsivo */
-	@media (max-width: 768px) {
-		form {
-			grid-template-columns: 1fr;
-		}
-
-		.form-group {
-			grid-column: span 1;
-		}
+		height: 100px;
+		resize: none;
 	}
 </style>
