@@ -1,7 +1,6 @@
 <script>
-	import wave from '$lib/images/wave.svg';
 	const socialIcons =
-		'flex items-center justify-center size-12 bg-white p-1 rounded-xl shadow pointer hover:shadow-principal-5 transition-all duration-150 ease-in';
+		'flex items-center justify-center size-12 bg-white p-1 rounded-xl shadow pointer hover:shadow-black transition-all duration-150 ease-in';
 	const socials = [
 		{
 			href: 'https://chat.whatsapp.com/LkR6fPlgtcuEvHk5x2A5r3',
@@ -24,9 +23,8 @@
 	];
 </script>
 
-<footer class="h-32 bg-principal-2">
-	<img class="w-full object-cover block" src={wave} alt="wave background" />
-	<div class="flex justify-between items-center px-8">
+<footer class="flex relative h-32">
+	<div class="flex w-full justify-between items-center px-12">
 		<span class="text-black font-medium"> &copy 2024 TechFind </span>
 		<div class="flex gap-5 items-center justify-around">
 			{#each socials as social}
@@ -41,4 +39,7 @@
 </footer>
 
 <style>
+	footer {
+		background: linear-gradient(0deg, rgba(255, 104, 0, 1) 10%, rgba(255, 232, 180, 1) 100%);
+	}
 </style>
