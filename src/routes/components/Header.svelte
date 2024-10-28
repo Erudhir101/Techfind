@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { slide } from 'svelte/transition';
+	import { slide, fade } from 'svelte/transition';
 	import logo from '$lib/images/logolaran.svg';
 
 	const btn =
 		'border-none flex items-center justify-center bg-principal-5 hover:bg-principal-3 rounded-xl py-3 px-4 font-semibold cursor-pointer transition-colors duration-300 ease-in';
 	let today = new Date().toISOString().split('T')[0];
-	let isMenu = false;
-	let isFormOpen = false;
-	let isSignupOpen = false;
-	let userType: 'Pessoa Física' | 'Pessoa Jurídica' | null = null;
+	let isMenu = $state(false);
+	let isFormOpen = $state(false);
+	let isSignupOpen = $state(false);
+	let userType = $state<'Pessoa Física' | 'Pessoa Jurídica' | null>(null);
 
 	function OpenCloseMenu() {
 		isMenu = !isMenu;
@@ -28,8 +28,8 @@
 		{ name: 'Suporte', href: '#support' }
 	];
 
-	let password = '';
-	let passwordStrength = '';
+	let password = $state('');
+	let passwordStrength = $state('');
 
 	function checkPasswordStrength() {
 		const strongPassword = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).{12,}$/;
@@ -53,7 +53,37 @@
 	}
 </script>
 
-<header class="p-8 sticky top-0 bg-principal-5 z-10 shadow-md">
+{#snippet buttonClose(fn: () => void)}
+	<button
+		aria-label="close"
+		class="absolute top-1.5 right-0 rounded-xl font-semibold cursor-pointer"
+		onclick={fn}
+	>
+		<svg xmlns="http://www.w3.org/2000/svg" width="32" height="24" viewBox="0 0 384 512"
+			><path
+				fill="#101010"
+				d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z"
+			/></svg
+		>
+	</button>
+{/snippet}
+
+{#snippet buttonBack()}
+	<button
+		aria-label="back"
+		class="absolute top-1.5 left-1 rounded-xl font-semibold cursor-pointer"
+		onclick={() => (userType = null)}
+	>
+		<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512"
+			><path
+				fill="#101010"
+				d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-320c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3l0 41.7 0 41.7L459.5 440.6zM256 352l0-96 0-128 0-32c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-64z"
+			/></svg
+		>
+	</button>
+{/snippet}
+
+<header class="p-8 sticky top-0 bg-principal-1 z-10 shadow-md">
 	<nav class="h-14 relative flex gap-4 items-center justify-between">
 		<img src={logo} alt="Logo Techfind" class="h-8 md:h-12" />
 		<ul class="hidden xl:flex xl:gap-4 xl:list-none">
@@ -68,22 +98,23 @@
 			<div
 				class="absolute flex justify-around top-[5rem] left-[-2rem] w-screen pb-5 bg-principal-1 shadow-md"
 			>
-				<ul
-					transition:slide={{ duration: 300, axis: 'y' }}
-					class="flex flex-col items-center gap-4"
-				>
+				<ul class="flex flex-col items-center gap-4">
 					{#each list as item}
 						<li class="nav-item">
 							<a href={item.href} class="no-underline font-semibold">{item.name}</a>
 						</li>
 					{/each}
 				</ul>
-				<div
-					transition:slide={{ duration: 300, axis: 'y' }}
-					class="flex flex-col items-center gap-4"
-				>
+				<div class="flex flex-col items-center gap-4">
 					<button id="login-btn" class={btn}>Login</button>
-					<button id="cadastro-btn" class={btn}>Cadastre-se</button>
+					<button
+						id="cadastro-btn"
+						class={btn}
+						onclick={() => {
+							OpenCloseMenu();
+							OpenCloseSignup();
+						}}>Cadastre-se</button
+					>
 					<button
 						class={btn}
 						onclick={() => {
@@ -91,7 +122,6 @@
 							OpenCloseForm();
 						}}
 					>
-						<!-- <a href="javascript:void(0)">Comece agora!</a> -->
 						<a href="/">Comece agora!</a>
 					</button>
 				</div>
@@ -101,12 +131,11 @@
 			<button id="login-btn" class={btn}>Login</button>
 			<button class={btn} onclick={OpenCloseSignup}>Cadastre-se</button>
 			<button class={btn} onclick={OpenCloseForm}>
-				<!-- <a href="javascript:void(0)">Comece agora!</a> -->
 				<a href="/">Comece agora!</a>
 			</button>
 		</div>
 		<!-- Botão de menu móvel -->
-		<button aria-label="menu" class="xl:hidden" onclick={() => (isMenu = !isMenu)}>
+		<button aria-label="menu" class="xl:hidden" onclick={OpenCloseMenu}>
 			<svg class="h-8 w-8 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 				<path
 					stroke-linecap="round"
@@ -117,8 +146,9 @@
 			</svg>
 		</button>
 	</nav>
+
 	{#if isSignupOpen}
-		<div class="popup-overlay-cad" aria-hidden="true" onclick={() => (isSignupOpen = false)}></div>
+		<div class="popup-overlay-cad" aria-hidden="true" onclick={OpenCloseSignup}></div>
 		<div class="popup-form-cad">
 			{#if !userType}
 				<h2>Escolha o Tipo de Cadastro</h2>
@@ -127,10 +157,13 @@
 					<button class={btn} onclick={() => (userType = 'Pessoa Jurídica')}>Pessoa Jurídica</button
 					>
 				</div>
+				{@render buttonClose(OpenCloseSignup)}
 			{:else}
 				<h2>Formulário de Cadastro: {userType}</h2>
 				<form onsubmit={submitForm}>
 					{#if userType === 'Pessoa Física'}
+						{@render buttonBack()}
+						{@render buttonClose(OpenCloseSignup)}
 						<div class="form-group">
 							<label for="name">Nome:</label>
 							<input type="text" id="name" placeholder="Nome Completo" required />
@@ -151,6 +184,8 @@
 							/>
 						</div>
 					{:else if userType === 'Pessoa Jurídica'}
+						{@render buttonBack()}
+						{@render buttonClose(OpenCloseSignup)}
 						<div class="form-group">
 							<label for="razao-social">Razão Social:</label>
 							<input type="text" id="razao-social" placeholder="Razão Social" required />
@@ -271,18 +306,7 @@
 				<!-- Botão de envio -->
 				<button type="submit" class={`${btn} w-96 justify-self-center`}>Enviar</button>
 			</form>
-			<button
-				aria-label="close"
-				class="absolute top-1.5 right-0 rounded-xl font-semibold cursor-pointer"
-				onclick={() => (isFormOpen = !isFormOpen)}
-			>
-				<svg xmlns="http://www.w3.org/2000/svg" width="32" height="24" viewBox="0 0 384 512"
-					><path
-						fill="#101010"
-						d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z"
-					/></svg
-				>
-			</button>
+			{@render buttonClose(OpenCloseForm)}
 		</div>
 	{/if}
 </header>
