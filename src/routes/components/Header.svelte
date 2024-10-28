@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
 	import logo from '$lib/images/logolaran.svg';
-	
-	const btn = 'border-none flex items-center justify-center bg-principal-5 hover:bg-principal-3 rounded-xl py-3 px-4 font-semibold cursor-pointer transition-colors duration-300 ease-in';
+
+	const btn =
+		'border-none flex items-center justify-center bg-principal-5 hover:bg-principal-3 rounded-xl py-3 px-4 font-semibold cursor-pointer transition-colors duration-300 ease-in';
 	let today = new Date().toISOString().split('T')[0];
 	let isMenu = false;
 	let isFormOpen = false;
@@ -44,7 +45,7 @@
 	}
 	function submitForm(event: Event) {
 		event.preventDefault();
-		alert("Cadastro concluído com sucesso!");
+		alert('Cadastro concluído com sucesso!');
 		isSignupOpen = false;
 		userType = null;
 		password = ''; // Reset password
@@ -52,7 +53,7 @@
 	}
 </script>
 
-<header class="p-8 sticky top-0 bg-principal-1 z-10 shadow-md">
+<header class="p-8 sticky top-0 bg-principal-5 z-10 shadow-md">
 	<nav class="h-14 relative flex gap-4 items-center justify-between">
 		<img src={logo} alt="Logo Techfind" class="h-8 md:h-12" />
 		<ul class="hidden xl:flex xl:gap-4 xl:list-none">
@@ -62,7 +63,7 @@
 				</li>
 			{/each}
 		</ul>
-		
+
 		{#if isMenu}
 			<div
 				class="absolute flex justify-around top-[5rem] left-[-2rem] w-screen pb-5 bg-principal-1 shadow-md"
@@ -123,7 +124,8 @@
 				<h2>Escolha o Tipo de Cadastro</h2>
 				<div class="flex justify-center gap-4">
 					<button class={btn} onclick={() => (userType = 'Pessoa Física')}>Pessoa Física</button>
-					<button class={btn} onclick={() => (userType = 'Pessoa Jurídica')}>Pessoa Jurídica</button>
+					<button class={btn} onclick={() => (userType = 'Pessoa Jurídica')}>Pessoa Jurídica</button
+					>
 				</div>
 			{:else}
 				<h2>Formulário de Cadastro: {userType}</h2>
@@ -139,7 +141,14 @@
 						</div>
 						<div class="form-group">
 							<label for="cpf">CPF:</label>
-							<input type="text" id="cpf" placeholder="000.000.000-00" required pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="CPF no formato 000.000.000-00"/>
+							<input
+								type="text"
+								id="cpf"
+								placeholder="000.000.000-00"
+								required
+								pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
+								title="CPF no formato 000.000.000-00"
+							/>
 						</div>
 					{:else if userType === 'Pessoa Jurídica'}
 						<div class="form-group">
@@ -152,7 +161,14 @@
 						</div>
 						<div class="form-group">
 							<label for="cnpj">CNPJ:</label>
-							<input type="text" id="cnpj" placeholder="00.000.000/0000-00" required pattern="\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}" title="CNPJ no formato 00.000.000/0000-00"/>
+							<input
+								type="text"
+								id="cnpj"
+								placeholder="00.000.000/0000-00"
+								required
+								pattern="\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}"
+								title="CNPJ no formato 00.000.000/0000-00"
+							/>
 						</div>
 					{/if}
 					<!-- Campos Comuns -->
@@ -162,11 +178,23 @@
 					</div>
 					<div class="form-group">
 						<label for="telefone">Telefone:</label>
-						<input type="tel" id="telefone" placeholder="(00) 00000-0000" pattern="\(\d{2}\) \d{5}-\d{4}" required />
+						<input
+							type="tel"
+							id="telefone"
+							placeholder="(00) 00000-0000"
+							pattern="\(\d{2}\) \d{5}-\d{4}"
+							required
+						/>
 					</div>
 					<div class="form-group">
 						<label for="senha">Senha:</label>
-						<input type="password" id="senha" bind:value={password} oninput={checkPasswordStrength} required />
+						<input
+							type="password"
+							id="senha"
+							bind:value={password}
+							oninput={checkPasswordStrength}
+							required
+						/>
 					</div>
 					<div class="password-strength">
 						<p>Força da senha: {passwordStrength}</p>
@@ -358,31 +386,31 @@
 		justify-content: space-between;
 	}
 
-	.popup-form-cad h2{
+	.popup-form-cad h2 {
 		font-weight: bold;
 		text-align: center;
 		font-size: large;
 	}
-	
-.password-strength {
-	margin-top: 10px;
-}
-.password-strength .progress-bar {
-	height: 5px;
-	background-color: grey;
-	width: 0; /* Initial width */
-	transition: width 0.3s ease;
-}
-.password-strength .progress-bar[data-strength='fácil'] {
-	width: 33%;
-	background-color: red;
-}
-.password-strength .progress-bar[data-strength='médio'] {
-	width: 66%;
-	background-color: orange;
-}
-.password-strength .progress-bar[data-strength='forte'] {
-	width: 100%;
-	background-color: green;
-}
+
+	.password-strength {
+		margin-top: 10px;
+	}
+	.password-strength .progress-bar {
+		height: 5px;
+		background-color: grey;
+		width: 0; /* Initial width */
+		transition: width 0.3s ease;
+	}
+	.password-strength .progress-bar[data-strength='fácil'] {
+		width: 33%;
+		background-color: red;
+	}
+	.password-strength .progress-bar[data-strength='médio'] {
+		width: 66%;
+		background-color: orange;
+	}
+	.password-strength .progress-bar[data-strength='forte'] {
+		width: 100%;
+		background-color: green;
+	}
 </style>
