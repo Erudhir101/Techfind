@@ -21,8 +21,8 @@
 	}
 
 	const list = [
-		{ name: 'início', href: '#home' },
-		{ name: 'Vantagens', href: '#menu' },
+		{ name: 'início', href: '/' },
+		{ name: 'Vantagens', href: '#vantagens' },
 		{ name: 'Sobre nós', href: '#aboutus' },
 		{ name: 'Planos', href: '#planos' },
 		{ name: 'Suporte', href: '#support' }
@@ -101,7 +101,11 @@
 				<ul class="flex flex-col items-center gap-4">
 					{#each list as item}
 						<li class="nav-item">
-							<a href={item.href} class="no-underline font-semibold">{item.name}</a>
+							<a
+								href={item.href}
+								onclick={() => window.scroll({ behavior: 'smooth' })}
+								class="no-underline font-semibold">{item.name}</a
+							>
 						</li>
 					{/each}
 				</ul>
@@ -414,6 +418,7 @@
 		font-weight: bold;
 		text-align: center;
 		font-size: large;
+		padding-bottom: 1rem;
 	}
 
 	.password-strength {

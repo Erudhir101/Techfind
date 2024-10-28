@@ -27,7 +27,7 @@
 	];
 </script>
 
-<section class="flex flex-col items-center p-5 mt-12 text-center gap-8">
+<section id="aboutus" class="flex flex-col items-center min-h-svh p-5 pt-32 text-center gap-8">
 	{#each contents as content}
 		<div class="flex flex-col items-center lg:w-1/2">
 			<svg class="size-24 w-full" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"

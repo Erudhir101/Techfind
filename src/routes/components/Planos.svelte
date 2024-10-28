@@ -29,7 +29,7 @@
 	];
 </script>
 
-<section class="p-5 my-4 text-center relative">
+<section id="planos" class="p-5 pt-32 text-center relative min-h-svh">
 	<h2 class="text-3xl font-semibold text-principal-6">Nossos Planos</h2>
 	<h3 class="text-5xl my-4 font-bold">Escolha o melhor plano para o seu negócio</h3>
 

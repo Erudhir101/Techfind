@@ -1,4 +1,4 @@
-<section class="flex flex-col items-center justify-center min-h-svh gap-4">
+<section id="vantagens" class="flex flex-col items-center justify-center min-h-svh gap-4">
 	<h2 class="text-2xl w-auto font-bold text-principal-6">Conheça nossos diferenciais</h2>
 	<h3 class="text-4xl w-auto font-bold mb-4">Vantagens em ser Techfind</h3>
 

@@ -27,7 +27,7 @@
 	];
 </script>
 
-<section class="flex flex-col items-center text-center gap-4 mt-32">
+<section id="support" class="flex flex-col items-center text-center min-h-svh gap-4 pt-32">
 	<h1 class="text-2xl font-bold">Atendimento personalizado e Suporte 24/7</h1>
 	{#each boxes as box}
 		<div class="flex flex-col items-center gap-3 my-3 rounded-xl p-5 w-64 lg:w-96">
