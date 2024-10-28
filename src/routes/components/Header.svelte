@@ -1,22 +1,22 @@
-<script>
+<script lang="ts">
 	import { slide } from 'svelte/transition';
-	const btn =
-		'border-none flex items-center justify-center bg-principal-5 hover:bg-principal-3 rounded-xl py-3 px-4 font-semibold cursor-pointer transition-colors duration-300 ease-in';
-	let today = new Date().toISOString().split('T')[0];
-	// Importação da logo
 	import logo from '$lib/images/logolaran.svg';
-
-	// Reatividade no Svelte para controlar o menu móvel
-	let isMenu = $state(false);
-
-	// Reatividade no Svelte para controlar o menu móvel
-	let isFormOpen = $state(false);
+	
+	const btn = 'border-none flex items-center justify-center bg-principal-5 hover:bg-principal-3 rounded-xl py-3 px-4 font-semibold cursor-pointer transition-colors duration-300 ease-in';
+	let today = new Date().toISOString().split('T')[0];
+	let isMenu = false;
+	let isFormOpen = false;
+	let isSignupOpen = false;
+	let userType: 'Pessoa Física' | 'Pessoa Jurídica' | null = null;
 
 	function OpenCloseMenu() {
 		isMenu = !isMenu;
 	}
 	function OpenCloseForm() {
 		isFormOpen = !isFormOpen;
+	}
+	function OpenCloseSignup() {
+		isSignupOpen = !isSignupOpen;
 	}
 
 	const list = [
@@ -26,6 +26,30 @@
 		{ name: 'Planos', href: '#planos' },
 		{ name: 'Suporte', href: '#support' }
 	];
+
+	let password = '';
+	let passwordStrength = '';
+
+	function checkPasswordStrength() {
+		const strongPassword = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).{12,}$/;
+		const mediumPassword = /^(?=.*[A-Z])(?=.*[0-9]).{8,}$/;
+
+		if (strongPassword.test(password)) {
+			passwordStrength = 'forte';
+		} else if (mediumPassword.test(password)) {
+			passwordStrength = 'médio';
+		} else {
+			passwordStrength = 'fácil';
+		}
+	}
+	function submitForm(event: Event) {
+		event.preventDefault();
+		alert("Cadastro concluído com sucesso!");
+		isSignupOpen = false;
+		userType = null;
+		password = ''; // Reset password
+		passwordStrength = ''; // Reset strength
+	}
 </script>
 
 <header class="p-8 sticky top-0 bg-principal-1 z-10 shadow-md">
@@ -38,6 +62,7 @@
 				</li>
 			{/each}
 		</ul>
+		
 		{#if isMenu}
 			<div
 				class="absolute flex justify-around top-[5rem] left-[-2rem] w-screen pb-5 bg-principal-1 shadow-md"
@@ -73,7 +98,7 @@
 		{/if}
 		<div class="hidden xl:flex xl:gap-4 xl:items-center">
 			<button id="login-btn" class={btn}>Login</button>
-			<button id="cadastro-btn" class={btn}>Cadastre-se</button>
+			<button class={btn} onclick={OpenCloseSignup}>Cadastre-se</button>
 			<button class={btn} onclick={OpenCloseForm}>
 				<!-- <a href="javascript:void(0)">Comece agora!</a> -->
 				<a href="/">Comece agora!</a>
@@ -91,6 +116,67 @@
 			</svg>
 		</button>
 	</nav>
+	{#if isSignupOpen}
+		<div class="popup-overlay-cad" aria-hidden="true" onclick={() => (isSignupOpen = false)}></div>
+		<div class="popup-form-cad">
+			{#if !userType}
+				<h2>Escolha o Tipo de Cadastro</h2>
+				<div class="flex justify-center gap-4">
+					<button class={btn} onclick={() => (userType = 'Pessoa Física')}>Pessoa Física</button>
+					<button class={btn} onclick={() => (userType = 'Pessoa Jurídica')}>Pessoa Jurídica</button>
+				</div>
+			{:else}
+				<h2>Formulário de Cadastro: {userType}</h2>
+				<form onsubmit={submitForm}>
+					{#if userType === 'Pessoa Física'}
+						<div class="form-group">
+							<label for="name">Nome:</label>
+							<input type="text" id="name" placeholder="Nome Completo" required />
+						</div>
+						<div class="form-group">
+							<label for="dob">Data de Nascimento:</label>
+							<input type="date" id="dob" max={today} required />
+						</div>
+						<div class="form-group">
+							<label for="cpf">CPF:</label>
+							<input type="text" id="cpf" placeholder="000.000.000-00" required pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="CPF no formato 000.000.000-00"/>
+						</div>
+					{:else if userType === 'Pessoa Jurídica'}
+						<div class="form-group">
+							<label for="razao-social">Razão Social:</label>
+							<input type="text" id="razao-social" placeholder="Razão Social" required />
+						</div>
+						<div class="form-group">
+							<label for="data-abertura">Data de Abertura:</label>
+							<input type="date" id="data-abertura" max={today} required />
+						</div>
+						<div class="form-group">
+							<label for="cnpj">CNPJ:</label>
+							<input type="text" id="cnpj" placeholder="00.000.000/0000-00" required pattern="\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}" title="CNPJ no formato 00.000.000/0000-00"/>
+						</div>
+					{/if}
+					<!-- Campos Comuns -->
+					<div class="form-group">
+						<label for="email">E-mail:</label>
+						<input type="email" id="email" placeholder="E-mail" required />
+					</div>
+					<div class="form-group">
+						<label for="telefone">Telefone:</label>
+						<input type="tel" id="telefone" placeholder="(00) 00000-0000" pattern="\(\d{2}\) \d{5}-\d{4}" required />
+					</div>
+					<div class="form-group">
+						<label for="senha">Senha:</label>
+						<input type="password" id="senha" bind:value={password} oninput={checkPasswordStrength} required />
+					</div>
+					<div class="password-strength">
+						<p>Força da senha: {passwordStrength}</p>
+						<div class="progress-bar" data-strength={passwordStrength}></div>
+					</div>
+					<button type="submit" class={`${btn} w-full`}>Cadastrar</button>
+				</form>
+			{/if}
+		</div>
+	{/if}
 
 	<!-- Estrutura do formulário de pop-up -->
 	{#if isFormOpen}
@@ -244,4 +330,59 @@
 		height: 100px;
 		resize: none;
 	}
+
+	.popup-overlay-cad {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background: rgba(0, 0, 0, 0.5);
+		backdrop-filter: blur(5px);
+		z-index: 10;
+		justify-content: space-between;
+	}
+
+	.popup-form-cad {
+		position: relative;
+		margin: 0 auto;
+		background-color: white;
+		padding: 20px;
+		border-radius: 10px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		z-index: 11;
+		width: 100%;
+		max-width: 600px;
+		max-height: 98vh;
+		overflow-y: auto;
+		justify-content: space-between;
+	}
+
+	.popup-form-cad h2{
+		font-weight: bold;
+		text-align: center;
+		font-size: large;
+	}
+	
+.password-strength {
+	margin-top: 10px;
+}
+.password-strength .progress-bar {
+	height: 5px;
+	background-color: grey;
+	width: 0; /* Initial width */
+	transition: width 0.3s ease;
+}
+.password-strength .progress-bar[data-strength='fácil'] {
+	width: 33%;
+	background-color: red;
+}
+.password-strength .progress-bar[data-strength='médio'] {
+	width: 66%;
+	background-color: orange;
+}
+.password-strength .progress-bar[data-strength='forte'] {
+	width: 100%;
+	background-color: green;
+}
 </style>
