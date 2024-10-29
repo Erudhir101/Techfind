@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { slide, fade } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 	import logo from '$lib/images/logolaran.svg';
 
 	const btn =
@@ -55,28 +55,27 @@
 
 {#snippet buttonClose(fn: () => void)}
 	<button
-		aria-label="close"
-		class="absolute top-1.5 right-0 rounded-xl font-semibold cursor-pointer"
+		aria-label="close buttom"
 		onclick={fn}
+		class="absolute top-[-5px] right-1 text-5xl font-semibold hover:text-principal-4"
 	>
-		<svg xmlns="http://www.w3.org/2000/svg" width="32" height="24" viewBox="0 0 384 512"
-			><path
-				fill="#101010"
-				d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z"
-			/></svg
-		>
+		&times;
 	</button>
 {/snippet}
 
 {#snippet buttonBack()}
 	<button
 		aria-label="back"
-		class="absolute top-1.5 left-1 rounded-xl font-semibold cursor-pointer"
+		class="absolute top-1.5 left-1 font-semibold cursor-pointer"
 		onclick={() => (userType = null)}
 	>
-		<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512"
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			width="28"
+			height="28"
+			class="fill-black hover:fill-principal-4"
+			viewBox="0 0 512 512"
 			><path
-				fill="#101010"
 				d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-320c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3l0 41.7 0 41.7L459.5 440.6zM256 352l0-96 0-128 0-32c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-64z"
 			/></svg
 		>
@@ -96,16 +95,13 @@
 
 		{#if isMenu}
 			<div
+				transition:slide={{ duration: 300 }}
 				class="absolute flex justify-around top-[5rem] left-[-2rem] w-screen pb-5 bg-principal-1 shadow-md"
 			>
 				<ul class="flex flex-col items-center gap-4">
 					{#each list as item}
 						<li class="nav-item">
-							<a
-								href={item.href}
-								onclick={() => window.scroll({ behavior: 'smooth' })}
-								class="no-underline font-semibold">{item.name}</a
-							>
+							<a href={item.href} class="no-underline font-semibold">{item.name}</a>
 						</li>
 					{/each}
 				</ul>
@@ -250,7 +246,7 @@
 		<div class="popup-overlay" aria-hidden="true" onclick={() => (isFormOpen = !isFormOpen)}></div>
 		<div class="popup-form">
 			<h2>Formulário de Contratação</h2>
-			<form>
+			<form method="POST" action="/chat">
 				<!-- Segmentação do negócio -->
 				<div class="form-group">
 					<label for="segment">Segmentação do Negócio:</label>
