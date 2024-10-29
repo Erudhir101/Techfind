@@ -3,6 +3,7 @@
 	import enterprise from '$img/enterprise.svelte';
 	import advanced from '$img/advanced.svelte';
 	import { list } from 'postcss';
+	import { fade } from 'svelte/transition';
 
 	let planOpen = $state(false);
 	let indxPlan = $state(0);
@@ -100,7 +101,8 @@
 
 	{#if planOpen}
 		<div
-			class="fixed flex items-center justify-center top-0 left-0 w-full h-full bg-black bg-opacity-70 z-50"
+			transition:fade={{ duration: 300 }}
+			class="fixed flex items-center justify-center top-0 left-0 w-full h-full bg-[#00000080] backdrop-blur-sm z-50"
 			aria-hidden="true"
 			onclick={() => (planOpen = !planOpen)}
 		>

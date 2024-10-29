@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { slide } from 'svelte/transition';
+	import { fade, slide } from 'svelte/transition';
 	import logo from '$lib/images/logolaran.svg';
 
 	const btn =
@@ -148,8 +148,13 @@
 	</nav>
 
 	{#if isSignupOpen}
-		<div class="popup-overlay-cad" aria-hidden="true" onclick={OpenCloseSignup}></div>
-		<div class="popup-form-cad">
+		<div
+			class="popup-overlay-cad"
+			aria-hidden="true"
+			transition:fade={{ duration: 300 }}
+			onclick={OpenCloseSignup}
+		></div>
+		<div class="popup-form-cad" transition:fade={{ duration: 300 }}>
 			{#if !userType}
 				<h2>Escolha o Tipo de Cadastro</h2>
 				<div class="flex justify-center gap-4">
@@ -243,8 +248,13 @@
 
 	<!-- Estrutura do formulário de pop-up -->
 	{#if isFormOpen}
-		<div class="popup-overlay" aria-hidden="true" onclick={() => (isFormOpen = !isFormOpen)}></div>
-		<div class="popup-form">
+		<div
+			class="popup-overlay"
+			aria-hidden="true"
+			transition:fade={{ duration: 300 }}
+			onclick={() => (isFormOpen = !isFormOpen)}
+		></div>
+		<div class="popup-form" transition:fade={{ duration: 300 }}>
 			<h2>Formulário de Contratação</h2>
 			<form method="POST" action="/chat">
 				<!-- Segmentação do negócio -->
