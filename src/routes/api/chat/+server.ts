@@ -23,7 +23,8 @@ engenheiro de software;
 PO;
 QA;
 linux;
-quando for fornecer o ranking, apenas dê a nota de cada característica e valor.
+quando for fornecer o ranking, dê apenas a nota de cada característica e valor, separando elas em cada linha. Como no exemplo a seguir:
+'características: 4/10\nTags: 5/10'
 `;
 
 // export async function POST({ request }) {

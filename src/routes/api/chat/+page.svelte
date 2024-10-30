@@ -25,7 +25,6 @@
 	let scrollMain: HTMLElement;
 	let autoscroll: boolean = false;
 
-	// $: console.log($messages.length);
 	beforeUpdate(() => {
 		if (scrollMain) {
 			autoscroll = scrollMain.scrollTop > scrollMain.scrollHeight - scrollMain.offsetHeight - 20;
@@ -38,4 +37,23 @@
 	});
 </script>
 
-<div>alguma coisa</div>
+<main>
+	<h1>AI Interaction</h1>
+	<form on:submit|preventDefault={handleSubmit}>
+		<textarea bind:value={$input} placeholder="Ask something..."></textarea>
+		<button type="submit">Submit</button>
+	</form>
+	<div>
+		<h2>Response:</h2>
+		{#each $messages as message (message.id)}
+			{#if message.role !== 'user'}
+				<p class="text-md prose">{message.content}</p>
+			{:else}
+				<p class="text-md">{message.content}</p>
+			{/if}
+		{/each}
+	</div>
+</main>
+
+<style>
+</style>
