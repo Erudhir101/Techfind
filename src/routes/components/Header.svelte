@@ -435,17 +435,19 @@
 		background-color: grey;
 		width: 0; /* Initial width */
 		transition: width 0.3s ease;
+		border: rgba(0, 0, 0, 0.2);
+		border-radius: 12px;
 	}
 	.password-strength .progress-bar[data-strength='fácil'] {
 		width: 33%;
-		background-color: red;
+		background-color: rgb(255, 168, 96);
 	}
 	.password-strength .progress-bar[data-strength='médio'] {
 		width: 66%;
-		background-color: orange;
+		background-color: rgb(255, 149, 63);
 	}
 	.password-strength .progress-bar[data-strength='forte'] {
 		width: 100%;
-		background-color: green;
+		background-color: rgb(209, 94, 0);
 	}
 </style>
