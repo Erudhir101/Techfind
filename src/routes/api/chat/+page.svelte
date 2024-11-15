@@ -37,23 +37,26 @@
 	});
 </script>
 
-<main>
-	<h1>AI Interaction</h1>
-	<form on:submit|preventDefault={handleSubmit}>
-		<textarea bind:value={$input} placeholder="Ask something..."></textarea>
-		<button type="submit">Submit</button>
-	</form>
-	<div>
-		<h2>Response:</h2>
-		{#each $messages as message (message.id)}
-			{#if message.role !== 'user'}
-				<p class="text-md prose">{message.content}</p>
-			{:else}
-				<p class="text-md">{message.content}</p>
-			{/if}
-		{/each}
-	</div>
-</main>
+<div class="flex w-full h-svh p-16">
+	<main class="basis-1/2">
+		<h1>AI Interaction</h1>
+		<form on:submit|preventDefault={handleUserSubmit}>
+			<textarea bind:value={$input} placeholder="Ask something..."></textarea>
+			<button type="submit">Submit</button>
+		</form>
+		<div>
+			<h2>Response:</h2>
+			{#each $messages as message (message.id)}
+				{#if message.role !== 'user'}
+					<p class="text-md prose">{message.content}</p>
+				{:else}
+					<p class="text-md">{message.content}</p>
+				{/if}
+			{/each}
+		</div>
+	</main>
+	<aside class="bg-red-200 basis-1/2">alguma coisa</aside>
+</div>
 
 <style>
 </style>

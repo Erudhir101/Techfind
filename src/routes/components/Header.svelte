@@ -165,7 +165,7 @@
 				{@render buttonClose(OpenCloseSignup)}
 			{:else}
 				<h2>Formulário de Cadastro: {userType}</h2>
-				<form onsubmit={submitForm}>
+				<form onsubmit={submitForm} action="/api/chat">
 					{#if userType === 'Pessoa Física'}
 						{@render buttonBack()}
 						{@render buttonClose(OpenCloseSignup)}
@@ -175,7 +175,7 @@
 						</div>
 						<div class="form-group">
 							<label for="dob">Data de Nascimento:</label>
-							<input type="date" id="dob" max={today} required />
+							<input type="date" id="dob" min={today} required />
 						</div>
 						<div class="form-group">
 							<label for="cpf">CPF:</label>
@@ -184,7 +184,7 @@
 								id="cpf"
 								placeholder="000.000.000-00"
 								required
-								pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
+								pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2})|(\d{2}\.?\d{3}\.?\d{3}/?\d{4}-?\d{2}"
 								title="CPF no formato 000.000.000-00"
 							/>
 						</div>
@@ -197,7 +197,7 @@
 						</div>
 						<div class="form-group">
 							<label for="data-abertura">Data de Abertura:</label>
-							<input type="date" id="data-abertura" max={today} required />
+							<input type="date" id="data-abertura" min={today} required />
 						</div>
 						<div class="form-group">
 							<label for="cnpj">CNPJ:</label>
@@ -206,7 +206,7 @@
 								id="cnpj"
 								placeholder="00.000.000/0000-00"
 								required
-								pattern="\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}"
+								pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2})|(\d{2}\.?\d{3}\.?\d{3}/?\d{4}-?\d{2}"
 								title="CNPJ no formato 00.000.000/0000-00"
 							/>
 						</div>
@@ -222,7 +222,7 @@
 							type="tel"
 							id="telefone"
 							placeholder="(00) 00000-0000"
-							pattern="\(\d{2}\) \d{5}-\d{4}"
+							pattern="/^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/"
 							required
 						/>
 					</div>

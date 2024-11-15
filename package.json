@@ -33,6 +33,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@ai-sdk/groq": "^0.0.3",
 		"ai": "^3.4.27",
 		"ollama": "^0.5.9",
 		"ollama-ai-provider": "^0.16.0",
