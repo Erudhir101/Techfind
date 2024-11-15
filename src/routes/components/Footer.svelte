@@ -42,8 +42,8 @@
 	footer {
 		background: linear-gradient(
 			0deg,
-			rgba(255, 104, 0, 0.8045454545454546) 10%,
-			rgba(255, 232, 180, 1) 100%
+			rgb(230, 230, 230) 10%,
+			rgba(255, 233, 180, 0) 100%
 		);
 	}
 </style>
