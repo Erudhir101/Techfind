@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { chatHistory, addMessage } from '$lib/stores/chatStore';
 	import { useChat } from '@ai-sdk/svelte';
-	import { afterUpdate, beforeUpdate } from 'svelte';
 	import type { Message } from 'ai';
 	import CardProfile from '../../components/CardProfile.svelte';
+	import type { ActionData } from './$types';
+
+	let { form }: { form: ActionData } = $props();
 
 	const { input, handleSubmit, messages } = useChat({
 		initialMessages: $chatHistory,
@@ -12,39 +14,27 @@
 		}
 	});
 
-	async function handleUserSubmit(event: Event) {
-		event.preventDefault();
-		if ($input.trim() === '') return;
-		addMessage({ id: crypto.randomUUID(), role: 'user', content: $input });
-		try {
-			handleSubmit(event);
-		} catch (err) {
-			console.error('Error sending message:', err);
-		}
-	}
+	// async function handleUserSubmit(event: Event) {
+	// 	event.preventDefault();
+	// 	if ($input.trim() === '') return;
+	// 	addMessage({ id: crypto.randomUUID(), role: 'user', content: $input });
+	// 	try {
+	// 		handleSubmit(event);
+	// 	} catch (err) {
+	// 		console.error('Error sending message:', err);
+	// 	}
+	// }
 
-	let scrollMain: HTMLElement;
-	let autoscroll: boolean = false;
-
-	beforeUpdate(() => {
-		if (scrollMain) {
-			autoscroll = scrollMain.scrollTop > scrollMain.scrollHeight - scrollMain.offsetHeight - 20;
-		}
-	});
-	afterUpdate(() => {
-		if (autoscroll) {
-			scrollMain.scrollTo(0, scrollMain.scrollHeight);
-		}
-	});
+	$effect(() => console.log(form));
 </script>
 
-<div class="flex w-full h-svh p-16">
-	<main class="basis-1/2">
+<div class="flex justify-center w-full h-svh p-16">
+	<main class="basis-1/2 p-4 border-2 border-principal-4">
 		<h1>AI Interaction</h1>
-		<form on:submit|preventDefault={handleUserSubmit}>
-			<textarea bind:value={$input} placeholder="Ask something..."></textarea>
-			<button type="submit">Submit</button>
-		</form>
+		<!-- <form on:submit|preventDefault={handleUserSubmit}> -->
+		<!-- 	<textarea bind:value={$input} placeholder="Ask something..."></textarea> -->
+		<!-- 	<button type="submit">Submit</button> -->
+		<!-- </form> -->
 		<div>
 			<h2>Response:</h2>
 			{#each $messages as message (message.id)}
@@ -56,7 +46,7 @@
 			{/each}
 		</div>
 	</main>
-	<aside class="bg-zinc-400 basis-1/2 flex flex-col items-center p-4 gap-4">
+	<aside class="bg-zinc-400 flex flex-col items-center py-8 px-16 gap-4 overflow-y-scroll">
 		<CardProfile></CardProfile>
 	</aside>
 </div>

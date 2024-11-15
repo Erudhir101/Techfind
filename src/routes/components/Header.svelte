@@ -303,7 +303,7 @@
 		></div>
 		<div class="popup-form" transition:fade={{ duration: 300 }}>
 			<h2>Formulário de Contratação</h2>
-			<form method="POST" action="/chat">
+			<form method="POST" action="/api/chat">
 				<!-- Segmentação do negócio -->
 				<div class="form-group">
 					<label for="segment">Segmentação do Negócio:</label>
