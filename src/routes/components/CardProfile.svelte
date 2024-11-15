@@ -1,4 +1,5 @@
 <script>
+	import avatar from '$lib/images/avatarGray.svg';
 	const usuarios = [
 		{
 			nome: 'João',
@@ -76,9 +77,9 @@
 </script>
 
 {#each usuarios as item}
-	<div class="bg-white w-full max-w-sm flex flex-col flex-1 p-8 gap-8 rounded-xl">
+	<div class="bg-white w-full max-w-sm flex flex-col flex-1 p-4 md:p-8 gap-8 rounded-xl">
 		<div class="flex gap-4">
-			<img src="/" alt="profile" class="bg-zinc-200 text-zinc-200 rounded-full" />
+			<img class="size-14 md:size-16" src={avatar} alt="" />
 			<div>
 				<h2 class="font-bold text-xl">{item.nome}</h2>
 				<h3>{item.desc}</h3>

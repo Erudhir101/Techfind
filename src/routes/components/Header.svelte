@@ -5,6 +5,7 @@
 	const btn =
 		'border-none flex items-center justify-center bg-principal-5 hover:bg-principal-3 rounded-xl py-3 px-4 font-semibold cursor-pointer transition-colors duration-300 ease-in';
 	let today = new Date().toISOString().split('T')[0];
+	let size = $state(0);
 	let isMenu = $state(false);
 	let isFormOpen = $state(false);
 	let isSignupOpen = $state(false);
@@ -98,6 +99,12 @@
 		password = ''; // Reset password
 		passwordStrength = ''; // Reset strength
 	}
+
+	$effect(() => {
+		if (size >= 1216 && isMenu) {
+			OpenCloseMenu();
+		}
+	});
 </script>
 
 {#snippet buttonClose(fn: () => void)}
@@ -130,7 +137,7 @@
 {/snippet}
 
 <header class="p-8 sticky top-0 bg-principal-1 z-10 shadow-md">
-	<nav class="h-14 relative flex gap-4 items-center justify-between">
+	<nav bind:clientWidth={size} class="h-14 relative flex gap-4 items-center justify-between">
 		<img src={logo} alt="Logo Techfind" class="h-8 md:h-12" />
 		<ul class="hidden xl:flex xl:gap-4 xl:list-none">
 			{#each list as item}
