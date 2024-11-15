@@ -8,6 +8,7 @@
 	let isMenu = $state(false);
 	let isFormOpen = $state(false);
 	let isSignupOpen = $state(false);
+	let isLoginOpen = $state(false);
 	let userType = $state<'Pessoa Física' | 'Pessoa Jurídica' | null>(null);
 
 	function OpenCloseMenu() {
@@ -18,6 +19,48 @@
 	}
 	function OpenCloseSignup() {
 		isSignupOpen = !isSignupOpen;
+	}
+	function OpenCloseLogin() {
+		isLoginOpen = !isLoginOpen;
+	}
+
+		// Função de login com verificações de tipo e validação de campos
+		function handleLogin(event: Event) {
+		event.preventDefault();
+		const form = event.target as HTMLFormElement | null;
+
+		if (!form) {
+			return;
+		}
+
+		const emailOrDoc = (form.querySelector('#login-email') as HTMLInputElement)?.value;
+		const password = (form.querySelector('#login-password') as HTMLInputElement)?.value;
+
+		const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		const cpfPattern = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
+		const cnpjPattern = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/;
+
+		if (
+			!emailOrDoc ||
+			(!emailPattern.test(emailOrDoc) && !cpfPattern.test(emailOrDoc) && !cnpjPattern.test(emailOrDoc))
+		) {
+			alert("Digite um E-mail, CPF ou CNPJ válido.");
+			return;
+		}
+
+		if (
+			!password ||
+			password.length < 12 ||
+			!/[A-Z]/.test(password) ||
+			!/[0-9]/.test(password) ||
+			!/[!@#$%^&*]/.test(password)
+		) {
+			alert("A senha deve ter no mínimo 12 caracteres, incluindo uma letra maiúscula, um número e um caractere especial.");
+			return;
+		}
+
+		alert("Login realizado com sucesso!");
+		isLoginOpen = false;
 	}
 
 	const list = [
@@ -106,7 +149,7 @@
 					{/each}
 				</ul>
 				<div class="flex flex-col items-center gap-4">
-					<button id="login-btn" class={btn}>Login</button>
+					<button id="login-btn" class={btn} onclick={OpenCloseLogin}>Login</button>
 					<button
 						id="cadastro-btn"
 						class={btn}
@@ -128,7 +171,7 @@
 			</div>
 		{/if}
 		<div class="hidden xl:flex xl:gap-4 xl:items-center">
-			<button id="login-btn" class={btn}>Login</button>
+			<button id="login-btn" class={btn} onclick={OpenCloseLogin}>Login</button>
 			<button class={btn} onclick={OpenCloseSignup}>Cadastre-se</button>
 			<button class={btn} onclick={OpenCloseForm}>
 				<a href="/">Comece agora!</a>
@@ -319,6 +362,28 @@
 			{@render buttonClose(OpenCloseForm)}
 		</div>
 	{/if}
+
+	{#if isLoginOpen}
+		<div class="login-overlay" role="button" tabindex="0" onclick={OpenCloseLogin} onkeydown={(e) => e.key === 'Escape' && OpenCloseLogin()}></div>
+		<div class="login-form">
+			<h2>Login</h2>
+			<form onsubmit={handleLogin}>
+				<div class="form-group">
+					<label for="login-email">E-mail, CPF ou CNPJ:</label>
+					<input type="text" id="login-email" name="login-email" required />
+				</div>
+				<div class="form-group">
+					<label for="login-password">Senha:</label>
+					<input type="password" id="login-password" name="login-password" required />
+				</div>
+				<button type="submit" class={`${btn} w-96 justify-self-center`}>Entrar</button>
+			</form>
+			<button aria-label="close-login" class="close-btn" onclick={OpenCloseLogin}>
+				Fechar
+			</button>
+		</div>
+	{/if}
+
 </header>
 
 <style>
@@ -449,5 +514,56 @@
 	.password-strength .progress-bar[data-strength='forte'] {
 		width: 100%;
 		background-color: rgb(209, 94, 0);
+	}
+
+ /*Login*/
+
+	.login-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background: rgba(0, 0, 0, 0.5);
+		backdrop-filter: blur(5px);
+		z-index: 10;
+	}
+
+	.login-form {
+		position: relative;
+		margin: 0 auto;
+		background-color: white;
+		padding: 20px;
+		border-radius: 10px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		z-index: 11;
+		width: 100%;
+		max-width: 600px;
+		max-height: 90vh;
+		overflow-y: auto;
+	}
+
+	.login-form h2 {
+		margin-bottom: 15px;
+		text-align: center;
+		font-weight: bold;
+		font-size: 1.5rem;
+	}
+
+	.form-group {
+		display: flex;
+		flex-direction: column;
+		margin-bottom: 20px;
+	}
+
+	.close-btn {
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		background: none;
+		border: none;
+		font-size: 1.2rem;
+		cursor: pointer;
+		color: #333;
 	}
 </style>
