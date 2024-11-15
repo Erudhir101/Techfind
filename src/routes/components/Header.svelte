@@ -24,8 +24,8 @@
 		isLoginOpen = !isLoginOpen;
 	}
 
-		// Função de login com verificações de tipo e validação de campos
-		function handleLogin(event: Event) {
+	// Função de login com verificações de tipo e validação de campos
+	function handleLogin(event: Event) {
 		event.preventDefault();
 		const form = event.target as HTMLFormElement | null;
 
@@ -42,9 +42,11 @@
 
 		if (
 			!emailOrDoc ||
-			(!emailPattern.test(emailOrDoc) && !cpfPattern.test(emailOrDoc) && !cnpjPattern.test(emailOrDoc))
+			(!emailPattern.test(emailOrDoc) &&
+				!cpfPattern.test(emailOrDoc) &&
+				!cnpjPattern.test(emailOrDoc))
 		) {
-			alert("Digite um E-mail, CPF ou CNPJ válido.");
+			alert('Digite um E-mail, CPF ou CNPJ válido.');
 			return;
 		}
 
@@ -55,11 +57,13 @@
 			!/[0-9]/.test(password) ||
 			!/[!@#$%^&*]/.test(password)
 		) {
-			alert("A senha deve ter no mínimo 12 caracteres, incluindo uma letra maiúscula, um número e um caractere especial.");
+			alert(
+				'A senha deve ter no mínimo 12 caracteres, incluindo uma letra maiúscula, um número e um caractere especial.'
+			);
 			return;
 		}
 
-		alert("Login realizado com sucesso!");
+		alert('Login realizado com sucesso!');
 		isLoginOpen = false;
 	}
 
@@ -364,7 +368,13 @@
 	{/if}
 
 	{#if isLoginOpen}
-		<div class="login-overlay" role="button" tabindex="0" onclick={OpenCloseLogin} onkeydown={(e) => e.key === 'Escape' && OpenCloseLogin()}></div>
+		<div
+			class="login-overlay"
+			role="button"
+			tabindex="0"
+			onclick={OpenCloseLogin}
+			onkeydown={(e) => e.key === 'Escape' && OpenCloseLogin()}
+		></div>
 		<div class="login-form">
 			<h2>Login</h2>
 			<form onsubmit={handleLogin}>
@@ -378,12 +388,9 @@
 				</div>
 				<button type="submit" class={`${btn} w-96 justify-self-center`}>Entrar</button>
 			</form>
-			<button aria-label="close-login" class="close-btn" onclick={OpenCloseLogin}>
-				Fechar
-			</button>
+			<button aria-label="close-login" class="close-btn" onclick={OpenCloseLogin}> Fechar </button>
 		</div>
 	{/if}
-
 </header>
 
 <style>
@@ -516,7 +523,7 @@
 		background-color: rgb(209, 94, 0);
 	}
 
- /*Login*/
+	/*Login*/
 
 	.login-overlay {
 		position: fixed;
@@ -548,12 +555,6 @@
 		text-align: center;
 		font-weight: bold;
 		font-size: 1.5rem;
-	}
-
-	.form-group {
-		display: flex;
-		flex-direction: column;
-		margin-bottom: 20px;
 	}
 
 	.close-btn {

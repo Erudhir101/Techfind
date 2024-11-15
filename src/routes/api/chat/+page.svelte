@@ -3,6 +3,7 @@
 	import { useChat } from '@ai-sdk/svelte';
 	import { afterUpdate, beforeUpdate } from 'svelte';
 	import type { Message } from 'ai';
+	import CardProfile from '../../components/CardProfile.svelte';
 
 	const { input, handleSubmit, messages } = useChat({
 		initialMessages: $chatHistory,
@@ -55,7 +56,9 @@
 			{/each}
 		</div>
 	</main>
-	<aside class="bg-red-200 basis-1/2">alguma coisa</aside>
+	<aside class="bg-zinc-400 basis-1/2 flex flex-col items-center p-4 gap-4">
+		<CardProfile></CardProfile>
+	</aside>
 </div>
 
 <style>
