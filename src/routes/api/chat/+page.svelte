@@ -29,7 +29,7 @@
 	// $effect(() => console.log(form));
 </script>
 
-<div class="flex justify-center w-full h-screen p-8 lg:p-16 gap-8 flex-col xl:flex-row">
+<div class="flex justify-center w-full h-full md:h-screen p-8 lg:p-16 gap-8 flex-col lg:flex-row">
 	<main class="basis-full lg:basis-1/3 p-8 border-2 border-principal-4 shadow-xl rounded-xl">
 		<h1 class="font-bold text-3xl">Resposta da IA</h1>
 		<!-- <form on:submit|preventDefault={handleUserSubmit}> -->
