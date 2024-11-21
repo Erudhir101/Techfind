@@ -2,7 +2,6 @@
 	import basic from '$img/basic.svelte';
 	import enterprise from '$img/enterprise.svelte';
 	import advanced from '$img/advanced.svelte';
-	import { list } from 'postcss';
 	import { fade } from 'svelte/transition';
 
 	let planOpen = $state(false);
@@ -82,6 +81,7 @@
 			<div
 				class="flex flex-col items-stretch justify-between bg-zinc-50 rounded-lg shadow-lg p-5 w-80 gap-4 text-center transition-transform duration-300 ease-in hover:shadow-principal-4 hover:scale-105"
 			>
+				<!-- svelte-ignore svelte_component_deprecated -->
 				<svelte:component this={card.image} />
 				<h3 class="text-lg md:text-2xl font-bold">{card.title}</h3>
 				<span class="text-md md:text-lg font-semibold text-zinc-600 italic">{card.subtitle}</span>

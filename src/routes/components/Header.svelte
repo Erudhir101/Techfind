@@ -395,7 +395,7 @@
 				</div>
 				<button type="submit" class={`${btn} w-96 justify-self-center`}>Entrar</button>
 			</form>
-			<button aria-label="close-login" class="close-btn" onclick={OpenCloseLogin}> Fechar </button>
+			{@render buttonClose(OpenCloseLogin)}
 		</div>
 	{/if}
 </header>
@@ -415,8 +415,12 @@
 
 	/* Pop-up do formulário */
 	.popup-form {
-		position: relative;
-		margin: 0 auto;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		margin-top: 1rem;
+		margin-inline: auto;
 		background-color: white;
 		padding: 20px;
 		border-radius: 10px;
@@ -424,7 +428,8 @@
 		z-index: 11;
 		width: 100%;
 		max-width: 600px;
-		max-height: 98vh;
+		/* max-height: 90vh; */
+		max-height: 90vh;
 		overflow-y: auto;
 		justify-content: space-between;
 	}
@@ -444,7 +449,7 @@
 	form {
 		display: grid;
 		grid-template-columns: 1fr;
-		grid-gap: 20px;
+		grid-gap: 1rem;
 		justify-items: stretch;
 	}
 
@@ -463,7 +468,7 @@
 		border-radius: 5px;
 		width: 100%;
 		box-sizing: border-box;
-		margin-bottom: 15px;
+		margin-bottom: 10px;
 	}
 
 	textarea {
@@ -485,8 +490,12 @@
 	}
 
 	.popup-form-cad {
-		position: relative;
-		margin: 0 auto;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		margin-top: 1rem;
+		margin-inline: auto;
 		background-color: white;
 		padding: 20px;
 		border-radius: 10px;
@@ -494,7 +503,7 @@
 		z-index: 11;
 		width: 100%;
 		max-width: 600px;
-		max-height: 98vh;
+		max-height: 90vh;
 		overflow-y: auto;
 		justify-content: space-between;
 	}
@@ -536,8 +545,8 @@
 		position: fixed;
 		top: 0;
 		left: 0;
-		width: 100vw;
-		height: 100vh;
+		width: 100svw;
+		height: 100svh;
 		background: rgba(0, 0, 0, 0.5);
 		backdrop-filter: blur(5px);
 		z-index: 10;
