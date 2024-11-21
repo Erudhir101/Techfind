@@ -3,6 +3,7 @@
 	// import { useChat } from '@ai-sdk/svelte';
 	// import type { Message } from 'ai';
 	import CardProfile from '../../components/CardProfile.svelte';
+	import Header from '../../components/Header.svelte';
 	// import type { ActionData } from './$types';
 
 	let { form } = $props();
@@ -29,7 +30,8 @@
 	// $effect(() => console.log(form));
 </script>
 
-<div class="flex justify-center w-full h-full md:h-screen p-8 lg:p-16 gap-8 flex-col lg:flex-row">
+<Header />
+<div class="princ flex justify-center w-full p-4 gap-8 flex-col lg:flex-row">
 	<main class="basis-full lg:basis-1/3 p-8 border-2 border-principal-4 shadow-xl rounded-xl">
 		<h1 class="font-bold text-3xl">Resposta da IA</h1>
 		<!-- <form on:submit|preventDefault={handleUserSubmit}> -->
@@ -72,4 +74,12 @@
 </div>
 
 <style>
+	.princ {
+		height: 100%;
+	}
+	@media (min-width: 1024px) {
+		.princ {
+			height: calc(100svh - 8rem);
+		}
+	}
 </style>

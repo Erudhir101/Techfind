@@ -136,7 +136,7 @@
 	</button>
 {/snippet}
 
-<header class="p-8 sticky top-0 bg-principal-1 z-10 shadow-md">
+<header class="p-4 sticky top-0 bg-principal-1 z-10 shadow-md">
 	<nav bind:clientWidth={size} class="h-14 relative flex gap-4 items-center justify-between">
 		<img src={logo} alt="Logo Techfind" class="h-8 md:h-12" />
 		<ul class="hidden xl:flex xl:gap-4 xl:list-none">
