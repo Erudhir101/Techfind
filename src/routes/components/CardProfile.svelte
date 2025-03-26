@@ -1,5 +1,5 @@
 <script lang="ts">
-	import avatar from '$lib/images/avatarGray.svg';
+	import { CircleUserRound } from '@lucide/svelte';
 
 	let isOpenModal = $state(false);
 	let item = $state({});
@@ -107,7 +107,7 @@
 {#each usuarios as usuario}
 	<div class="bg-white w-full max-w-sm flex flex-col flex-1 p-4 md:p-8 gap-8 rounded-xl">
 		<div class="flex gap-4">
-			<img class="size-14 md:size-16" src={avatar} alt="" />
+			<CircleUserRound size="64" />
 			<div>
 				<h2 class="font-bold text-xl">{usuario.nome}</h2>
 				<h3 class="font-medium">{usuario.desc}</h3>
@@ -157,7 +157,7 @@
 			{@render buttonClose(openModal)}
 			<div class="flex flex-col gap-6 py-4 text-left px-6">
 				<div class="flex flex-col justify-between items-center pb-2">
-					<img class="size-28" src={avatar} alt="" />
+					<CircleUserRound size="64" />
 					<h3 class="text-2xl font-bold">{item.nome}</h3>
 					<h2 class="font-medium">{item.desc}</h2>
 				</div>

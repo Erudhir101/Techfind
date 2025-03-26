@@ -1,4 +1,5 @@
 <script>
+	import { Copyright } from '@lucide/svelte';
 	const socialIcons =
 		'flex items-center justify-center size-12 bg-white p-1 rounded-xl shadow pointer hover:shadow-black transition-all duration-150 ease-in';
 	const socials = [
@@ -25,7 +26,10 @@
 
 <footer class="flex relative h-32">
 	<div class="flex w-full justify-between items-center px-12">
-		<span class="text-black font-medium"> &copy 2024 TechFind </span>
+		<div class="flex gap-4 items-center">
+			<Copyright size={20} />
+			<span class="text-black font-medium"> 2024 TechFind </span>
+		</div>
 		<div class="flex gap-5 items-center justify-around">
 			{#each socials as social}
 				<a aria-label="social icon" class={socialIcons} href={social.href} target="_blank">
@@ -40,10 +44,6 @@
 
 <style>
 	footer {
-		background: linear-gradient(
-			0deg,
-			rgb(230, 230, 230) 10%,
-			rgba(255, 233, 180, 0) 100%
-		);
+		background: linear-gradient(0deg, rgb(230, 230, 230) 10%, rgba(255, 233, 180, 0) 100%);
 	}
 </style>

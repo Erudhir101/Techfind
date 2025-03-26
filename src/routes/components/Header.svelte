@@ -1,6 +1,8 @@
 <script lang="ts">
+	// TODO: refazer o Header
 	import { fade, slide } from 'svelte/transition';
 	import logo from '$lib/images/logolaran.svg';
+	import { X, ChevronsLeft } from '@lucide/svelte';
 
 	const btn =
 		'border-none flex items-center justify-center bg-principal-5 hover:bg-principal-3 rounded-xl py-3 px-4 font-semibold cursor-pointer transition-colors duration-300 ease-in';
@@ -113,9 +115,9 @@
 	<button
 		aria-label="close buttom"
 		onclick={fn}
-		class="absolute top-[-5px] right-1 text-5xl font-semibold hover:text-principal-4"
+		class="absolute right-1 top-1.5 text-5xl font-semibold hover:text-principal-4"
 	>
-		&times;
+		<X size={28} />
 	</button>
 {/snippet}
 
@@ -125,16 +127,7 @@
 		class="absolute top-1.5 left-1 font-semibold cursor-pointer"
 		onclick={() => (userType = null)}
 	>
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="28"
-			height="28"
-			class="fill-black hover:fill-principal-4"
-			viewBox="0 0 512 512"
-			><path
-				d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-320c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3l0 41.7 0 41.7L459.5 440.6zM256 352l0-96 0-128 0-32c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-64z"
-			/></svg
-		>
+		<ChevronsLeft size={32} />
 	</button>
 {/snippet}
 
