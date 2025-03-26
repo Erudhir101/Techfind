@@ -70,27 +70,29 @@
 
 	const list = [
 		{ name: 'início', href: '/' },
-		{ name: 'Vantagens', href: '#vantagens' },
-		{ name: 'Sobre nós', href: '#aboutus' },
-		{ name: 'Planos', href: '#planos' },
-		{ name: 'Suporte', href: '#support' }
+		{ name: 'Vantagens', href: '/#vantagens' },
+		{ name: 'Sobre nós', href: '/#aboutus' },
+		{ name: 'Planos', href: '/#planos' },
+		{ name: 'Suporte', href: '/#support' }
 	];
 
 	let password = $state('');
 	let passwordStrength = $state('');
 
 	function checkPasswordStrength() {
-		const strongPassword = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).{12,}$/;
-		const mediumPassword = /^(?=.*[A-Z])(?=.*[0-9]).{8,}$/;
+		const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{12,})/;
+		const mediumRegex =
+			/^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{8,})/;
 
-		if (strongPassword.test(password)) {
-			passwordStrength = 'forte';
-		} else if (mediumPassword.test(password)) {
-			passwordStrength = 'médio';
+		if (strongRegex.test(password)) {
+			passwordStrength = 'strong';
+		} else if (mediumRegex.test(password)) {
+			passwordStrength = 'medium';
 		} else {
-			passwordStrength = 'fácil';
+			passwordStrength = 'easy';
 		}
 	}
+
 	function submitForm(event: Event) {
 		event.preventDefault();
 		alert('Cadastro concluído com sucesso!');

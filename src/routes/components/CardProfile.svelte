@@ -147,8 +147,8 @@
 {/snippet}
 
 {#snippet modal()}
-	<div class="w-full h-full top-0 left-0 flex items-center justify-center" class:isOpenModal>
-		<div class="absolute w-full h-full bg-gray-900 opacity-50"></div>
+	<div class="w-full top-0 left-0 flex items-center justify-center" class:isOpenModal>
+		<div class="absolute w-full bg-gray-900 opacity-50"></div>
 
 		<div
 			class="relative bg-white w-11/12 md:max-w-md mx-auto rounded-xl shadow-lg z-50 overflow-y-auto"
