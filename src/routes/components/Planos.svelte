@@ -102,7 +102,7 @@
 	{#if planOpen}
 		<div
 			transition:fade={{ duration: 300 }}
-			class="fixed flex items-center justify-center top-0 left-0 w-full h-full bg-[#00000080] backdrop-blur-sm z-50"
+			class="fixed flex items-center justify-center top-0 left-0 w-full h-full bg-[#00000080] backdrop-blur-xs z-50"
 			aria-hidden="true"
 			onclick={() => (planOpen = !planOpen)}
 		>

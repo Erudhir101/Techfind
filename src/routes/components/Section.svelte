@@ -1,9 +1,9 @@
 <script>
 	import banner from '$img/BANNER TF SHAPE.png';
 	const btn =
-		'border-none flex items-center justify-center no-underline shadow hover:bg-principal-3 rounded-xl py-3 px-4 font-semibold cursor-pointer transition-colors duration-300 ease-in';
+		'border-none flex items-center justify-center no-underline shadow-sm hover:bg-principal-3 rounded-xl py-3 px-4 font-semibold cursor-pointer transition-colors duration-300 ease-in';
 	const socialIcons =
-		'flex items-center justify-center size-12 bg-white p-1 rounded-xl shadow pointer hover:shadow-principal-5 transition-all duration-150 ease-in';
+		'flex items-center justify-center size-12 bg-white p-1 rounded-xl shadow-sm pointer hover:shadow-principal-5 transition-all duration-150 ease-in';
 
 	const socials = [
 		{

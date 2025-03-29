@@ -3,6 +3,7 @@
 	import { fade, slide } from 'svelte/transition';
 	import logo from '$lib/images/logolaran.svg';
 	import { X, ChevronsLeft } from '@lucide/svelte';
+	import Dialog from './Dialog.svelte';
 
 	const btn =
 		'border-none flex items-center justify-center bg-principal-5 hover:bg-principal-3 rounded-xl py-3 px-4 font-semibold cursor-pointer transition-colors duration-300 ease-in';
@@ -95,15 +96,6 @@
 		}
 	}
 
-	function submitForm(event: Event) {
-		event.preventDefault();
-		alert('Cadastro concluído com sucesso!');
-		isSignupOpen = false;
-		userType = null;
-		password = ''; // Reset password
-		passwordStrength = ''; // Reset strength
-	}
-
 	$effect(() => {
 		if (size >= 1216 && isMenu) {
 			OpenCloseMenu();
@@ -155,27 +147,12 @@
 					{/each}
 				</ul>
 				<div class="flex flex-col items-center gap-4">
-					<button id="login-btn" class={btn} onclick={OpenCloseLogin}>Login</button>
-					<button
-						id="cadastro-btn"
-						class={btn}
-						onclick={() => {
-							OpenCloseMenu();
-							OpenCloseSignup();
-						}}>Cadastre-se</button
-					>
-					<button
-						class={btn}
-						onclick={() => {
-							OpenCloseMenu();
-							OpenCloseForm();
-						}}
-					>
-						<a href="/">Comece agora!</a>
-					</button>
+					<Dialog tp="login" title="Login" />
+					<Dialog tp="cadastro" title="Cadastre-se" />
 				</div>
 			</div>
 		{/if}
+
 		<div class="hidden xl:flex xl:gap-4 xl:items-center">
 			<button id="login-btn" class={btn} onclick={OpenCloseLogin}>Login</button>
 			<button class={btn} onclick={OpenCloseSignup}>Cadastre-se</button>
