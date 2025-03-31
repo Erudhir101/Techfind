@@ -1,24 +1,31 @@
 <script lang="ts">
-	//TODO: fazer o formulario
-	import { Dialog, Label } from 'bits-ui';
+	import { Dialog, Meter, Label } from 'bits-ui';
 	import { X } from '@lucide/svelte';
-	import { Tween } from 'svelte/motion';
-	import { cubicOut } from 'svelte/easing';
 
 	let data = $props();
 
 	let password = $state('');
-	let strength = $derived(checkPasswordStrength());
+	let strength = $derived(checkPasswordStrength() * 100);
 
-	let progress = Tween.of(() => strength, {
-		duration: 400,
-		easing: cubicOut
+	const colorName = $derived.by(() => {
+		if (strength <= 20) return 'text-red-500 dark:text-red-400';
+		if (strength <= 40) return 'text-orange-500 dark:text-orange-400';
+		if (strength <= 60) return 'text-yellow-500 dark:text-yellow-400';
+		return 'text-green-500 dark:text-green-400';
 	});
+
+	const colorMeter = $derived.by(() => {
+		if (strength <= 20) return 'bg-red-500 dark:bg-red-400';
+		if (strength <= 40) return 'bg-orange-500 dark:bg-orange-400';
+		if (strength <= 60) return 'bg-yellow-500 dark:bg-yellow-400';
+		return 'bg-green-500 dark:bg-green-400';
+	});
+
 	function stringPassword() {
-		if (strength * 10 === 2) return 'senha fraca';
-		if (strength * 10 === 4) return 'senha media';
-		if (Math.floor(strength * 10) === 6 || strength * 10 === 8) return 'senha forte';
-		if (strength === 1) return 'senha muito forte';
+		if (strength === 20) return 'senha fraca';
+		if (strength === 40) return 'senha media';
+		if (Math.floor(strength) === 60 || strength === 80) return 'senha forte';
+		if (strength === 100) return 'senha muito forte';
 		return '';
 	}
 
@@ -29,6 +36,7 @@
 		sum += /[a-z]/.test(password) ? 0.2 : 0;
 		sum += /[0-9]/.test(password) ? 0.2 : 0;
 		sum += /[^A-Za-z0-9]/.test(password) ? 0.2 : 0;
+		if (password.length >= 15) return 1;
 		return sum;
 	}
 </script>
@@ -36,7 +44,7 @@
 {#snippet login()}
 	<form method="post" action="?/login">
 		<div class="flex flex-col items-start gap-1 py-4">
-			<Label.Root for="email" class="text-sm font-medium">Email, CPF ou CNPJ:</Label.Root>
+			<Label.Root for="email" class="text-sm font-medium">Email:</Label.Root>
 			<div class="relative w-full">
 				<input
 					type="email"
@@ -46,7 +54,7 @@
 			</div>
 		</div>
 		<div class="flex flex-col items-start gap-1 py-4 mb-8">
-			<Label.Root for="password" class="text-sm font-medium">Senha</Label.Root>
+			<Label.Root for="password" class="text-sm font-medium">Senha:</Label.Root>
 			<div class="relative w-full">
 				<input
 					type="password"
@@ -122,20 +130,34 @@
 		</div>
 		<div class="flex flex-col items-start gap-1 py-4">
 			<Label.Root for="password" class="text-sm font-medium">Senha:</Label.Root>
-			<div class="relative w-full">
+			<div class="relative w-full flex flex-col gap-4">
 				<input
 					bind:value={password}
 					type="password"
 					name="password"
 					class="h-10 rounded-sm bg-principal-1 placeholder:text-foreground-alt/50 border-zinc-300 focus:outline-hidden inline-flex w-full items-center border px-4 text-base focus:ring-2 focus:ring-offset-2 sm:text-sm"
 				/>
-				<progress class="progress rounded-lg mt-2" value={progress.current}></progress>
-				<span class="text-principal-6 font-semibold">{stringPassword()}</span>
+				<div class="flex w-[60%] flex-col">
+					<Meter.Root
+						aria-valuetext="password strength {strength}% - {stringPassword()}"
+						value={strength}
+						min={0}
+						max={100}
+						class="bg-dark-10 shadow-mini-inset relative h-[15px] overflow-hidden rounded-full"
+					>
+						<div
+							class="shadow-mini-inset h-full w-full flex-1 rounded-full transition-all duration-1000 ease-in-out {colorMeter}"
+							style="transform: translateX(-{100 - (100 * (strength ?? 0)) / 100}%)"
+						></div>
+					</Meter.Root>
+					<span class="font-bold transition-all duration-1000 ease-in-out {colorName}"
+						>{stringPassword()}</span
+					>
+				</div>
 			</div>
 		</div>
 		<div class="flex w-full justify-center">
 			<button
-				type="submit"
 				class="h-10 rounded-lg bg-principal-5 text-black shadow-sm hover:bg-principal-3 transition-colors duration-300 inline-flex items-center justify-center px-12 font-semibold active:scale-[0.95]"
 			>
 				Cadastrar
@@ -168,22 +190,8 @@
 			<Dialog.Close
 				class="focus-visible:ring-foreground focus-visible:ring-offset-background focus-visible:outline-hidden absolute right-5 top-5 rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98]"
 			>
-				<div>
-					<X class="text-black size-6 hover:text-principal-4" />
-					<span class="sr-only">Close</span>
-				</div>
+				<X class="text-black size-6 hover:text-principal-4" />
 			</Dialog.Close>
 		</Dialog.Content>
 	</Dialog.Portal>
 </Dialog.Root>
-
-<style>
-	.progress::-webkit-progress-bar {
-		background-color: #f3f3f3; /* Background color */
-	}
-
-	.progress::-webkit-progress-value,
-	.progress::-moz-progress-bar {
-		background-color: var(--color-principal-4);
-	}
-</style>
