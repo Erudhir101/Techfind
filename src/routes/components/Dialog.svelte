@@ -86,7 +86,7 @@
 			</div>
 		</div>
 		<div class="flex flex-col items-start gap-1 py-4">
-			<Label.Root for="date" class="text-sm font-medium">Data de Nascimento:</Label.Root>
+			<Label.Root for="date" class="text-sm font-medium">Data para o trabalho:</Label.Root>
 			<div class="relative w-full">
 				<input
 					type="date"

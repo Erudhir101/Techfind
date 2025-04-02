@@ -1,7 +1,7 @@
 <script>
 	import { Copyright } from '@lucide/svelte';
 	const socialIcons =
-		'flex items-center justify-center size-12 bg-white p-1 rounded-xl shadow-sm pointer hover:shadow-black transition-all duration-150 ease-in';
+		'flex items-center justify-center size-12 bg-white p-1 rounded-xl shadow-sm pointer hover:shadow-principal-4 transition-all duration-150 ease-in';
 	const socials = [
 		{
 			href: 'https://chat.whatsapp.com/LkR6fPlgtcuEvHk5x2A5r3',
