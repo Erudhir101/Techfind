@@ -1,18 +1,28 @@
 import type { Actions } from './$types';
 
+interface FormData {
+	segment: string;
+	product: string;
+	'contract-regime': 'freelancer' | 'clt' | 'pj';
+	'work-regime': 'hibrido' | 'remoto' | 'presencial';
+	'start-date': string;
+	'client-message': string;
+}
+
 export const load = () => {
 	return {};
 };
+
 export const actions = {
 	default: async ({ request }) => {
 		const form = await request.formData();
 		return {
-			segment: form.get('segment'),
-			product: form.get('product'),
-			contract_regime: form.get('contract-regime'),
-			work_regime: form.get('work-regime'),
-			start_date: form.get('start-date'),
-			client_message: form.get('client-message'),
+			segment: form.get('segment') as string,
+			product: form.get('product') as string,
+			contract_regime: form.get('contract-regime') as string,
+			work_regime: form.get('work-regime') as string,
+			start_date: form.get('start-date') as string,
+			client_message: form.get('client-message') as string,
 			resposta: `
 características:
 valor da hora: 5/10

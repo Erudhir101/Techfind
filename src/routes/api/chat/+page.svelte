@@ -66,11 +66,7 @@
 			<!-- {/each} -->
 		</div>
 	</main>
-	<aside
-		class="bg-zinc-400 flex flex-col items-center px-4 py-4 md:py-8 md:px-16 gap-4 overflow-y-scroll shadow-xl rounded-xl"
-	>
-		<CardProfile></CardProfile>
-	</aside>
+	<CardProfile></CardProfile>
 </div>
 
 <style>

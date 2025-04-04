@@ -1,8 +1,11 @@
 <script lang="ts">
-	import { Dialog, Meter, Label } from 'bits-ui';
+	import { Dialog, Meter, Label, RadioGroup } from 'bits-ui';
 	import { X } from '@lucide/svelte';
 
 	let data = $props();
+
+	let isCPF = $state('CPF');
+	let placeholdCPF = $derived(isCPF === 'CPF' ? '000.000.000-00' : '00.000.000/0000-00');
 
 	let password = $state('');
 	let strength = $derived(checkPasswordStrength() * 100);
@@ -45,7 +48,7 @@
 	<form method="post" action="?/login">
 		<div class="flex flex-col items-start gap-1 py-4">
 			<Label.Root for="email" class="text-sm font-medium">Email:</Label.Root>
-			<div class="relative w-full">
+			<div class="w-full">
 				<input
 					type="email"
 					name="email"
@@ -55,7 +58,7 @@
 		</div>
 		<div class="flex flex-col items-start gap-1 py-4 mb-8">
 			<Label.Root for="password" class="text-sm font-medium">Senha:</Label.Root>
-			<div class="relative w-full">
+			<div class="w-full">
 				<input
 					type="password"
 					name="password"
@@ -77,7 +80,7 @@
 	<form method="post" action="?/signup">
 		<div class="flex flex-col items-start gap-1 py-4">
 			<Label.Root for="name" class="text-sm font-medium">Nome Completo:</Label.Root>
-			<div class="relative w-full">
+			<div class="w-full">
 				<input
 					type="text"
 					name="name"
@@ -87,7 +90,7 @@
 		</div>
 		<div class="flex flex-col items-start gap-1 py-4">
 			<Label.Root for="date" class="text-sm font-medium">Data para o trabalho:</Label.Root>
-			<div class="relative w-full">
+			<div class="w-full">
 				<input
 					type="date"
 					min={new Date().toISOString().split('T')[0]}
@@ -96,20 +99,36 @@
 				/>
 			</div>
 		</div>
-		<div class="flex flex-col items-start gap-1 py-4">
-			<Label.Root for="cpf" class="text-sm font-medium">CPF:</Label.Root>
-			<div class="relative w-full">
+		<div class="flex flex-col items-start gap-2 py-4">
+			<Label.Root for="typePersonal" class="w-1/2 text-sm font-medium text-black"
+				><RadioGroup.Root
+					name="radio"
+					bind:value={isCPF}
+					class="flex flex-wrap flex-1 gap-4 justify-between text-sm font-medium"
+				>
+					{#each ['CPF', 'CNPJ'] as itens (itens)}
+						<div class="flex items-center gap-4">
+							<RadioGroup.Item
+								id={itens}
+								value={itens}
+								class="hover:border-black/40 data-[state=checked]:border-6 data-[state=checked]:border-principal-3 size-6 shrink-0 cursor-default rounded-full border-2 border-black transition-all duration-100 ease-in-out"
+							></RadioGroup.Item><Label.Root for={itens} class="">{itens}</Label.Root>
+						</div>
+					{/each}
+				</RadioGroup.Root></Label.Root
+			>
+			<div class="w-full">
 				<input
 					type="text"
-					placeholder="000.000.000-00"
-					name="cpf"
+					placeholder={placeholdCPF}
+					name="typePersonal"
 					class="h-10 rounded-sm bg-principal-1 placeholder:text-foreground-alt/50 border-zinc-300 focus:outline-hidden inline-flex w-full items-center border px-4 text-base focus:ring-2 focus:ring-offset-2 sm:text-sm"
 				/>
 			</div>
 		</div>
 		<div class="flex flex-col items-start gap-1 py-4">
 			<Label.Root for="phone" class="text-sm font-medium">Telefone:</Label.Root>
-			<div class="relative w-full">
+			<div class="w-full">
 				<input
 					type="text"
 					name="phone"
@@ -120,7 +139,7 @@
 		</div>
 		<div class="flex flex-col items-start gap-1 py-4">
 			<Label.Root for="email" class="text-sm font-medium">Email:</Label.Root>
-			<div class="relative w-full">
+			<div class="w-full">
 				<input
 					type="email"
 					name="email"
@@ -130,7 +149,7 @@
 		</div>
 		<div class="flex flex-col items-start gap-1 py-4">
 			<Label.Root for="password" class="text-sm font-medium">Senha:</Label.Root>
-			<div class="relative w-full flex flex-col gap-4">
+			<div class="w-full flex flex-col gap-4">
 				<input
 					bind:value={password}
 					type="password"

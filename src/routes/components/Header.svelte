@@ -43,10 +43,10 @@
 
 {#snippet ModalMobile()}
 	<Collapsible.Root class="w-full">
-		<nav class="h-full relative gap-8 flex flex-col">
-			<div class="w-full flex justify-between items-center">
+		<nav class="min-h-12 relative gap-8 flex flex-col justify-center">
+			<div class="w-full flex justify-between">
 				<img src={logo} alt="logo techfind" class="h-8 object-cover" />
-				<Collapsible.Trigger class=""><AlignJustify /></Collapsible.Trigger>
+				<Collapsible.Trigger><AlignJustify /></Collapsible.Trigger>
 			</div>
 			<Collapsible.Content forceMount class="w-full">
 				{#snippet child({ props, open })}
@@ -75,7 +75,7 @@
 	</Collapsible.Root>
 {/snippet}
 
-<header bind:clientWidth={size} class="min-h-18 p-6 sticky top-0 z-10 bg-principal-1 shadow-md">
+<header bind:clientWidth={size} class="p-6 sticky top-0 z-10 bg-principal-1 shadow-md">
 	{#if isMenu}
 		{@render Modal()}
 	{:else}

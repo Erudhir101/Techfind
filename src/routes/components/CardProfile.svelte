@@ -1,14 +1,16 @@
 <script lang="ts">
-	import { CircleUserRound } from '@lucide/svelte';
+	import { CircleUserRound, Cpu, X } from '@lucide/svelte';
+	import { ScrollArea, Dialog } from 'bits-ui';
 
-	let isOpenModal = $state(false);
-	let item = $state({});
-	function openModal() {
-		isOpenModal = !isOpenModal;
+	interface UsuarioContato {
+		nome: string;
+		desc: string;
+		tags: string[];
+		dispo: string;
+		caract: string;
 	}
-	$effect(() => console.log(isOpenModal));
 
-	const usuarios = [
+	const usuarios: UsuarioContato[] = [
 		{
 			nome: 'João',
 			desc: 'Desenvolvedor Backend',
@@ -104,8 +106,47 @@
 	];
 </script>
 
-{#each usuarios as usuario}
-	<div class="bg-white w-full max-w-sm flex flex-col flex-1 p-4 md:p-8 gap-8 rounded-xl">
+{#snippet usuarioContato(usuario: UsuarioContato)}
+	<Dialog.Root>
+		<Dialog.Trigger
+			class="rounded-lg bg-principal-5 hover:bg-principal-3 text-black shadow-sm inline-flex h-12 items-center justify-center whitespace-nowrap gap-2 font-semibold transition-colors duration-300 active:scale-[0.95]"
+		>
+			<Cpu /> Entre em Contato
+		</Dialog.Trigger>
+		<Dialog.Portal>
+			<Dialog.Overlay class="fixed inset-0 z-50 bg-black/80" />
+			<Dialog.Content
+				class="rounded-lg bg-principal-1 shadow-sm outline-hidden fixed left-[50%] top-[50%] z-50 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] border p-5 sm:max-w-[490px] md:w-full flex flex-col gap-8"
+			>
+				<Dialog.Title class="flex w-full items-center justify-center tracking-tight">
+					<div class="flex flex-col justify-between items-center pb-2">
+						<CircleUserRound size="64" />
+						<h3 class="text-2xl font-bold">{usuario.nome}</h3>
+						<h2 class="font-medium">{usuario.desc}</h2>
+					</div>
+				</Dialog.Title>
+				<ul class="flex justify-center gap-2 flex-wrap">
+					{#each usuario.tags as tag}
+						<li class="bg-zinc-200 rounded-lg px-2 font-semibold">{tag}</li>
+					{/each}
+				</ul>
+				<div class="flex flex-col justify-center items-center">
+					<h4 class="font-bold">Disponibilidade</h4>
+					<p class="bg-zinc-200 rounded-lg px-2 font-semibold">{usuario.dispo}</p>
+				</div>
+				<p class="text-justify bg-zinc-200 rounded-lg p-2">{usuario.caract}</p>
+				<Dialog.Close
+					class="focus-visible:ring-foreground focus-visible:ring-offset-background focus-visible:outline-hidden absolute right-5 top-5 rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98]"
+				>
+					<X class="text-black size-6 hover:text-principal-4" />
+				</Dialog.Close>
+			</Dialog.Content>
+		</Dialog.Portal>
+	</Dialog.Root>
+{/snippet}
+
+{#snippet usuarioCard(usuario: UsuarioContato)}
+	<div class="bg-white flex flex-col flex-1 p-4 md:p-8 gap-8 rounded-xl">
 		<div class="flex gap-4">
 			<CircleUserRound size="64" />
 			<div>
@@ -115,71 +156,32 @@
 		</div>
 		<ul class="flex gap-4 flex-wrap">
 			{#each usuario.tags as tag}
-				<li class="bg-zinc-100 rounded-lg px-2 font-semibold">{tag}</li>
+				<li class="bg-zinc-200 rounded-lg px-2 font-semibold">{tag}</li>
 			{/each}
 		</ul>
-		<button
-			onclick={() => {
-				item = usuario;
-				openModal();
-			}}
-			class="bg-black text-white flex justify-center usuarios-center text-center p-3 gap-8 rounded-xl fill-white hover:fill-zinc-900 hover:text-zinc-900 hover:bg-principal-5 transition-colors duration-300"
-		>
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="size-5"
-				><path
-					d="M176 24c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 40c-35.3 0-64 28.7-64 64l-40 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l40 0 0 56-40 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l40 0 0 56-40 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l40 0c0 35.3 28.7 64 64 64l0 40c0 13.3 10.7 24 24 24s24-10.7 24-24l0-40 56 0 0 40c0 13.3 10.7 24 24 24s24-10.7 24-24l0-40 56 0 0 40c0 13.3 10.7 24 24 24s24-10.7 24-24l0-40c35.3 0 64-28.7 64-64l40 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-40 0 0-56 40 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-40 0 0-56 40 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-40 0c0-35.3-28.7-64-64-64l0-40c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 40-56 0 0-40c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 40-56 0 0-40zM160 128l192 0c17.7 0 32 14.3 32 32l0 192c0 17.7-14.3 32-32 32l-192 0c-17.7 0-32-14.3-32-32l0-192c0-17.7 14.3-32 32-32zm192 32l-192 0 0 192 192 0 0-192z"
-				/></svg
-			>Entrar em contato</button
-		>
+		{@render usuarioContato(usuario)}
 	</div>
-{/each}
-
-{@render modal()}
-
-{#snippet buttonClose(fn: () => void)}
-	<button
-		aria-label="close buttom"
-		onclick={fn}
-		class="absolute right-2 top-0 text-5xl font-medium hover:text-principal-4"
-	>
-		&times;
-	</button>
 {/snippet}
 
-{#snippet modal()}
-	<div class="w-full top-0 left-0 flex items-center justify-center" class:isOpenModal>
-		<div class="absolute w-full bg-gray-900 opacity-50"></div>
-
-		<div
-			class="relative bg-white w-11/12 md:max-w-md mx-auto rounded-xl shadow-lg z-50 overflow-y-auto"
-		>
-			<!-- Add modal content here -->
-			{@render buttonClose(openModal)}
-			<div class="flex flex-col gap-6 py-4 text-left px-6">
-				<div class="flex flex-col justify-between items-center pb-2">
-					<CircleUserRound size="64" />
-					<h3 class="text-2xl font-bold">{item.nome}</h3>
-					<h2 class="font-medium">{item.desc}</h2>
-				</div>
-				<ul class="flex justify-center gap-2 flex-wrap">
-					{#each item.tags as tag}
-						<li class="bg-zinc-200 rounded-lg px-2 font-semibold">{tag}</li>
-					{/each}
-				</ul>
-
-				<div class="flex flex-col justify-center items-center">
-					<h4 class="font-bold">Disponibilidade</h4>
-					<p class="bg-zinc-200 rounded-lg px-2 font-semibold">{item.dispo}</p>
-				</div>
-
-				<p class="text-justify bg-zinc-200 rounded-lg p-2">{item.caract}</p>
-			</div>
+<ScrollArea.Root
+	type="always"
+	class="bg-zinc-400 flex justify-center px-2 py-4 md:py-8 md:px-16 overflow-hidden shadow-xl rounded-xl"
+>
+	<ScrollArea.Viewport class="w-full h-full max-w-md">
+		<div class="flex flex-col items-center justify-center gap-8">
+			{#each usuarios as usuario}
+				{@render usuarioCard(usuario)}
+			{/each}
 		</div>
-	</div>
-{/snippet}
-
-<style>
-	.isOpenModal {
-		position: fixed;
-	}
-</style>
+	</ScrollArea.Viewport>
+	<ScrollArea.Scrollbar
+		orientation="vertical"
+		class="bg-principal-5 hover:bg-principal-6 flex w-3 my-1 touch-none select-none rounded-full border-l border-l-transparent p-px transition-all duration-200 hover:w-3"
+	>
+		<ScrollArea.Thumb class="bg-principal-2 flex-1 rounded-full" />
+	</ScrollArea.Scrollbar>
+	<ScrollArea.Scrollbar orientation="horizontal">
+		<ScrollArea.Thumb />
+	</ScrollArea.Scrollbar>
+	<ScrollArea.Corner />
+</ScrollArea.Root>
