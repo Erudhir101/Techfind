@@ -1,9 +1,10 @@
 import { createOllama } from 'ollama-ai-provider';
 import { streamText } from 'ai';
+import type { RequestHandler } from '@sveltejs/kit';
 
 const ollama = createOllama();
 
-export async function POST({ request }) {
+export const POST: RequestHandler = async ({ request }) => {
 	const { messages } = await request.json();
 
 	const result = await streamText({
@@ -12,4 +13,4 @@ export async function POST({ request }) {
 	});
 
 	return result.toDataStreamResponse();
-}
+};

@@ -1,27 +1,31 @@
 <script lang="ts">
 	import logo from '$lib/images/logolaran.svg';
 	import { slide } from 'svelte/transition';
-	import Dialog from './Dialog.svelte';
 	import { AlignJustify } from '@lucide/svelte';
-	import { Collapsible } from 'bits-ui';
+	import { Collapsible, Button } from 'bits-ui';
+	import { redirect } from '@sveltejs/kit';
+
+	let { data, children } = $props();
+	let { supabase } = $derived(data);
 
 	let size = $state(0);
 	let isOpen = $state(false);
 	let isMenu = $derived(size >= 1216 ? true : false);
 
-	const list = [
-		{ name: 'início', href: '/' },
-		{ name: 'Vantagens', href: '/#vantagens' },
-		{ name: 'Sobre nós', href: '/#aboutus' },
-		{ name: 'Planos', href: '/#planos' },
-		{ name: 'Suporte', href: '/#support' }
-	];
+	const list = [{ name: 'perfil', href: 'pv/perfil' }];
 
 	$effect(() => {
 		if (size >= 1216 && isOpen) {
 			isOpen = !isOpen;
 		}
 	});
+
+	const logout = async () => {
+		const { error } = await supabase.auth.signOut();
+		if (error) {
+			redirect(303, '/');
+		}
+	};
 </script>
 
 {#snippet Modal()}
@@ -35,8 +39,11 @@
 			{/each}
 		</ul>
 		<div class="flex gap-4">
-			<Dialog title="Login" tp="login"></Dialog>
-			<Dialog title="Cadastro" tp="cadastro" />
+			<Button.Root
+				onclick={logout}
+				class="text-xl bg-principal-4 hover:bg-principal-3 px-4 py-2 rounded-lg shadow-md transition-colors duration-300"
+				>Sair</Button.Root
+			>
 		</div>
 	</nav>
 {/snippet}
@@ -64,8 +71,11 @@
 								{/each}
 							</ul>
 							<div class="flex flex-wrap w-full md:w-auto justify-center gap-4">
-								<Dialog title="Login" tp="login" />
-								<Dialog title="Cadastro" tp="cadastro" />
+								<Button.Root
+									onclick={logout}
+									class="text-xl bg-principal-4 hover:bg-principal-3 px-4 py-2 rounded-lg shadow-md transition-colors duration-300"
+									>Sair</Button.Root
+								>
 							</div>
 						</div>
 					{/if}
@@ -82,3 +92,4 @@
 		{@render ModalMobile()}
 	{/if}
 </header>
+{@render children()}

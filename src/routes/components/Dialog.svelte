@@ -1,8 +1,16 @@
 <script lang="ts">
 	import { Dialog, Meter, Label, RadioGroup } from 'bits-ui';
 	import { X } from '@lucide/svelte';
+	import { page } from '$app/stores';
+	import { superForm } from 'sveltekit-superforms';
+	import { fly } from 'svelte/transition';
 
-	let data = $props();
+	let { title, tp } = $props();
+
+	const { errors: signupErrors, enhance: signupEnhance } = superForm($page.data.formSignup);
+	const { errors: loginErrors, enhance: loginEnhance } = superForm($page.data.formLogin);
+
+	$inspect($signupErrors);
 
 	let isCPF = $state('CPF');
 	let placeholdCPF = $derived(isCPF === 'CPF' ? '000.000.000-00' : '00.000.000/0000-00');
@@ -45,16 +53,20 @@
 </script>
 
 {#snippet login()}
-	<form method="post" action="?/login">
+	<form method="post" action="?/login" use:loginEnhance>
 		<div class="flex flex-col items-start gap-1 py-4">
 			<Label.Root for="email" class="text-sm font-medium">Email:</Label.Root>
 			<div class="w-full">
 				<input
 					type="email"
 					name="email"
+					aria-invalid={$loginErrors.email ? 'true' : undefined}
 					class="h-10 rounded-sm bg-principal-1 line focus:outline-hidden inline-flex w-full items-center border border-zinc-300 px-4 text-base focus:ring-2 focus:ring-offset-2 sm:text-sm"
 				/>
 			</div>
+			{#if $loginErrors.email}<span class="text-red-500 font-bold mt-1 pl-2"
+					>{$loginErrors.email}</span
+				>{/if}
 		</div>
 		<div class="flex flex-col items-start gap-1 py-4 mb-8">
 			<Label.Root for="password" class="text-sm font-medium">Senha:</Label.Root>
@@ -62,22 +74,31 @@
 				<input
 					type="password"
 					name="password"
+					aria-invalid={$loginErrors.password ? 'true' : undefined}
 					class="h-10 rounded-sm bg-principal-1 focus:outline-hidden inline-flex w-full items-center border px-4 border-zinc-300 text-base focus:ring-2 focus:ring-offset-2 sm:text-sm"
 				/>
 			</div>
+			{#if $loginErrors.password}<span class="text-red-500 font-bold mt-1 pl-2"
+					>{$loginErrors.password}</span
+				>{/if}
 		</div>
-		<div class="flex w-full justify-center">
+		<div class="flex flex-col gap-4 w-full items-center">
 			<button
-				class="h-10 rounded-lg bg-principal-5 text-black shadow-sm hover:bg-principal-3 transition-colors duration-300 inline-flex items-center justify-center px-12 font-semibold active:scale-[0.95]"
+				class="mb-4 h-10 w-2/3 rounded-lg bg-principal-5 text-black shadow-sm hover:bg-principal-3 transition-colors duration-300 inline-flex items-center justify-center px-12 py-6 font-semibold active:scale-[0.95]"
 			>
 				Entrar
 			</button>
+			{#if $loginErrors._errors && !($loginErrors.password || $loginErrors.email)}
+				<span class="text-red-500 font-bold" in:fly={{ x: 200, duration: 1000 }}>
+					{$loginErrors._errors}
+				</span>
+			{/if}
 		</div>
 	</form>
 {/snippet}
 
 {#snippet cadastro()}
-	<form method="post" action="?/signup">
+	<form method="post" action="?/signup" use:signupEnhance>
 		<div class="flex flex-col items-start gap-1 py-4">
 			<Label.Root for="name" class="text-sm font-medium">Nome Completo:</Label.Root>
 			<div class="w-full">
@@ -189,7 +210,7 @@
 	<Dialog.Trigger
 		class="rounded-lg bg-principal-5 hover:bg-principal-3 text-black shadow-sm inline-flex h-12 items-center justify-center whitespace-nowrap px-[21px] text-[15px] font-semibold transition-colors duration-300 active:scale-[0.95]"
 	>
-		{data.title}
+		{title}
 	</Dialog.Trigger>
 	<Dialog.Portal>
 		<Dialog.Overlay class="fixed inset-0 z-50 bg-black/80" />
@@ -199,9 +220,9 @@
 			<Dialog.Title
 				class="flex w-full items-center justify-center text-2xl font-bold tracking-tight "
 			>
-				{data.title}
+				{title}
 			</Dialog.Title>
-			{#if data.tp === 'login'}
+			{#if tp === 'login'}
 				{@render login()}
 			{:else}
 				{@render cadastro()}

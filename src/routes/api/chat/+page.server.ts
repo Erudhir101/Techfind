@@ -1,14 +1,5 @@
 import type { Actions } from './$types';
 
-interface FormData {
-	segment: string;
-	product: string;
-	'contract-regime': 'freelancer' | 'clt' | 'pj';
-	'work-regime': 'hibrido' | 'remoto' | 'presencial';
-	'start-date': string;
-	'client-message': string;
-}
-
 export const load = () => {
 	return {};
 };
@@ -46,6 +37,7 @@ engenheiro de software: 7/10
 		};
 	}
 } satisfies Actions;
+
 // FormData {
 //   segment: 'asdfasdfasd',
 //   product: 'asdfasdfasd',
