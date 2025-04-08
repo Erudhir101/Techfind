@@ -12,9 +12,10 @@
 	<div class="grid grid-cols-1 grid-rows-4 sm:grid-cols-2 sm:grid-rows-2 w-1/2 p-8 gap-4">
 		{#each ['perfil', 'servicos'] as item}
 			<Button.Root
-				class="rounded-md bg-principal-4 shadow hover:bg-principal-3 px-4 py-2 transition-colors duration-300 cursor-pointer font-semibold"
+				href="pv/{item}"
+				class="text-center rounded-md bg-principal-4 shadow hover:bg-principal-3 px-4 py-2 transition-colors duration-300 cursor-pointer font-semibold"
 			>
-				<a href="pv/{item}"> {item} </a>
+				{item}
 			</Button.Root>
 		{/each}
 	</div>

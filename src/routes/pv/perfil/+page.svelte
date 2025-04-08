@@ -1,17 +1,16 @@
 <script>
 	import { Button, Label } from 'bits-ui';
-	import { ArrowLeftIcon } from '@lucide/svelte';
+	import { ArrowBigLeft } from '@lucide/svelte';
 
 	let { data } = $props();
-	let { supabase, profile } = $derived(data);
+	let { profile } = $derived(data);
 </script>
 
 <Button.Root
-	class="rounded-full shadow-md border border-zinc-300 hover:bg-principal-4 transition-colors duration-300 mt-5 ml-5"
+	href="../"
+	class="inline-block bg-principal-1 rounded-full hover:bg-principal-4 mt-4 ml-4 border-2 border-black hover:border-black/80 shadow"
 >
-	<a href="../">
-		<ArrowLeftIcon size={40} />
-	</a>
+	<ArrowBigLeft class="size-10 stroke-1 hover:stroke-black/80" />
 </Button.Root>
 
 <div class="flex w-full mt-24 justify-center">
