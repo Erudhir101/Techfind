@@ -72,20 +72,20 @@
 	];
 </script>
 
-<section id="planos" class="p-5 pt-32 text-center relative min-h-svh">
-	<h2 class="text-3xl font-semibold text-principal-6">Nossos Planos</h2>
-	<h3 class="text-5xl my-4 font-bold">Escolha o melhor plano para o seu negócio</h3>
+<section id="planos" class="relative min-h-svh p-5 pt-32 text-center">
+	<h2 class="text-principal-6 text-3xl font-semibold">Nossos Planos</h2>
+	<h3 class="my-4 text-5xl font-bold">Escolha o melhor plano para o seu negócio</h3>
 
-	<div class="flex flex-col flex-wrap md:flex-row justify-center items-center gap-6 mt-8">
+	<div class="mt-8 flex flex-col flex-wrap items-center justify-center gap-6 md:flex-row">
 		{#each cards as card, id}
 			<div
-				class="flex flex-col items-stretch justify-between bg-zinc-50 rounded-lg shadow-lg p-5 w-80 gap-4 text-center transition-transform duration-300 ease-in hover:shadow-principal-4 hover:scale-105"
+				class="hover:shadow-principal-4 flex w-80 flex-col items-stretch justify-between gap-4 rounded-lg bg-zinc-50 p-5 text-center shadow-lg transition-transform duration-300 ease-in hover:scale-105"
 			>
 				<!-- svelte-ignore svelte_component_deprecated -->
 				<svelte:component this={card.image} />
-				<h3 class="text-lg md:text-2xl font-bold">{card.title}</h3>
-				<span class="text-md md:text-lg font-semibold text-zinc-600 italic">{card.subtitle}</span>
-				<p class="text-sm md:text-md h-24">
+				<h3 class="text-lg font-bold md:text-2xl">{card.title}</h3>
+				<span class="text-md font-semibold text-zinc-600 italic md:text-lg">{card.subtitle}</span>
+				<p class="md:text-md h-24 text-sm">
 					{card.paragraph}
 				</p>
 				<button
@@ -102,12 +102,12 @@
 	{#if planOpen}
 		<div
 			transition:fade={{ duration: 300 }}
-			class="fixed flex items-center justify-center top-0 left-0 w-full h-full bg-[#00000080] backdrop-blur-xs z-50"
+			class="fixed top-0 left-0 z-50 flex h-full w-full items-center justify-center bg-[#00000080] backdrop-blur-xs"
 			aria-hidden="true"
 			onclick={() => (planOpen = !planOpen)}
 		>
-			<div class="relative flex flex-col gap-4 max-w-md bg-white rounded-lg p-8">
-				<button class="absolute top-[-5px] right-1 text-4xl font-semibold hover:text-principal-4">
+			<div class="relative flex max-w-md flex-col gap-4 rounded-lg bg-white p-8">
+				<button class="hover:text-principal-4 absolute top-[-5px] right-1 text-4xl font-semibold">
 					&times;
 				</button>
 				<h2 class="text-xl font-bold">{cards[indxPlan].title}</h2>

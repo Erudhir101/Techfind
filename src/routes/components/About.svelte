@@ -26,14 +26,14 @@
 	];
 </script>
 
-<section id="aboutus" class="flex flex-col items-center min-h-svh p-5 pt-32 text-center gap-8">
+<section id="aboutus" class="flex min-h-svh flex-col items-center gap-8 p-5 pt-32 text-center">
 	{#each contents as content}
 		{@const Icon = content.image}
 		<div class="flex flex-col items-center lg:w-1/2">
 			<Icon size="96" fill="#ff6800" />
-			<h2 class="text-5xl font-semibold text-principal-6">{content.title}</h2>
-			<h3 class="text-xl my-4 font-semibold italic">{content.subtitle}</h3>
-			<p class="text-lg mb-5 leading-8 text-zinc-900">
+			<h2 class="text-principal-6 text-5xl font-semibold">{content.title}</h2>
+			<h3 class="my-4 text-xl font-semibold italic">{content.subtitle}</h3>
+			<p class="mb-5 text-lg leading-8 text-zinc-900">
 				{content.paragraph}
 			</p>
 		</div>

@@ -24,11 +24,11 @@
 	];
 </script>
 
-<section id="support" class="flex flex-col items-center text-center min-h-svh gap-4 pt-32">
+<section id="support" class="flex min-h-svh flex-col items-center gap-4 pt-32 text-center">
 	<h1 class="text-2xl font-bold">Atendimento personalizado e Suporte 24/7</h1>
 	{#each boxes as box}
 		{@const Icon = box.image}
-		<div class="flex flex-col items-center gap-3 my-3 rounded-xl p-5 w-64 lg:w-96">
+		<div class="my-3 flex w-64 flex-col items-center gap-3 rounded-xl p-5 lg:w-96">
 			<Icon size="96" fill="#ff6800" />
 			<h2 class="text-xl font-bold">{box.title}</h2>
 			<p>{box.paragraph}</p>

@@ -25,26 +25,25 @@
 </script>
 
 {#snippet Modal()}
-	<nav class="relative flex gap-4 items-center justify-between">
+	<nav class="relative flex items-center justify-between gap-4">
 		<img src={logo} alt="logo techfind" class="h-12 object-cover" />
-		<ul class="flex gap-4 list-none">
+		<ul class="flex list-none gap-4">
 			{#each list as item}
 				<li class="hover:text-principal-4 transition-colors duration-150">
-					<a href={item.href} class="no-underline font-semibold">{item.name}</a>
+					<a href={item.href} class="font-semibold no-underline">{item.name}</a>
 				</li>
 			{/each}
 		</ul>
 		<div class="flex gap-4">
-			<Dialog title="Login" tp="login"></Dialog>
-			<Dialog title="Cadastro" tp="cadastro" />
+			<Dialog />
 		</div>
 	</nav>
 {/snippet}
 
 {#snippet ModalMobile()}
 	<Collapsible.Root class="w-full">
-		<nav class="min-h-12 relative gap-8 flex flex-col justify-center">
-			<div class="w-full flex justify-between">
+		<nav class="relative flex min-h-12 flex-col justify-center gap-8">
+			<div class="flex w-full justify-between">
 				<img src={logo} alt="logo techfind" class="h-8 object-cover" />
 				<Collapsible.Trigger><AlignJustify /></Collapsible.Trigger>
 			</div>
@@ -53,19 +52,18 @@
 					{#if open}
 						<div
 							{...props}
-							class="flex justify-between gap-8 items-center flex-wrap"
+							class="flex flex-wrap items-center justify-between gap-8"
 							transition:slide={{ axis: 'y' }}
 						>
-							<ul class="flex flex-wrap justify-center w-full md:w-auto gap-4 list-none">
+							<ul class="flex w-full list-none flex-wrap justify-center gap-4 md:w-auto">
 								{#each list as item}
 									<li class="hover:text-principal-4 transition-colors duration-150">
-										<a href={item.href} class="no-underline font-semibold">{item.name}</a>
+										<a href={item.href} class="font-semibold no-underline">{item.name}</a>
 									</li>
 								{/each}
 							</ul>
-							<div class="flex flex-wrap w-full md:w-auto justify-center gap-4">
-								<Dialog title="Login" tp="login" />
-								<Dialog title="Cadastro" tp="cadastro" />
+							<div class="flex w-full flex-wrap justify-center gap-4 md:w-auto">
+								<Dialog />
 							</div>
 						</div>
 					{/if}
@@ -75,7 +73,7 @@
 	</Collapsible.Root>
 {/snippet}
 
-<header bind:clientWidth={size} class="p-6 sticky top-0 z-10 bg-principal-1 shadow-md">
+<header bind:clientWidth={size} class="bg-principal-1 sticky top-0 z-10 p-6 shadow-md">
 	{#if isMenu}
 		{@render Modal()}
 	{:else}

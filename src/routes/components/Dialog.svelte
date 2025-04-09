@@ -5,12 +5,8 @@
 	import { superForm } from 'sveltekit-superforms';
 	import { fly } from 'svelte/transition';
 
-	let { title, tp } = $props();
-
 	const { errors: signupErrors, enhance: signupEnhance } = superForm($page.data.formSignup);
 	const { errors: loginErrors, enhance: loginEnhance } = superForm($page.data.formLogin);
-
-	$inspect($signupErrors);
 
 	let isCPF = $state('CPF');
 	let placeholdCPF = $derived(isCPF === 'CPF' ? '000.000.000-00' : '00.000.000/0000-00');
@@ -53,7 +49,7 @@
 </script>
 
 {#snippet login()}
-	<form method="post" action="?/login" use:loginEnhance>
+	<form method="POST" action="?/login" use:loginEnhance>
 		<div class="flex flex-col items-start gap-1 py-4">
 			<Label.Root for="email" class="text-sm font-medium">Email:</Label.Root>
 			<div class="w-full">
@@ -61,35 +57,35 @@
 					type="email"
 					name="email"
 					aria-invalid={$loginErrors.email ? 'true' : undefined}
-					class="h-10 rounded-sm bg-principal-1 line focus:outline-hidden inline-flex w-full items-center border border-zinc-300 px-4 text-base focus:ring-2 focus:ring-offset-2 sm:text-sm"
+					class="bg-principal-1 line inline-flex h-10 w-full items-center rounded-sm border border-zinc-300 px-4 text-base focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-sm"
 				/>
 			</div>
-			{#if $loginErrors.email}<span class="text-red-500 font-bold mt-1 pl-2"
+			{#if $loginErrors.email}<span class="mt-1 pl-2 font-bold text-red-500"
 					>{$loginErrors.email}</span
 				>{/if}
 		</div>
-		<div class="flex flex-col items-start gap-1 py-4 mb-8">
+		<div class="mb-8 flex flex-col items-start gap-1 py-4">
 			<Label.Root for="password" class="text-sm font-medium">Senha:</Label.Root>
 			<div class="w-full">
 				<input
 					type="password"
 					name="password"
 					aria-invalid={$loginErrors.password ? 'true' : undefined}
-					class="h-10 rounded-sm bg-principal-1 focus:outline-hidden inline-flex w-full items-center border px-4 border-zinc-300 text-base focus:ring-2 focus:ring-offset-2 sm:text-sm"
+					class="bg-principal-1 inline-flex h-10 w-full items-center rounded-sm border border-zinc-300 px-4 text-base focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-sm"
 				/>
 			</div>
-			{#if $loginErrors.password}<span class="text-red-500 font-bold mt-1 pl-2"
+			{#if $loginErrors.password}<span class="mt-1 pl-2 font-bold text-red-500"
 					>{$loginErrors.password}</span
 				>{/if}
 		</div>
-		<div class="flex flex-col gap-4 w-full items-center">
+		<div class="flex w-full flex-col items-center gap-4">
 			<button
-				class="mb-4 h-10 w-2/3 rounded-lg bg-principal-5 text-black shadow-sm hover:bg-principal-3 transition-colors duration-300 inline-flex items-center justify-center px-12 py-6 font-semibold active:scale-[0.95]"
+				class="bg-principal-5 hover:bg-principal-3 mb-4 inline-flex h-10 w-2/3 items-center justify-center rounded-lg px-12 py-6 font-semibold text-black shadow-sm transition-colors duration-300 active:scale-[0.95]"
 			>
 				Entrar
 			</button>
 			{#if $loginErrors._errors && !($loginErrors.password || $loginErrors.email)}
-				<span class="text-red-500 font-bold" in:fly={{ x: 200, duration: 1000 }}>
+				<span class="font-bold text-red-500" in:fly={{ x: 200, duration: 1000 }}>
 					{$loginErrors._errors}
 				</span>
 			{/if}
@@ -98,16 +94,19 @@
 {/snippet}
 
 {#snippet cadastro()}
-	<form method="post" action="?/signup" use:signupEnhance>
+	<form method="POST" action="?/signup" use:signupEnhance>
 		<div class="flex flex-col items-start gap-1 py-4">
 			<Label.Root for="name" class="text-sm font-medium">Nome Completo:</Label.Root>
 			<div class="w-full">
 				<input
 					type="text"
 					name="name"
-					class="h-10 rounded-sm bg-principal-1 placeholder:text-foreground-alt/50 border-zinc-300 focus:outline-hidden inline-flex w-full items-center border px-4 text-base focus:ring-2 focus:ring-offset-2 sm:text-sm"
+					class="bg-principal-1 placeholder:text-foreground-alt/50 inline-flex h-10 w-full items-center rounded-sm border border-zinc-300 px-4 text-base focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-sm"
 				/>
 			</div>
+			{#if $signupErrors.name}<span class="mt-1 pl-2 font-bold text-red-500"
+					>{$signupErrors.name}</span
+				>{/if}
 		</div>
 		<div class="flex flex-col items-start gap-1 py-4">
 			<Label.Root for="date" class="text-sm font-medium">Data para o trabalho:</Label.Root>
@@ -116,23 +115,26 @@
 					type="date"
 					min={new Date().toISOString().split('T')[0]}
 					name="date"
-					class="h-10 rounded-sm bg-principal-1 placeholder:text-foreground-alt/50 border-zinc-300 focus:outline-hidden inline-flex w-full items-center border px-4 text-base focus:ring-2 focus:ring-offset-2 sm:text-sm"
+					class="bg-principal-1 placeholder:text-foreground-alt/50 inline-flex h-10 w-full items-center rounded-sm border border-zinc-300 px-4 text-base focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-sm"
 				/>
 			</div>
+			{#if $signupErrors.date}<span class="mt-1 pl-2 font-bold text-red-500"
+					>{$signupErrors.date}</span
+				>{/if}
 		</div>
 		<div class="flex flex-col items-start gap-2 py-4">
 			<Label.Root for="typePersonal" class="w-1/2 text-sm font-medium text-black"
 				><RadioGroup.Root
 					name="radio"
 					bind:value={isCPF}
-					class="flex flex-wrap flex-1 gap-4 justify-between text-sm font-medium"
+					class="flex flex-1 flex-wrap justify-between gap-4 text-sm font-medium"
 				>
 					{#each ['CPF', 'CNPJ'] as itens (itens)}
 						<div class="flex items-center gap-4">
 							<RadioGroup.Item
 								id={itens}
 								value={itens}
-								class="hover:border-black/40 data-[state=checked]:border-6 data-[state=checked]:border-principal-3 size-6 shrink-0 cursor-default rounded-full border-2 border-black transition-all duration-100 ease-in-out"
+								class="data-[state=checked]:border-principal-3 size-6 shrink-0 cursor-default rounded-full border-2 border-black transition-all duration-100 ease-in-out hover:border-black/40 data-[state=checked]:border-6"
 							></RadioGroup.Item><Label.Root for={itens} class="">{itens}</Label.Root>
 						</div>
 					{/each}
@@ -143,9 +145,13 @@
 					type="text"
 					placeholder={placeholdCPF}
 					name="typePersonal"
-					class="h-10 rounded-sm bg-principal-1 placeholder:text-foreground-alt/50 border-zinc-300 focus:outline-hidden inline-flex w-full items-center border px-4 text-base focus:ring-2 focus:ring-offset-2 sm:text-sm"
+					class="bg-principal-1 placeholder:text-foreground-alt/50 inline-flex h-10 w-full items-center rounded-sm border border-zinc-300 px-4 text-base focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-sm"
 				/>
 			</div>
+
+			{#if $signupErrors.typePersonal}<span class="mt-1 pl-2 font-bold text-red-500"
+					>{$signupErrors.typePersonal}</span
+				>{/if}
 		</div>
 		<div class="flex flex-col items-start gap-1 py-4">
 			<Label.Root for="phone" class="text-sm font-medium">Telefone:</Label.Root>
@@ -154,9 +160,13 @@
 					type="text"
 					name="phone"
 					placeholder="(00)00000-0000"
-					class="h-10 rounded-sm bg-principal-1 placeholder:text-foreground-alt/50 border-zinc-300 focus:outline-hidden inline-flex w-full items-center border px-4 text-base focus:ring-2 focus:ring-offset-2 sm:text-sm"
+					class="bg-principal-1 placeholder:text-foreground-alt/50 inline-flex h-10 w-full items-center rounded-sm border border-zinc-300 px-4 text-base focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-sm"
 				/>
 			</div>
+
+			{#if $signupErrors.phone}<span class="mt-1 pl-2 font-bold text-red-500"
+					>{$signupErrors.phone}</span
+				>{/if}
 		</div>
 		<div class="flex flex-col items-start gap-1 py-4">
 			<Label.Root for="email" class="text-sm font-medium">Email:</Label.Root>
@@ -164,19 +174,26 @@
 				<input
 					type="email"
 					name="email"
-					class="h-10 rounded-sm bg-principal-1 placeholder:text-foreground-alt/50 border-zinc-300 focus:outline-hidden inline-flex w-full items-center border px-4 text-base focus:ring-2 focus:ring-offset-2 sm:text-sm"
+					class="bg-principal-1 placeholder:text-foreground-alt/50 inline-flex h-10 w-full items-center rounded-sm border border-zinc-300 px-4 text-base focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-sm"
 				/>
 			</div>
+
+			{#if $signupErrors.email}<span class="mt-1 pl-2 font-bold text-red-500"
+					>{$signupErrors.email}</span
+				>{/if}
 		</div>
 		<div class="flex flex-col items-start gap-1 py-4">
 			<Label.Root for="password" class="text-sm font-medium">Senha:</Label.Root>
-			<div class="w-full flex flex-col gap-4">
+			<div class="flex w-full flex-col gap-4">
 				<input
 					bind:value={password}
 					type="password"
 					name="password"
-					class="h-10 rounded-sm bg-principal-1 placeholder:text-foreground-alt/50 border-zinc-300 focus:outline-hidden inline-flex w-full items-center border px-4 text-base focus:ring-2 focus:ring-offset-2 sm:text-sm"
+					class="bg-principal-1 placeholder:text-foreground-alt/50 inline-flex h-10 w-full items-center rounded-sm border border-zinc-300 px-4 text-base focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-sm"
 				/>
+				{#if $signupErrors.password}<span class="mt-1 pl-2 font-bold text-red-500"
+						>{$signupErrors.password}</span
+					>{/if}
 				<div class="flex w-[60%] flex-col">
 					<Meter.Root
 						aria-valuetext="password strength {strength}% - {stringPassword()}"
@@ -198,7 +215,7 @@
 		</div>
 		<div class="flex w-full justify-center">
 			<button
-				class="h-10 rounded-lg bg-principal-5 text-black shadow-sm hover:bg-principal-3 transition-colors duration-300 inline-flex items-center justify-center px-12 font-semibold active:scale-[0.95]"
+				class="bg-principal-5 hover:bg-principal-3 inline-flex h-10 items-center justify-center rounded-lg px-12 font-semibold text-black shadow-sm transition-colors duration-300 active:scale-[0.95]"
 			>
 				Cadastrar
 			</button>
@@ -208,29 +225,51 @@
 
 <Dialog.Root>
 	<Dialog.Trigger
-		class="rounded-lg bg-principal-5 hover:bg-principal-3 text-black shadow-sm inline-flex h-12 items-center justify-center whitespace-nowrap px-[21px] text-[15px] font-semibold transition-colors duration-300 active:scale-[0.95]"
+		class="bg-principal-5 hover:bg-principal-3 inline-flex h-12 items-center justify-center rounded-lg px-[21px] text-[15px] font-semibold whitespace-nowrap text-black shadow-sm transition-colors duration-300 active:scale-[0.95]"
 	>
-		{title}
+		Login
 	</Dialog.Trigger>
 	<Dialog.Portal>
 		<Dialog.Overlay class="fixed inset-0 z-50 bg-black/80" />
 		<Dialog.Content
-			class="rounded-lg bg-principal-1 shadow-sm outline-hidden fixed left-[50%] top-[50%] z-50 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] border p-5 sm:max-w-[490px] md:w-full"
+			class="bg-principal-1 fixed top-[50%] left-[50%] z-50 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] rounded-lg border p-5 shadow-sm outline-hidden sm:max-w-[490px] md:w-full"
 		>
 			<Dialog.Title
 				class="flex w-full items-center justify-center text-2xl font-bold tracking-tight "
 			>
-				{title}
+				Login
 			</Dialog.Title>
-			{#if tp === 'login'}
-				{@render login()}
-			{:else}
-				{@render cadastro()}
-			{/if}
+			{@render login()}
 			<Dialog.Close
-				class="focus-visible:ring-foreground focus-visible:ring-offset-background focus-visible:outline-hidden absolute right-5 top-5 rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98]"
+				class="focus-visible:ring-foreground focus-visible:ring-offset-background absolute top-5 right-5 rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden active:scale-[0.98]"
 			>
-				<X class="text-black size-6 hover:text-principal-4" />
+				<X class="hover:text-principal-4 size-6 text-black" />
+			</Dialog.Close>
+		</Dialog.Content>
+	</Dialog.Portal>
+</Dialog.Root>
+
+<Dialog.Root>
+	<Dialog.Trigger
+		class="bg-principal-5 hover:bg-principal-3 inline-flex h-12 items-center justify-center rounded-lg px-[21px] text-[15px] font-semibold whitespace-nowrap text-black shadow-sm transition-colors duration-300 active:scale-[0.95]"
+	>
+		Cadastro
+	</Dialog.Trigger>
+	<Dialog.Portal>
+		<Dialog.Overlay class="fixed inset-0 z-50 bg-black/80" />
+		<Dialog.Content
+			class="bg-principal-1 fixed top-[50%] left-[50%] z-50 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] rounded-lg border p-5 shadow-sm outline-hidden sm:max-w-[490px] md:w-full"
+		>
+			<Dialog.Title
+				class="flex w-full items-center justify-center text-2xl font-bold tracking-tight "
+			>
+				Cadastro
+			</Dialog.Title>
+			{@render cadastro()}
+			<Dialog.Close
+				class="focus-visible:ring-foreground focus-visible:ring-offset-background absolute top-5 right-5 rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden active:scale-[0.98]"
+			>
+				<X class="hover:text-principal-4 size-6 text-black" />
 			</Dialog.Close>
 		</Dialog.Content>
 	</Dialog.Portal>

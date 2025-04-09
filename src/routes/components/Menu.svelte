@@ -1,8 +1,8 @@
-<section id="vantagens" class="flex flex-col items-center justify-center min-h-svh gap-4">
-	<h2 class="text-2xl w-auto font-bold text-principal-6">Conheça nossos diferenciais</h2>
-	<h3 class="text-4xl w-auto font-bold mb-4">Vantagens em ser Techfind</h3>
+<section id="vantagens" class="flex min-h-svh flex-col items-center justify-center gap-4">
+	<h2 class="text-principal-6 w-auto text-2xl font-bold">Conheça nossos diferenciais</h2>
+	<h3 class="mb-4 w-auto text-4xl font-bold">Vantagens em ser Techfind</h3>
 
-	<div id="cards" class="flex justify-center text-center gap-6 p-4">
+	<div id="cards" class="flex justify-center gap-6 p-4 text-center">
 		<div class="card">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"

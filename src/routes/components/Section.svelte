@@ -27,9 +27,9 @@
 	];
 </script>
 
-<section class="flex justify-center items-center py-8 gap-40">
-	<div id="cta" class="w-full flex flex-col items-center gap-8 xl:items-stretch xl:w-1/3">
-		<h1 class="text-center xl:text-left w-2/3 tracking-tighter text-7xl font-semibold">
+<section class="flex items-center justify-center gap-40 py-8">
+	<div id="cta" class="flex w-full flex-col items-center gap-8 xl:w-1/3 xl:items-stretch">
+		<h1 class="w-2/3 text-center text-7xl font-semibold tracking-tighter xl:text-left">
 			<span class="text-principal-6">TechFind:</span> sua solução em IA para serviços de tecnologia
 		</h1>
 
@@ -40,9 +40,9 @@
 		<div class="flex gap-6">
 			<a href="#aboutus" class={`${btn} bg-principal-5`}>Saiba mais</a>
 
-			<a href="tel:+5561984975160" class={`${btn} bg-white gap-3`}>
+			<a href="tel:+5561984975160" class={`${btn} gap-3 bg-white`}>
 				<svg
-					class="size-8 rounded-xl bg-principal-3 p-2"
+					class="bg-principal-3 size-8 rounded-xl p-2"
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 512 512"
 					><path
@@ -53,10 +53,10 @@
 			</a>
 		</div>
 
-		<div class="flex gap-8 items-center justify-around w-fit">
+		<div class="flex w-fit items-center justify-around gap-8">
 			{#each socials as social}
 				<a aria-label="social icon" class={socialIcons} href={social.href} target="_blank">
-					<svg xmlns="http://www.w3.org/2000/svg" class="w-auto h-auto p-2" viewBox="0 0 496 512"
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-auto w-auto p-2" viewBox="0 0 496 512"
 						><path d={social.icon.path} /></svg
 					>
 				</a>

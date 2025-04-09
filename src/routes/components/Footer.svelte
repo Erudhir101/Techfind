@@ -24,16 +24,16 @@
 	];
 </script>
 
-<footer class="flex relative h-32">
-	<div class="flex w-full justify-between items-center px-12">
-		<div class="flex gap-4 items-center">
+<footer class="relative flex h-32">
+	<div class="flex w-full items-center justify-between px-12">
+		<div class="flex items-center gap-4">
 			<Copyright size={20} />
-			<span class="text-black font-medium"> 2024 TechFind </span>
+			<span class="font-medium text-black"> 2024 TechFind </span>
 		</div>
-		<div class="flex gap-5 items-center justify-around">
+		<div class="flex items-center justify-around gap-5">
 			{#each socials as social}
 				<a aria-label="social icon" class={socialIcons} href={social.href} target="_blank">
-					<svg xmlns="http://www.w3.org/2000/svg" class="w-auto h-auto p-2" viewBox="0 0 496 512"
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-auto w-auto p-2" viewBox="0 0 496 512"
 						><path d={social.icon.path} /></svg
 					>
 				</a>

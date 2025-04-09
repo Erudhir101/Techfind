@@ -12,11 +12,14 @@ const schemaLogin = z.object({
 const schemaSignup = z.object({
 	name: z.string().min(3, { message: 'Nome deve ter 3 caracteres no mínimo.' }),
 	date: z
-		.date()
-		.min(new Date(), { message: 'Selecione uma data, que você tenha disponibilidade.' }),
+		.date({ message: 'Selecione uma data que tenha disponibilidade.' })
+		.refine((data) => new Date(data).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)),
 	radio: z.enum(['CPF', 'CNPJ']),
-	typePersonal: z.string().regex(/^\d+$/).max(11, { message: 'Deve ter apenas os 11 numeros.' }),
-	phone: z.string().min(11, { message: 'Telefone digite apenas os números' }),
+	typePersonal: z
+		.string()
+		.regex(/^\d+$/, { message: 'Deve ter apenas os números.' })
+		.max(11, { message: 'Deve ter apenas os 11 numeros.' }),
+	phone: z.string().min(11, { message: 'Deve ter apenas os números.' }),
 	email: z.string().email('Email está vazio.'),
 	password: z.string().min(6, { message: 'Senha deve ter 6 caracteres no mínimo.' })
 });
@@ -46,17 +49,15 @@ export const actions: Actions = {
 		if (error) {
 			return setError(formSignup, 'não foi possivel realizar o cadastro... tente novamente');
 		} else {
-			const prof = await supabase
-				.from('profile')
-				.insert([
-					{
-						id_auth: data.user?.id,
-						type: type,
-						name: name,
-						typePersonal: typePersonal,
-						phone: phone
-					}
-				]);
+			const prof = await supabase.from('profile').insert([
+				{
+					id_auth: data.user?.id,
+					type: type,
+					name: name,
+					typePersonal: typePersonal,
+					phone: phone
+				}
+			]);
 			if (prof.error) {
 				return setError(formSignup, 'não foi possivel realizar o cadastro... tente novamente');
 			}
