@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { CircleUserRound, Cpu, X } from '@lucide/svelte';
-	import { ScrollArea, Dialog } from 'bits-ui';
+	import { ScrollArea, Dialog, Button } from 'bits-ui';
 
 	interface UsuarioContato {
 		nome: string;
@@ -140,6 +140,14 @@
 				>
 					<X class="hover:text-principal-4 size-6 text-black" />
 				</Dialog.Close>
+				<form action="?/notification" method="POST" class="self-center">
+					<Button.Root
+						type="submit"
+						class="bg-principal-4 hover:bg-principal-3 flex gap-4 rounded-md px-4 py-2 font-semibold shadow transition-colors duration-300"
+					>
+						<Cpu /> Entre em Contato
+					</Button.Root>
+				</form>
 			</Dialog.Content>
 		</Dialog.Portal>
 	</Dialog.Root>
@@ -154,8 +162,8 @@
 				<h3 class="font-medium">{usuario.desc}</h3>
 			</div>
 		</div>
-		<ul class="flex flex-wrap gap-4">
-			{#each usuario.tags as tag}
+		<ul class="flex flex-wrap items-center justify-center gap-4">
+			{#each usuario.tags.sort() as tag (tag)}
 				<li class="rounded-lg bg-zinc-200 px-2 font-semibold">{tag}</li>
 			{/each}
 		</ul>

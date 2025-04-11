@@ -20,5 +20,10 @@
 				{item}
 			</Button.Root>
 		{/each}
+		<Button.Root
+			href="pv/pesquisa"
+			class="bg-principal-2 hover:bg-principal-3 cursor-pointer rounded-md px-4 py-4 text-center font-semibold shadow transition-colors duration-300"
+			>Começar a pesquisa!</Button.Root
+		>
 	</div>
 </div>

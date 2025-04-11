@@ -1,6 +1,6 @@
 <script>
 	import { Accordion, AlertDialog, Button, Dialog, Label } from 'bits-ui';
-	import { ArrowBigLeft, Plus, X, ChevronDown } from '@lucide/svelte';
+	import { ChevronLeft, Plus, X, ChevronDown } from '@lucide/svelte';
 	import { superForm } from 'sveltekit-superforms';
 	import { fly } from 'svelte/transition';
 
@@ -69,7 +69,7 @@
 	href="../"
 	class="bg-principal-1 hover:bg-principal-4 mt-4 ml-4 inline-block rounded-full border-2 border-black shadow hover:border-black/80"
 >
-	<ArrowBigLeft class="size-10 stroke-1 hover:stroke-black/80" />
+	<ChevronLeft class="size-10 stroke-1 hover:stroke-black/80" />
 </Button.Root>
 
 <div class="mt-24 flex w-full flex-col items-center gap-4">

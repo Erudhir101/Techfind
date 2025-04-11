@@ -1,6 +1,6 @@
 <script>
 	import { Button, Label } from 'bits-ui';
-	import { ArrowBigLeft } from '@lucide/svelte';
+	import { ChevronLeft } from '@lucide/svelte';
 
 	let { data } = $props();
 	let { profile } = $derived(data);
@@ -10,16 +10,16 @@
 	href="../"
 	class="bg-principal-1 hover:bg-principal-4 mt-4 ml-4 inline-block rounded-full border-2 border-black shadow hover:border-black/80"
 >
-	<ArrowBigLeft class="size-10 stroke-1 hover:stroke-black/80" />
+	<ChevronLeft class="size-10 stroke-1 hover:stroke-black/80" />
 </Button.Root>
 
-<div class="mt-24 flex w-full justify-center">
+<div class="mt-14 flex w-full justify-center">
 	<form
 		method="post"
 		action="?/signup"
 		class=" flex w-md flex-col items-stretch gap-8 rounded-md border border-zinc-300 p-8 shadow-lg"
 	>
-		<h2 class="text-2xl font-bold">PROFILE</h2>
+		<h2 class="text-2xl font-bold">PERFIL</h2>
 		<div class="flex flex-col items-start gap-1">
 			<Label.Root for="name" class="text-sm font-medium">Nome Completo:</Label.Root>
 			<div class="w-full">
