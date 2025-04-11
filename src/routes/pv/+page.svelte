@@ -9,11 +9,13 @@
 	<h2 class="text-4xl font-bold">
 		Bem Vindo <span class="text-principal-6">{profile?.name}</span>
 	</h2>
-	<div class="grid w-1/2 grid-cols-1 grid-rows-4 gap-4 p-8 sm:grid-cols-2 sm:grid-rows-2">
-		{#each ['perfil', 'servicos'] as item}
+	<div
+		class="grid w-full grid-cols-1 grid-rows-4 gap-8 p-8 sm:w-1/4 sm:min-w-sm sm:grid-cols-2 sm:grid-rows-2 sm:gap-4"
+	>
+		{#each ['perfil', 'servicos', 'contratos'] as item}
 			<Button.Root
 				href="pv/{item}"
-				class="bg-principal-4 hover:bg-principal-3 cursor-pointer rounded-md px-4 py-2 text-center font-semibold shadow transition-colors duration-300"
+				class="bg-principal-4 hover:bg-principal-3 cursor-pointer rounded-md px-4 py-4 text-center font-semibold shadow transition-colors duration-300"
 			>
 				{item}
 			</Button.Root>

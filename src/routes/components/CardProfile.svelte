@@ -176,7 +176,7 @@
 	</ScrollArea.Viewport>
 	<ScrollArea.Scrollbar
 		orientation="vertical"
-		class="bg-principal-5 hover:bg-principal-6 my-1 flex w-3 touch-none rounded-full border-l border-l-transparent p-px transition-all duration-200 select-none hover:w-3"
+		class="bg-principal-5 hover:bg-principal-6 my-1 hidden w-3 touch-none rounded-full border-l border-l-transparent p-px transition-all duration-200 select-none hover:w-3 lg:flex"
 	>
 		<ScrollArea.Thumb class="bg-principal-2 flex-1 rounded-full" />
 	</ScrollArea.Scrollbar>

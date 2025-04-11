@@ -33,10 +33,9 @@ export const load: PageServerLoad = async () => {
 export const actions: Actions = {
 	signup: async ({ request, locals: { supabase } }) => {
 		const formData = await request.formData();
-		console.log(formData);
 		const formSignup = await superValidate(formData, zod(schemaSignup));
 		if (!formSignup.valid) {
-			return setError(formSignup, 'error de validação sig');
+			return setError(formSignup, 'error de validação signup');
 		}
 		const email = formData.get('email') as string;
 		const password = formData.get('password') as string;
