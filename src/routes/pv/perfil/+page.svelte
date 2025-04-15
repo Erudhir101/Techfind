@@ -13,11 +13,11 @@
 	<ChevronLeft class="size-10 stroke-1 hover:stroke-black/80" />
 </Button.Root>
 
-<div class="mt-14 flex w-full justify-center">
+<div class="flex w-full justify-center">
 	<form
 		method="post"
 		action="?/signup"
-		class=" flex w-md flex-col items-stretch gap-8 rounded-md border border-zinc-300 p-8 shadow-lg"
+		class=" flex w-lg flex-col items-stretch gap-8 rounded-md border border-zinc-300 p-8 shadow-lg"
 	>
 		<h2 class="text-2xl font-bold">PERFIL</h2>
 		<div class="flex flex-col items-start gap-1">
@@ -27,6 +27,17 @@
 					type="text"
 					name="name"
 					value={profile?.name}
+					class="bg-principal-1 placeholder:text-foreground-alt/50 inline-flex h-10 w-full items-center rounded-sm border border-zinc-300 px-4 text-base focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-sm"
+				/>
+			</div>
+		</div>
+		<div class="flex flex-col items-start gap-1">
+			<Label.Root for="name" class="text-sm font-medium">Descrição:</Label.Root>
+			<div class="w-full">
+				<input
+					type="text"
+					name="descricao"
+					value={profile?.desc}
 					class="bg-principal-1 placeholder:text-foreground-alt/50 inline-flex h-10 w-full items-center rounded-sm border border-zinc-300 px-4 text-base focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-sm"
 				/>
 			</div>
