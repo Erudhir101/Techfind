@@ -40,14 +40,12 @@
 				>
 					<X class="hover:text-principal-4 size-6 text-black" />
 				</Dialog.Close>
-				<form action="?/notification" method="POST" class="self-center">
-					<Button.Root
-						type="submit"
-						class="bg-principal-4 hover:bg-principal-3 flex gap-4 rounded-md px-8 py-4 font-semibold shadow transition-colors duration-300"
-					>
-						<Send /> Entre em Contato
-					</Button.Root>
-				</form>
+				<Button.Root
+					href="./userPage?user={usuario.id}"
+					class="bg-principal-4 hover:bg-principal-3 flex gap-4 rounded-md px-8 py-4 font-semibold shadow transition-colors duration-300"
+				>
+					<Send /> Visualizar Perfil
+				</Button.Root>
 			</Dialog.Content>
 		</Dialog.Portal>
 	</Dialog.Root>
