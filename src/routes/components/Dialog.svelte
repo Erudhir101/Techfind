@@ -8,8 +8,10 @@
 	const { errors: signupErrors, enhance: signupEnhance } = superForm($page.data.formSignup);
 	const { errors: loginErrors, enhance: loginEnhance } = superForm($page.data.formLogin);
 
-	let isCPF = $state('CPF');
-	let placeholdCPF = $derived(isCPF === 'CPF' ? '000.000.000-00' : '00.000.000/0000-00');
+	let isClient = $state('Cliente');
+	let dateToday = new Date().toISOString().split('T')[0].split('-');
+	dateToday[0] = String(Number(dateToday[0]) - 18);
+	// let placeholdCPF = $derived(isCPF === 'CPF' ? '000.000.000-00' : '00.000.000/0000-00');
 
 	let password = $state('');
 	let strength = $derived(checkPasswordStrength() * 100);
@@ -78,7 +80,7 @@
 					>{$loginErrors.password}</span
 				>{/if}
 		</div>
-		<div class="flex w-full flex-col items-center gap-4">
+		<div class="flex w-full flex-col items-center gap-2">
 			<button
 				class="bg-principal-5 hover:bg-principal-3 mb-4 inline-flex h-10 w-2/3 items-center justify-center rounded-lg px-12 py-6 font-semibold text-black shadow-sm transition-colors duration-300 active:scale-[0.95]"
 			>
@@ -95,41 +97,14 @@
 
 {#snippet cadastro()}
 	<form method="POST" action="?/signup" use:signupEnhance>
-		<div class="flex flex-col items-start gap-1 py-4">
-			<Label.Root for="name" class="text-sm font-medium">Nome Completo:</Label.Root>
-			<div class="w-full">
-				<input
-					type="text"
-					name="name"
-					class="bg-principal-1 placeholder:text-foreground-alt/50 inline-flex h-10 w-full items-center rounded-sm border border-zinc-300 px-4 text-base focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-sm"
-				/>
-			</div>
-			{#if $signupErrors.name}<span class="mt-1 pl-2 font-bold text-red-500"
-					>{$signupErrors.name}</span
-				>{/if}
-		</div>
-		<div class="flex flex-col items-start gap-1 py-4">
-			<Label.Root for="date" class="text-sm font-medium">Data para o trabalho:</Label.Root>
-			<div class="w-full">
-				<input
-					type="date"
-					min={new Date().toISOString().split('T')[0]}
-					name="date"
-					class="bg-principal-1 placeholder:text-foreground-alt/50 inline-flex h-10 w-full items-center rounded-sm border border-zinc-300 px-4 text-base focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-sm"
-				/>
-			</div>
-			{#if $signupErrors.date}<span class="mt-1 pl-2 font-bold text-red-500"
-					>{$signupErrors.date}</span
-				>{/if}
-		</div>
-		<div class="flex flex-col items-start gap-2 py-4">
-			<Label.Root for="typePersonal" class="w-1/2 text-sm font-medium text-black"
+		<div class="flex flex-col items-center gap-2 py-4">
+			<Label.Root for="client" class="w-1/2 text-sm font-medium text-black"
 				><RadioGroup.Root
 					name="radio"
-					bind:value={isCPF}
+					bind:value={isClient}
 					class="flex flex-1 flex-wrap justify-between gap-4 text-sm font-medium"
 				>
-					{#each ['CPF', 'CNPJ'] as itens (itens)}
+					{#each ['Cliente', 'Prestador'] as itens (itens)}
 						<div class="flex items-center gap-4">
 							<RadioGroup.Item
 								id={itens}
@@ -140,16 +115,51 @@
 					{/each}
 				</RadioGroup.Root></Label.Root
 			>
+		</div>
+		<div class="flex flex-col items-start gap-1 py-4">
+			<Label.Root for="name" class="text-sm font-medium">Nome Completo:</Label.Root>
 			<div class="w-full">
 				<input
 					type="text"
-					placeholder={placeholdCPF}
+					name="name"
+					class="bg-principal-1 placeholder:text-foreground-alt/50 inline-flex h-10 w-full items-center rounded-sm border border-zinc-300 px-4 text-base focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-sm"
+				/>
+			</div>
+			{#if $signupErrors.name}<span class="mt-1 pl-2 text-sm font-bold text-red-500"
+					>{$signupErrors.name}</span
+				>{/if}
+		</div>
+		<div class="flex flex-col items-start gap-1 py-4">
+			<Label.Root for="date" class="text-sm font-medium"
+				>Data de nascimento / abertura da empresa:</Label.Root
+			>
+			<div class="w-full">
+				<input
+					type="date"
+					max={isClient === 'Cliente'
+						? dateToday.join('-')
+						: new Date().toISOString().split('T')[0]}
+					name="date"
+					class="bg-principal-1 placeholder:text-foreground-alt/50 inline-flex h-10 w-full items-center rounded-sm border border-zinc-300 px-4 text-base focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-sm"
+				/>
+			</div>
+			{#if $signupErrors.date}<span class="mt-1 pl-2 text-sm font-bold text-red-500"
+					>{$signupErrors.date}</span
+				>{/if}
+		</div>
+
+		<div class="flex flex-col items-start gap-1 py-4">
+			<Label.Root for="typePersonal" class="text-sm font-medium">CPF / CNPJ:</Label.Root>
+			<div class="w-full">
+				<input
+					type="text"
+					placeholder="0000000000"
 					name="typePersonal"
 					class="bg-principal-1 placeholder:text-foreground-alt/50 inline-flex h-10 w-full items-center rounded-sm border border-zinc-300 px-4 text-base focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-sm"
 				/>
 			</div>
 
-			{#if $signupErrors.typePersonal}<span class="mt-1 pl-2 font-bold text-red-500"
+			{#if $signupErrors.typePersonal}<span class="mt-1 pl-2 text-sm font-bold text-red-500"
 					>{$signupErrors.typePersonal}</span
 				>{/if}
 		</div>
@@ -164,7 +174,7 @@
 				/>
 			</div>
 
-			{#if $signupErrors.phone}<span class="mt-1 pl-2 font-bold text-red-500"
+			{#if $signupErrors.phone}<span class="mt-1 pl-2 text-sm font-bold text-red-500"
 					>{$signupErrors.phone}</span
 				>{/if}
 		</div>
@@ -178,7 +188,7 @@
 				/>
 			</div>
 
-			{#if $signupErrors.email}<span class="mt-1 pl-2 font-bold text-red-500"
+			{#if $signupErrors.email}<span class="mt-1 pl-2 text-sm font-bold text-red-500"
 					>{$signupErrors.email}</span
 				>{/if}
 		</div>
@@ -191,7 +201,7 @@
 					name="password"
 					class="bg-principal-1 placeholder:text-foreground-alt/50 inline-flex h-10 w-full items-center rounded-sm border border-zinc-300 px-4 text-base focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-sm"
 				/>
-				{#if $signupErrors.password}<span class="mt-1 pl-2 font-bold text-red-500"
+				{#if $signupErrors.password}<span class="mt-1 pl-2 text-sm font-bold text-red-500"
 						>{$signupErrors.password}</span
 					>{/if}
 				<div class="flex w-[60%] flex-col">

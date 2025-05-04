@@ -73,7 +73,7 @@
 
 <ScrollArea.Root
 	type="always"
-	class="flex justify-center overflow-hidden rounded-xl bg-zinc-400 px-2 py-4 shadow-xl md:px-16 md:py-8"
+	class="flex h-full justify-center overflow-hidden rounded-xl bg-zinc-400 px-2 py-4 shadow-xl md:px-16 md:py-8"
 >
 	<ScrollArea.Viewport class="h-full w-full max-w-md">
 		{#if $page.data.usuarios.length !== 0}

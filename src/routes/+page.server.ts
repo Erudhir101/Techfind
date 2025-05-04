@@ -18,7 +18,8 @@ const schemaSignup = z.object({
 	typePersonal: z
 		.string()
 		.regex(/^\d+$/, { message: 'Deve ter apenas os números.' })
-		.max(11, { message: 'Deve ter apenas os 11 numeros.' }),
+		.min(11, { message: 'Deve ter mais de 11 digitos.' })
+		.max(14, { message: 'Deve ter menos de 14 digitos.' }),
 	phone: z.string().min(11, { message: 'Deve ter apenas os números.' }),
 	email: z.string().email('Email está vazio.'),
 	password: z.string().min(6, { message: 'Senha deve ter 6 caracteres no mínimo.' })
