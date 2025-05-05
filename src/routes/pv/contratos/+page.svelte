@@ -14,7 +14,7 @@
 	<ChevronLeft class="size-10 stroke-1 hover:stroke-black/80" />
 </Button.Root>
 
-<div class="mt-24 flex w-full justify-center">
+<div class="flex w-full justify-center">
 	<h2 class="text-2xl font-bold">CONTRATOS</h2>
 </div>
 

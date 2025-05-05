@@ -1,7 +1,7 @@
 <script>
 	import CryptoJS from 'crypto-js';
 	import { jsPDF } from 'jspdf';
-	import html2canvas from 'html2canvas';
+	import html2canvas from 'html2canvas-pro';
 
 	let contractData = $state({
 		effectiveDate: '',
@@ -22,25 +22,22 @@
 		signatureHash: ''
 	});
 
-	let isValid = $state(false);
-	let isSigned = $state(false);
-	let formattedValue = $state('');
-	let contractElement = $state(null);
-
-	$effect(() => {
-		isValid =
-			contractData.effectiveDate &&
+	let isValid = $derived(
+		contractData.effectiveDate &&
 			contractData.term &&
 			contractData.contractObject &&
-			contractData.value;
-	});
+			contractData.value
+	);
+	let isSigned = $state(false);
+	let formattedValue = $state('');
+	let contractElement = $state();
 
 	$effect(() => {
 		if (contractData.value) {
 			formattedValue = new Intl.NumberFormat('pt-BR', {
 				style: 'currency',
 				currency: 'BRL'
-			}).format(contractData.value);
+			}).format(Number(contractData.value));
 		}
 	});
 
@@ -67,9 +64,8 @@
 	}
 
 	async function downloadPDF() {
-		const element = contractElement;
-		const canvas = await html2canvas(element, {
-			scale: 2,
+		const canvas = await html2canvas(contractElement, {
+			scale: 1,
 			useCORS: true,
 			logging: false
 		});
@@ -77,15 +73,14 @@
 		const imgData = canvas.toDataURL('image/png');
 		const pdf = new jsPDF('p', 'mm', 'a4');
 		const pageWidth = pdf.internal.pageSize.getWidth();
-		const pageHeight = pdf.internal.pageSize.getHeight();
 		const ratio = canvas.width / canvas.height;
 		const imgWidth = pageWidth - 20;
 		const imgHeight = imgWidth / ratio;
-
 		pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
 		pdf.save('contrato-trabalho.pdf');
 	}
 
+	// TODO: fazer o envio do handle para o banco de dados
 	function handleSubmit() {
 		if (!isValid || !isSigned) {
 			alert('Por favor, preencha todos os campos obrigatórios e assine o contrato');
@@ -96,8 +91,8 @@
 </script>
 
 <div class="contract-page">
-	<div class="contract-content">
-		<div class="contract-document" bind:this={contractElement}>
+	<div class="contract-content" bind:this={contractElement}>
+		<div class="contract-document">
 			<div class="document-header">
 				<div class="logo">TECHFIND</div>
 				<h1>CONTRATO DE TRABALHO</h1>
@@ -223,15 +218,15 @@
 					bind:value={contractData.signature}
 					placeholder="Digite seu nome completo como assinatura"
 				/>
-				<button on:click={handleSign} disabled={!isValid}>Assinar Contrato</button>
+				<button onclick={handleSign} disabled={!isValid}>Assinar Contrato</button>
 			</div>
 		{/if}
 
 		<div class="contract-actions">
-			<button class="action-button" on:click={downloadPDF} disabled={!isValid}> Baixar PDF </button>
+			<button class="action-button" onclick={downloadPDF} disabled={!isValid}> Baixar PDF </button>
 			<button
 				class="action-button submit-button"
-				on:click={handleSubmit}
+				onclick={handleSubmit}
 				disabled={!isValid || !isSigned}
 			>
 				Enviar Contrato
@@ -249,7 +244,7 @@
 		display: flex;
 		gap: 2rem;
 		padding: 2rem;
-		min-height: calc(100vh - 8rem);
+		min-height: calc(100vh - 7rem);
 		background-color: #f5f5f5;
 	}
 
