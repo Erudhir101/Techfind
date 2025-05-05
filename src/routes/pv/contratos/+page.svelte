@@ -1,6 +1,7 @@
 <script>
 	import { Button } from 'bits-ui';
 	import { ChevronLeft } from '@lucide/svelte';
+	import Contract from '../../components/Contract.svelte';
 
 	let { data } = $props();
 	let { services, user } = $derived(data);
@@ -16,3 +17,5 @@
 <div class="mt-24 flex w-full justify-center">
 	<h2 class="text-2xl font-bold">CONTRATOS</h2>
 </div>
+
+<Contract />
