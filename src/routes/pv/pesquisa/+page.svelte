@@ -11,8 +11,9 @@
 	// import type { ActionData } from './$types';
 
 	let { data } = $props();
+	$inspect(data.usurarios);
 
-	const markdown = marked.parse(data.api.desc);
+	const markdown = data.usuarios ? marked.parse(data.api.desc) : '';
 
 	// const { messages } = useChat({
 	// 	initialInput: text,
@@ -51,10 +52,18 @@
 			<h1 class="text-3xl font-bold">Resposta da IA</h1>
 			<ScrollArea.Root class="overflow-hidden rounded-md bg-white/80 p-4 text-justify">
 				<ScrollArea.Viewport class="h-full">
-					<div id="markdown">
-						{@html marked.parse(markdown)}
-						<!-- {@html teste} -->
-					</div>
+					{#if data.usuarios}
+						<div id="markdown">
+							{@html marked.parse(markdown)}
+						</div>
+					{:else}
+						<h2 class="text-principal-5 text-center text-2xl font-bold">
+							Nenhuma Pesquisa Realizada
+						</h2>
+						<h3 class="text-principal-4 text-center text-xl font-bold">
+							Faça uma pesquisa no botão embaixo!!
+						</h3>
+					{/if}
 				</ScrollArea.Viewport>
 				<ScrollArea.Scrollbar
 					orientation="vertical"
@@ -66,7 +75,9 @@
 			</ScrollArea.Root>
 			<CardPesquisa />
 		</main>
-		<CardProfile></CardProfile>
+		{#if data.usuarios}
+			<CardProfile></CardProfile>
+		{/if}
 	</div>
 </div>
 

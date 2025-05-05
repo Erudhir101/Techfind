@@ -1,28 +1,28 @@
-import type { Actions, PageServerLoad } from './$types';
+import type { Actions } from './$types';
 import { createGroq } from '@ai-sdk/groq';
 import { generateText } from 'ai';
 import { GROQ_API_KEY } from '$env/static/private';
 
 const groq = createGroq({ apiKey: GROQ_API_KEY });
 
-export const load: PageServerLoad = async ({ locals: { supabase } }) => {
-	const { text } = await generateText({
-		model: groq('llama-3.3-70b-versatile'),
-		prompt: example
-	});
-
-	const desc = text.split('Esses profissionais podem ser encontrados com as seguintes tags:')[0];
-
-	const tags = text
-		.split('Esses profissionais podem ser encontrados com as seguintes tags:')[1]
-		.split('-')
-		.map((value) => `tags.ilike.%${value.trim()}%`)
-		.join(', ');
-
-	const { data: usuarios } = await supabase.from('profile').select().eq('type', '1').or(tags);
-
-	return { usuarios: usuarios, api: { desc: desc, tags: tags } };
-};
+// export const load: PageServerLoad = async ({ locals: { supabase } }) => {
+// 	const { text } = await generateText({
+// 		model: groq('llama-3.3-70b-versatile'),
+// 		prompt: example
+// 	});
+//
+// 	const desc = text.split('Esses profissionais podem ser encontrados com as seguintes tags:')[0];
+//
+// 	const tags = text
+// 		.split('Esses profissionais podem ser encontrados com as seguintes tags:')[1]
+// 		.split('-')
+// 		.map((value) => `tags.ilike.%${value.trim()}%`)
+// 		.join(', ');
+//
+// 	const { data: usuarios } = await supabase.from('profile').select().eq('type', '1').or(tags);
+//
+// 	return { usuarios: usuarios, api: { desc: desc, tags: tags } };
+// };
 
 export const actions = {
 	pesquisar: async ({ locals: { supabase } }) => {
