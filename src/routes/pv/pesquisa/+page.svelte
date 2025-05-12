@@ -5,15 +5,16 @@
 	// import { chatHistory, addMessage } from '$lib/stores/chatStore';
 	// import { useChat } from '@ai-sdk/svelte';
 	// import type { Message } from 'ai';
+	// import type { ActionData } from './$types';
 	import CardProfile from '../../components/CardProfile.svelte';
 	import CardPesquisa from '../../components/CardPesquisa.svelte';
 	import { ChevronLeft } from '@lucide/svelte';
-	// import type { ActionData } from './$types';
 
 	let { data } = $props();
-	$inspect(data.usurarios);
+	let api = JSON.parse(data.api);
+	$inspect(api);
 
-	const markdown = data.usuarios ? marked.parse(data.api.desc) : '';
+	const markdown = api ? marked.parse(api.desc) : '';
 
 	// const { messages } = useChat({
 	// 	initialInput: text,
@@ -34,7 +35,7 @@
 	// 	}
 	// }
 
-	// $effect(() => console.log(form));
+	// $effect(() => console.log(api));
 </script>
 
 <div class="flex h-full w-full flex-col items-start justify-start gap-4 lg:h-svh">
@@ -47,12 +48,14 @@
 
 	<div class="flex h-1/3 w-full flex-1 flex-col justify-center gap-8 p-4 pt-0 lg:flex-row">
 		<main
-			class="border-principal-4 flex basis-1/2 flex-col gap-8 rounded-xl border-2 p-8 shadow-xl sm:h-full"
+			class="border-principal-4 flex basis-1/2 flex-col justify-between gap-8 rounded-xl border-2 px-8 py-16 shadow-xl {api
+				? 'h-full'
+				: 'h-1/2'}"
 		>
-			<h1 class="text-3xl font-bold">Resposta da IA</h1>
+			<h1 class="text-center text-3xl font-bold">Resposta da IA</h1>
 			<ScrollArea.Root class="overflow-hidden rounded-md bg-white/80 p-4 text-justify">
 				<ScrollArea.Viewport class="h-full">
-					{#if data.usuarios}
+					{#if api}
 						<div id="markdown">
 							{@html marked.parse(markdown)}
 						</div>
@@ -69,14 +72,14 @@
 					orientation="vertical"
 					class="bg-principal-2 hover:bg-principal-6 my-1 hidden w-3 touch-none rounded-full border-l border-l-transparent p-px transition-all duration-200 select-none hover:w-3 lg:flex"
 				>
-					<ScrollArea.Thumb class="bg-principal-2 flex-1 rounded-full" />
+					<ScrollArea.Thumb class="bg-principal-4 flex-1 rounded-full" />
 				</ScrollArea.Scrollbar>
 				<ScrollArea.Corner />
 			</ScrollArea.Root>
 			<CardPesquisa />
 		</main>
-		{#if data.usuarios}
-			<CardProfile></CardProfile>
+		{#if api}
+			<CardProfile usuarios={api.usuarios}></CardProfile>
 		{/if}
 	</div>
 </div>

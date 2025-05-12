@@ -1,37 +1,26 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-	import {
-		CircleUserRound,
-		X,
-		Send,
-		Search,
-		Check,
-		ChevronsDown,
-		ChevronsUpDown,
-		Citrus,
-		ChevronsUp
-	} from '@lucide/svelte';
+	import { page } from '$app/stores';
+	import { X, Search, Check, ChevronsDown, ChevronsUpDown, ChevronsUp } from '@lucide/svelte';
 	import { Dialog, Button, Label, Combobox } from 'bits-ui';
+	import { superForm } from 'sveltekit-superforms';
 
 	let label = 'text-sm font-semibold';
 	let div = 'flex h-full w-full flex-col gap-2';
 
-	let regimeContratacao = ['frelancer', 'clt'];
-	let regimeTrabalho = ['presencial', 'home office', 'híbrido'];
+	let regimeContratacao = ['freelancer', 'clt'];
+	let regimeTrabalho = ['presencial', 'home office', 'hibrido'];
+
+	const { errors: errors } = superForm($page.data.formPesquisa);
+	// $inspect($errors);
+
+	let open = $state(false);
 </script>
 
-{#snippet combobox(list)}
-	<Combobox.Root
-		type="single"
-		name="favoriteFruit"
-		onOpenChange={(o) => {
-			if (!o) searchValue = '';
-		}}
-	>
+{#snippet combobox(list: string[], name: string)}
+	<Combobox.Root type="single" {name}>
 		<div class="relative">
 			<Combobox.Input
 				disabled
-				oninput={(e) => (searchValue = e.currentTarget.value)}
 				class="bg-principal-1 inline-flex h-10 w-full items-center rounded-sm border border-zinc-500 px-4 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-lg"
 				placeholder="Escolha um regime"
 				aria-label="Escolha um regime"
@@ -78,7 +67,7 @@
 	</Combobox.Root>
 {/snippet}
 
-<Dialog.Root>
+<Dialog.Root bind:open>
 	<Dialog.Trigger
 		class="bg-principal-5 hover:bg-principal-3 inline-flex flex-wrap items-center justify-center gap-2 self-center rounded-lg p-4 font-semibold whitespace-nowrap shadow-sm transition-colors duration-300 active:scale-[0.95] sm:gap-4"
 	>
@@ -101,52 +90,69 @@
 				class="flex flex-col items-center justify-center gap-4"
 			>
 				<div class={div}>
-					<Label.Root for="segmentacao" class={label}>Segmentação do Negócio:</Label.Root>
+					<Label.Root for="negocio" class={label}>Segmentação do Negócio:</Label.Root>
 					<input
 						type="text"
-						id="segmentacao"
+						name="negocio"
 						placeholder="segmentação do projeto"
-						class="bg-principal-1 inline-flex h-10 w-full items-center rounded-sm border border-zinc-500 px-4 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-lg"
+						class="bg-principal-1 focus:outline-hnameden inline-flex h-10 w-full items-center rounded-sm border border-zinc-500 px-4 text-sm focus:ring-2 focus:ring-offset-2 sm:text-lg"
 					/>
+					{#if $errors.negocio}<span class="mt-1 pl-2 font-bold text-red-500"
+							>{$errors.negocio}</span
+						>{/if}
 				</div>
 				<div class={div}>
 					<Label.Root for="tipoProduto" class={label}>Tipo produto/serviço:</Label.Root>
 					<input
 						type="text"
-						id="tipoProduto"
+						name="tipoProduto"
 						placeholder="Digite o produto ou serviço"
-						class="bg-principal-1 inline-flex h-10 w-full items-center rounded-sm border border-zinc-500 px-4 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-lg"
+						class="bg-principal-1 focus:outline-hnameden inline-flex h-10 w-full items-center rounded-sm border border-zinc-500 px-4 text-sm focus:ring-2 focus:ring-offset-2 sm:text-lg"
 					/>
+					{#if $errors.tipoProduto}<span class="mt-1 pl-2 font-bold text-red-500"
+							>{$errors.tipoProduto}</span
+						>{/if}
 				</div>
 				<div class={div}>
-					<Label.Root for="regimeContratacao" class={label}>Regime de Contratação:</Label.Root>
-					{@render combobox(regimeContratacao)}
+					<Label.Root for="contratacao" class={label}>Regime de Contratação:</Label.Root>
+					{@render combobox(regimeContratacao, 'contratacao')}
+					{#if $errors.contratacao}<span class="mt-1 pl-2 font-bold text-red-500"
+							>{$errors.contratacao}</span
+						>{/if}
 				</div>
 				<div class={div}>
-					<Label.Root for="regimeTrabalho" class={label}>Regime de Trabalho:</Label.Root>
-					{@render combobox(regimeTrabalho)}
+					<Label.Root for="trabalho" class={label}>Regime de Trabalho:</Label.Root>
+					{@render combobox(regimeTrabalho, 'trabalho')}
+					{#if $errors.trabalho}<span class="mt-1 pl-2 font-bold text-red-500"
+							>{$errors.trabalho}</span
+						>{/if}
 				</div>
 				<div class={div}>
-					<Label.Root for="date" class={label}>Data para pesquisa:</Label.Root>
+					<Label.Root for="time" class={label}>Data para pesquisa:</Label.Root>
 					<div class="w-full">
 						<input
 							type="date"
 							max={new Date().toISOString().split('T')[0]}
-							name="date"
-							class="bg-principal-1 inline-flex h-10 w-full items-center rounded-sm border border-zinc-500 px-4 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-lg"
+							name="time"
+							class="bg-principal-1 focus:outline-hnameden inline-flex h-10 w-full items-center rounded-sm border border-zinc-500 px-4 text-sm focus:ring-2 focus:ring-offset-2 sm:text-lg"
 						/>
 					</div>
+					{#if $errors.time}<span class="mt-1 pl-2 font-bold text-red-500">{$errors.time}</span
+						>{/if}
 				</div>
 				<div class={div}>
-					<Label.Root for="descricao" class={label}>Área de Descrição:</Label.Root>
+					<Label.Root for="desc" class={label}>Área de Descrição:</Label.Root>
 					<textarea
-						id="descricao"
+						name="desc"
 						placeholder="Descreva o seu projeto..."
-						class="bg-principal-1 inline-flex h-20 w-full items-center rounded-sm border border-zinc-500 px-4 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-lg"
+						class="bg-principal-1 focus:outline-hnameden inline-flex h-20 w-full items-center rounded-sm border border-zinc-500 px-4 text-sm focus:ring-2 focus:ring-offset-2 sm:text-lg"
 					>
 					</textarea>
+					{#if $errors.desc}<span class="mt-1 pl-2 font-bold text-red-500">{$errors.desc}</span
+						>{/if}
 				</div>
 				<Button.Root
+					type="submit"
 					class="bg-principal-5 hover:bg-principal-3 inline-flex flex-wrap items-center justify-center gap-2 self-center rounded-lg p-4 font-semibold whitespace-nowrap shadow-sm transition-colors duration-300 active:scale-[0.95] sm:gap-4"
 					>Pesquisar</Button.Root
 				>
