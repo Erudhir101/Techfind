@@ -12,9 +12,10 @@
 
 	let { data } = $props();
 	let api = JSON.parse(data.api);
-	$inspect(api);
+	// $inspect(api);
+	//TODO: fazer o filtro da pesquisa com os valores do formulario
 
-	const markdown = api ? marked.parse(api.desc) : '';
+	const markdown = api.desc ? marked.parse(api.desc) : '';
 
 	// const { messages } = useChat({
 	// 	initialInput: text,
@@ -48,14 +49,14 @@
 
 	<div class="flex h-1/3 w-full flex-1 flex-col justify-center gap-8 p-4 pt-0 lg:flex-row">
 		<main
-			class="border-principal-4 flex basis-1/2 flex-col justify-between gap-8 rounded-xl border-2 px-8 py-16 shadow-xl {api
+			class="border-principal-4 flex basis-1/2 flex-col justify-between gap-8 rounded-xl border-2 px-8 py-16 shadow-xl {markdown
 				? 'h-full'
 				: 'h-1/2'}"
 		>
 			<h1 class="text-center text-3xl font-bold">Resposta da IA</h1>
 			<ScrollArea.Root class="overflow-hidden rounded-md bg-white/80 p-4 text-justify">
 				<ScrollArea.Viewport class="h-full">
-					{#if api}
+					{#if markdown}
 						<div id="markdown">
 							{@html marked.parse(markdown)}
 						</div>
@@ -78,7 +79,7 @@
 			</ScrollArea.Root>
 			<CardPesquisa />
 		</main>
-		{#if api}
+		{#if markdown}
 			<CardProfile usuarios={api.usuarios}></CardProfile>
 		{/if}
 	</div>
