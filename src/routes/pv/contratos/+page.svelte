@@ -38,15 +38,15 @@
 					</ScrollArea.Viewport>
 					<ScrollArea.Scrollbar
 						orientation="vertical"
-						class="flex w-2.5 touch-none rounded-full border-l border-l-transparent bg-zinc-300 p-px transition-all duration-200 select-none hover:w-3 hover:bg-black/10"
+						class="bg-princical-2 flex w-2.5 touch-none rounded-full border-l border-l-transparent p-px transition-all duration-200 select-none hover:w-3"
 					>
-						<ScrollArea.Thumb class="bg-principal-5 flex-1 rounded-full" />
+						<ScrollArea.Thumb class="bg-principal-4 flex-1 rounded-full" />
 					</ScrollArea.Scrollbar>
 					<ScrollArea.Scrollbar
 						orientation="horizontal"
-						class="flex w-2.5 touch-none rounded-full border-l border-l-transparent bg-zinc-300 p-px transition-all duration-200 select-none hover:w-3 hover:bg-black/10"
+						class="bg-principal-2 flex w-2.5 touch-none rounded-full border-l border-l-transparent p-px transition-all duration-200 select-none hover:w-3"
 					>
-						<ScrollArea.Thumb class="bg-principal-5 flex-1 rounded-full" />
+						<ScrollArea.Thumb class="bg-principal-4 flex-1 rounded-full" />
 					</ScrollArea.Scrollbar>
 					<ScrollArea.Corner />
 				</ScrollArea.Root>

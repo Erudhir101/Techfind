@@ -12,7 +12,6 @@
 
 	let { data } = $props();
 	let api = JSON.parse(data.api);
-	// $inspect(api);
 	//TODO: fazer o filtro da pesquisa com os valores do formulario
 
 	const markdown = api.desc ? marked.parse(api.desc) : '';
@@ -49,7 +48,7 @@
 
 	<div class="flex h-1/3 w-full flex-1 flex-col justify-center gap-8 p-4 pt-0 lg:flex-row">
 		<main
-			class="border-principal-4 flex basis-1/2 flex-col justify-between gap-8 rounded-xl border-2 px-8 py-16 shadow-xl {markdown
+			class="border-principal-4 flex basis-1/2 flex-col justify-between gap-8 rounded-xl border-2 px-8 py-8 shadow-xl {markdown
 				? 'h-full'
 				: 'h-1/2'}"
 		>
@@ -97,10 +96,8 @@
 
 		/* Headings */
 		h1 {
-			font-size: 2.5rem;
-			margin: 2rem 0 1.5rem;
-			border-bottom: 2px solid #eee;
-			padding-bottom: 0.5rem;
+			font-size: 1.5rem;
+			margin: 1.5rem 0;
 		}
 
 		h2 {

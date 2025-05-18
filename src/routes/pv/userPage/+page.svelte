@@ -27,7 +27,7 @@
 </svelte:head>
 
 <Button.Root
-	href="../"
+	href="../pv/pesquisa"
 	class="bg-principal-1 hover:bg-principal-4 mt-4 ml-4 inline-block rounded-full border-2 border-black shadow hover:border-black/80"
 >
 	<ChevronLeft class="size-10 stroke-1 hover:stroke-black/80" />

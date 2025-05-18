@@ -74,7 +74,7 @@
 	class="flex h-full justify-center overflow-hidden rounded-xl bg-zinc-400 px-2 py-4 shadow-xl md:px-16 md:py-8"
 >
 	<ScrollArea.Viewport class="h-full w-full max-w-md">
-		{#if usuarios.length !== 0}
+		{#if usuarios}
 			<div class="flex flex-col items-center justify-center gap-8">
 				{#each usuarios as usuario}
 					{@render usuarioCard(usuario)}
@@ -88,7 +88,7 @@
 	</ScrollArea.Viewport>
 	<ScrollArea.Scrollbar
 		orientation="vertical"
-		class="bg-principal-2 hover:bg-principal-6 my-1 hidden w-3 touch-none rounded-full border-l border-l-transparent p-px transition-all duration-200 select-none hover:w-3 lg:flex"
+		class="my-1 mr-1.5 hidden w-3 touch-none rounded-full border-l border-l-transparent p-px transition-all duration-200 select-none hover:w-3 lg:flex"
 	>
 		<ScrollArea.Thumb class="bg-principal-4 flex-1 rounded-full" />
 	</ScrollArea.Scrollbar>

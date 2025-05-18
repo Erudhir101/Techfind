@@ -3,6 +3,8 @@
 	import { X, Search, Check, ChevronsDown, ChevronsUpDown, ChevronsUp } from '@lucide/svelte';
 	import { Dialog, Button, Label, Combobox } from 'bits-ui';
 	import { superForm } from 'sveltekit-superforms';
+	import Loading from './Loading.svelte';
+	import { goto, invalidate } from '$app/navigation';
 
 	let label = 'text-sm font-semibold';
 	let div = 'flex h-full w-full flex-col gap-2';
@@ -10,10 +12,21 @@
 	let regimeContratacao = ['freelancer', 'clt'];
 	let regimeTrabalho = ['presencial', 'home office', 'hibrido'];
 
-	const { errors: errors } = superForm($page.data.formPesquisa);
-	// $inspect($errors);
-
 	let open = $state(false);
+
+	const {
+		errors: errors,
+		enhance: enhance,
+		delayed: delayed
+	} = superForm($page.data.formPesquisa, {
+		delayMs: 0,
+		timeoutMs: 0,
+		onResult: async ({ result }) => {
+			if (result.type === 'success') {
+				window.location.href = window.location.href;
+			}
+		}
+	});
 </script>
 
 {#snippet combobox(list: string[], name: string)}
@@ -85,6 +98,7 @@
 			</Dialog.Title>
 
 			<form
+				use:enhance
 				method="POST"
 				action="?/pesquisar"
 				class="flex flex-col items-center justify-center gap-4"
@@ -154,8 +168,13 @@
 				<Button.Root
 					type="submit"
 					class="bg-principal-5 hover:bg-principal-3 inline-flex flex-wrap items-center justify-center gap-2 self-center rounded-lg p-4 font-semibold whitespace-nowrap shadow-sm transition-colors duration-300 active:scale-[0.95] sm:gap-4"
-					>Pesquisar</Button.Root
 				>
+					{#if $delayed}
+						<Loading />
+					{:else}
+						Procurar
+					{/if}
+				</Button.Root>
 			</form>
 			<Dialog.Close
 				class="focus-visible:ring-foreground focus-visible:ring-offset-background absolute top-5 right-5 rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden active:scale-[0.98]"
