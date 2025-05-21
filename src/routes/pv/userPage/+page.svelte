@@ -2,13 +2,13 @@
 	import { ChevronLeft } from '@lucide/svelte';
 	import { Button } from 'bits-ui';
 
-	let usuario = $props();
+	export let usuario;
 
 	let provider = {
-		name: usuario.data.usuario.name,
-		title: usuario.data.usuario.caract,
-		description: usuario.data.usuario.desc,
-		expertise: usuario.data.usuario.tags.split('-'),
+		name: usuario?.data?.usuario?.name || 'Nome desconhecido',
+		title: usuario?.data?.usuario?.caract || 'Título desconhecido',
+		description: usuario?.data?.usuario?.desc || 'Descrição não fornecida',
+		expertise: usuario?.data?.usuario?.tags?.split('-') || [],
 		completedProjects: 156,
 		activeContracts: 12,
 		satisfactionRate: 98,
@@ -28,7 +28,7 @@
 
 <Button.Root
 	href="../pv/pesquisa"
-	class="bg-principal-1 hover:bg-principal-4 mt-4 ml-4 inline-block rounded-full border-2 border-black shadow hover:border-black/80"
+	class="bg-principal-1 hover:bg-principal-4 ml-4 mt-4 inline-block rounded-full border-2 border-black shadow hover:border-black/80"
 >
 	<ChevronLeft class="size-10 stroke-1 hover:stroke-black/80" />
 </Button.Root>
