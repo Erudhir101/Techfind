@@ -4,9 +4,22 @@
 	import { page } from '$app/stores';
 	import { superForm } from 'sveltekit-superforms';
 	import { fly } from 'svelte/transition';
+	import Loading from './Loading.svelte';
 
 	const { errors: signupErrors, enhance: signupEnhance } = superForm($page.data.formSignup);
-	const { errors: loginErrors, enhance: loginEnhance } = superForm($page.data.formLogin);
+	const {
+		errors: loginErrors,
+		enhance: loginEnhance,
+		delayed: delayed
+	} = superForm($page.data.formLogin, {
+		delayMs: 0,
+		timeoutMs: 0,
+		onResult: async ({ result }) => {
+			if (result.type === 'success') {
+				window.location.href = window.location.href;
+			}
+		}
+	});
 
 	let isClient = $state('Cliente');
 	let dateToday = new Date().toISOString().split('T')[0].split('-');
@@ -84,7 +97,11 @@
 			<button
 				class="bg-principal-5 hover:bg-principal-3 mb-4 inline-flex h-10 w-2/3 items-center justify-center rounded-lg px-12 py-6 font-semibold text-black shadow-sm transition-colors duration-300 active:scale-[0.95]"
 			>
-				Entrar
+				{#if $delayed}
+					<Loading />
+				{:else}
+					Entrar
+				{/if}
 			</button>
 			{#if $loginErrors._errors && !($loginErrors.password || $loginErrors.email)}
 				<span class="font-bold text-red-500" in:fly={{ x: 200, duration: 1000 }}>

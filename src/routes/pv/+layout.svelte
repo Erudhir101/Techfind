@@ -4,6 +4,7 @@
 	import { AlignJustify } from '@lucide/svelte';
 	import { Collapsible, Button } from 'bits-ui';
 	import { goto } from '$app/navigation';
+	import Loading from '../components/Loading.svelte';
 
 	let { data, children } = $props();
 	let { supabase, session } = $derived(data);
@@ -11,6 +12,8 @@
 	let size = $state(0);
 	let isOpen = $state(false);
 	let isMenu = $derived(size >= 1216 ? true : false);
+
+	let loading = $state(false);
 
 	const list = [{}];
 
@@ -21,9 +24,11 @@
 	});
 
 	const logout = async () => {
+		loading = true;
 		if (session) {
 			const { error } = await supabase.auth.signOut();
 			if (error) console.log(error);
+			loading = false;
 			goto('/');
 		}
 	};
@@ -43,8 +48,13 @@
 			<Button.Root
 				onclick={logout}
 				class="bg-principal-4 hover:bg-principal-3 rounded-lg px-4 py-2 text-xl font-medium shadow-md transition-colors duration-300"
-				>Sair</Button.Root
 			>
+				{#if loading}
+					<Loading />
+				{:else}
+					Sair
+				{/if}
+			</Button.Root>
 		</div>
 	</nav>
 {/snippet}
@@ -75,8 +85,13 @@
 								<Button.Root
 									onclick={logout}
 									class="bg-principal-4 hover:bg-principal-3 rounded-lg px-4 py-2 text-xl font-medium shadow-md transition-colors duration-300"
-									>Sair</Button.Root
 								>
+									{#if loading}
+										<Loading />
+									{:else}
+										Sair
+									{/if}
+								</Button.Root>
 							</div>
 						</div>
 					{/if}

@@ -4,7 +4,6 @@
 	import { Dialog, Button, Label, Combobox } from 'bits-ui';
 	import { superForm } from 'sveltekit-superforms';
 	import Loading from './Loading.svelte';
-	import { goto, invalidate } from '$app/navigation';
 
 	let label = 'text-sm font-semibold';
 	let div = 'flex h-full w-full flex-col gap-2';

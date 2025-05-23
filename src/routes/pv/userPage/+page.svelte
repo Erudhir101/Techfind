@@ -2,7 +2,7 @@
 	import { ChevronLeft } from '@lucide/svelte';
 	import { Button } from 'bits-ui';
 
-	export let usuario;
+	let usuario = $props();
 
 	let provider = {
 		name: usuario?.data?.usuario?.name || 'Nome desconhecido',

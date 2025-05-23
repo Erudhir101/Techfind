@@ -12,7 +12,6 @@
 
 	let { data } = $props();
 	let api = JSON.parse(data.api);
-	//TODO: fazer o filtro da pesquisa com os valores do formulario
 
 	const markdown = api.desc ? marked.parse(api.desc) : '';
 
