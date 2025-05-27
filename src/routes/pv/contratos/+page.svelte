@@ -1,10 +1,11 @@
 <script>
-	import { Button, Dialog, ScrollArea } from 'bits-ui';
+	import { Accordion, Button, Dialog, ScrollArea } from 'bits-ui';
 	import { ChevronLeft, Plus, X } from '@lucide/svelte';
 	import Contract from '../../components/Contract.svelte';
 
 	let { data } = $props();
-	let { services, user } = $derived(data);
+	let { contracts } = $derived(data);
+	$inspect(contracts);
 </script>
 
 <Button.Root
@@ -58,4 +59,90 @@
 			</Dialog.Content>
 		</Dialog.Portal>
 	</Dialog.Root>
+	<Accordion.Root
+		orientation="vertical"
+		type="multiple"
+		class="flex w-full flex-col gap-4 sm:max-w-2/5"
+	>
+		{#each data.services as service}
+			<Accordion.Item
+				class="flex flex-col items-center gap-8 rounded-md border-2 border-black px-2 py-2 shadow sm:px-8 sm:py-4"
+			>
+				<Accordion.Header class="w-full">
+					<Accordion.Trigger
+						class="border-principal-5 flex w-full items-center justify-between gap-2 [&[data-state=open]>span>svg]:rotate-180"
+					>
+						<h3 class="border-principal-5 border-b-4 text-lg font-bold">
+							{service.titulo}
+						</h3>
+						<h4 class="font-semibold">
+							Criado em:
+							<span class="text-principal-6 font-semibold">
+								{new Date(service.criado_em).toLocaleString('pt-BR', {
+									day: '2-digit',
+									month: '2-digit',
+									year: 'numeric',
+									hour: '2-digit',
+									minute: '2-digit',
+									hour12: false // Use formato 24 horas
+								})}
+							</span>
+						</h4>
+						<span
+							class="hover:bg-principal-2 inline-flex size-8 items-center justify-center rounded-[7px]"
+						>
+							<ChevronDown class=" transition-transform duration-200 " />
+						</span>
+					</Accordion.Trigger>
+				</Accordion.Header>
+				<Accordion.Content class="flex w-full flex-col items-center justify-around gap-4">
+					<div class="text-md overflow-hidden text-justify">"{service.descricao}"</div>
+					<div class="flex items-center gap-2">
+						<p class="font-bold">PREÇO:</p>
+						<span class="bg-principal-5 rounded-md px-4 py-2 font-semibold"
+							>R$: {service.preco}</span
+						>
+					</div>
+
+					<div class="self-end">
+						<AlertDialog.Root>
+							<AlertDialog.Trigger
+								class="bg-principal-5 hover:bg-principal-3 rounded-md px-2 py-2 shadow transition-colors duration-300"
+								><X strokeWidth={3} /></AlertDialog.Trigger
+							>
+							<AlertDialog.Portal>
+								<AlertDialog.Overlay class="fixed inset-0 z-50 bg-black/40" />
+								<AlertDialog.Content
+									class="fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border bg-white p-7 shadow outline-hidden sm:max-w-lg md:w-full "
+								>
+									<AlertDialog.Title class="text-lg font-semibold tracking-tight uppercase"
+										>Deletar Serviço</AlertDialog.Title
+									>
+									<AlertDialog.Description class="text-md font-semibold text-black/50"
+										>Tem certeza que deseja deletar esse serviço?</AlertDialog.Description
+									>
+									<form method="POST" action="?/deleteService">
+										<input type="hidden" name="servicoId" value={service.id} />
+										<div class="mt-4 flex w-full items-center justify-center gap-4">
+											<AlertDialog.Cancel
+												type="button"
+												class="inline-flex w-full items-center justify-center rounded-md bg-black/90 py-4 text-sm font-medium text-white shadow-sm transition-all hover:bg-black/50 active:scale-[0.98]"
+												>Cancelar</AlertDialog.Cancel
+											>
+											<AlertDialog.Action
+												type="submit"
+												value={service}
+												class="inline-flex w-full items-center justify-center rounded-md bg-red-600/80 py-4 text-sm font-medium shadow-sm transition-all hover:bg-red-600/50 active:scale-[0.98]"
+												>Confirmar</AlertDialog.Action
+											>
+										</div>
+									</form>
+								</AlertDialog.Content>
+							</AlertDialog.Portal>
+						</AlertDialog.Root>
+					</div>
+				</Accordion.Content>
+			</Accordion.Item>
+		{/each}
+	</Accordion.Root>
 </div>

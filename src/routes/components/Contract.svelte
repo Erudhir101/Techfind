@@ -2,12 +2,13 @@
 	import CryptoJS from 'crypto-js';
 	import { jsPDF } from 'jspdf';
 	import html2canvas from 'html2canvas-pro';
+	import { page } from '$app/stores';
 
 	let contractData = $state({
-		effectiveDate: '',
-		term: '',
-		contractObject: '',
-		value: '',
+		data_ini: '',
+		prazo: '',
+		objetivo: '',
+		valor: '',
 		contractor: {
 			name: 'TechFind Digital Technology LTDA',
 			address: 'Rua Comercial, 123, São Paulo, SP',
@@ -23,21 +24,19 @@
 	});
 
 	let isValid = $derived(
-		contractData.effectiveDate &&
-			contractData.term &&
-			contractData.contractObject &&
-			contractData.value
+		contractData.data_ini && contractData.prazo && contractData.objetivo && contractData.valor
 	);
 	let isSigned = $state(false);
 	let formattedValue = $state('');
 	let contractElement = $state();
+	let isLoading = $state(false);
 
 	$effect(() => {
-		if (contractData.value) {
+		if (contractData.valor) {
 			formattedValue = new Intl.NumberFormat('pt-BR', {
 				style: 'currency',
 				currency: 'BRL'
-			}).format(Number(contractData.value));
+			}).format(Number(contractData.valor));
 		}
 	});
 
@@ -79,15 +78,6 @@
 		pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
 		pdf.save('contrato-trabalho.pdf');
 	}
-
-	// TODO: fazer o envio do handle para o banco de dados
-	function handleSubmit() {
-		if (!isValid || !isSigned) {
-			alert('Por favor, preencha todos os campos obrigatórios e assine o contrato');
-			return;
-		}
-		alert('Contrato enviado com sucesso!');
-	}
 </script>
 
 <div class="contract-page">
@@ -127,14 +117,14 @@
 
 				<div class="clause">
 					<h4>CLÁUSULA PRIMEIRA - OBJETO DO CONTRATO</h4>
-					<p>{contractData.contractObject || '[Objeto pendente]'}</p>
+					<p>{contractData.objetivo || '[Objeto pendente]'}</p>
 				</div>
 
 				<div class="clause">
 					<h4>CLÁUSULA SEGUNDA - VIGÊNCIA</h4>
 					<p>
-						O presente contrato terá início em {formatDate(contractData.effectiveDate) ||
-							'[Data pendente]'}, com duração de {contractData.term || '[Prazo pendente]'} meses.
+						O presente contrato terá início em {formatDate(contractData.data_ini) ||
+							'[Data pendente]'}, com duração de {contractData.prazo || '[Prazo pendente]'} meses.
 					</p>
 				</div>
 
@@ -178,61 +168,63 @@
 		</div>
 	</div>
 
-	<div class="sidebar">
-		<h2>Detalhes do Contrato</h2>
-		<div class="form-group">
-			<label for="effectiveDate">Data de Início</label>
-			<input type="date" id="effectiveDate" bind:value={contractData.effectiveDate} />
-		</div>
-		<div class="form-group">
-			<label for="term">Prazo (meses)</label>
-			<input type="number" id="term" bind:value={contractData.term} min="1" />
-		</div>
-		<div class="form-group">
-			<label for="contractObject">Objeto do Contrato</label>
-			<textarea
-				id="contractObject"
-				bind:value={contractData.contractObject}
-				rows="4"
-				placeholder="Descreva o objeto do contrato..."
-			></textarea>
-		</div>
-		<div class="form-group">
-			<label for="value">Valor do Contrato (R$)</label>
-			<input
-				type="number"
-				id="value"
-				bind:value={contractData.value}
-				min="0"
-				step="0.01"
-				placeholder="0,00"
-			/>
-		</div>
-
-		{#if !isSigned}
-			<div class="signature-input">
-				<label for="signature">Assinatura Digital</label>
-				<input
-					type="text"
-					id="signature"
-					bind:value={contractData.signature}
-					placeholder="Digite seu nome completo como assinatura"
-				/>
-				<button onclick={handleSign} disabled={!isValid}>Assinar Contrato</button>
+	<form method="POST" action="?/create">
+		<div class="sidebar">
+			<h2>Detalhes do Contrato</h2>
+			<div class="form-group">
+				<label for="data_ini">Data de Início</label>
+				<input type="date" name="data_ini" bind:value={contractData.data_ini} />
 			</div>
-		{/if}
+			<div class="form-group">
+				<label for="prazo">Prazo (meses)</label>
+				<input type="number" name="prazo" bind:value={contractData.prazo} min="1" />
+			</div>
+			<div class="form-group">
+				<label for="objetivo">Objeto do Contrato</label>
+				<textarea
+					name="objetivo"
+					bind:value={contractData.objetivo}
+					rows="4"
+					placeholder="Descreva o objeto do contrato..."
+				></textarea>
+			</div>
+			<div class="form-group">
+				<label for="valor">Valor do Contrato (R$)</label>
+				<input
+					type="number"
+					name="valor"
+					bind:value={contractData.valor}
+					min="0"
+					step="0.01"
+					placeholder="0,00"
+				/>
+			</div>
 
-		<div class="contract-actions">
-			<button class="action-button" onclick={downloadPDF} disabled={!isValid}> Baixar PDF </button>
-			<button
-				class="action-button submit-button"
-				onclick={handleSubmit}
-				disabled={!isValid || !isSigned}
-			>
-				Enviar Contrato
-			</button>
+			{#if !isSigned}
+				<div class="signature-input">
+					<label for="assinatura">Assinatura Digital</label>
+					<input
+						type="text"
+						name="assinatura"
+						bind:value={contractData.signature}
+						placeholder="Digite seu nome completo como assinatura"
+					/>
+					<button onclick={handleSign} disabled={!isValid}>Assinar Contrato</button>
+				</div>
+			{/if}
+			<input type="hidden" name="assinatura_hash" value={contractData.signatureHash} />
+			<input type="hidden" name="id_creator" value={$page.data.profile.id} />
+
+			<div class="contract-actions">
+				<button class="action-button" onclick={downloadPDF} disabled={!isValid}>
+					Baixar PDF
+				</button>
+				<button type="submit" class="action-button submit-button" disabled={!isValid || !isSigned}>
+					Enviar Contrato
+				</button>
+			</div>
 		</div>
-	</div>
+	</form>
 </div>
 
 <style>

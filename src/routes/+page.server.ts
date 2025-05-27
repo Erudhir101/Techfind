@@ -13,8 +13,8 @@ const schemaSignup = z.object({
 	name: z.string().min(3, { message: 'Nome deve ter 3 caracteres no mínimo.' }),
 	date: z
 		.date({ message: 'Selecione uma data que tenha disponibilidade.' })
-		.refine((data) => new Date(data).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)),
-	radio: z.enum(['CPF', 'CNPJ']),
+		.refine((data) => new Date(data).setHours(0, 0, 0, 0) <= new Date().setHours(0, 0, 0, 0)),
+	radio: z.enum(['Cliente', 'Prestador']),
 	typePersonal: z
 		.string()
 		.regex(/^\d+$/, { message: 'Deve ter apenas os números.' })
@@ -40,10 +40,11 @@ export const actions: Actions = {
 		}
 		const email = formData.get('email') as string;
 		const password = formData.get('password') as string;
-		const type = formData.get('radio') === 'CPF' ? 1 : 2;
+		const type = formData.get('radio') === 'Cliente' ? 1 : 2;
 		const typePersonal = formData.get('typePersonal') as string;
 		const phone = formData.get('phone') as string;
 		const name = formData.get('name') as string;
+		const date = formData.get('date') as string;
 
 		const { data, error } = await supabase.auth.signUp({ email, password });
 		if (error) {
@@ -55,7 +56,8 @@ export const actions: Actions = {
 					type: type,
 					name: name,
 					typePersonal: typePersonal,
-					phone: phone
+					phone: phone,
+					date: date
 				}
 			]);
 			if (prof.error) {
