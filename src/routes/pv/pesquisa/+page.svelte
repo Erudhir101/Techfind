@@ -40,7 +40,7 @@
 <div class="flex h-full w-full flex-col items-start justify-start gap-4 lg:h-svh">
 	<Button.Root
 		href="../"
-		class="bg-principal-1 hover:bg-principal-4 mt-4 ml-4 inline-block rounded-full border-2 border-black shadow hover:border-black/80"
+		class="bg-principal-1 hover:bg-principal-4 mt-4 ml-4 inline-block rounded-full shadow hover:border-black/80"
 	>
 		<ChevronLeft class="size-10 stroke-1 hover:stroke-black/80" />
 	</Button.Root>
