@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ locals: { supabase, user } }) => {
 			.single();
 		const { data: contracts } = await supabase
 			.from('contracts')
-			.select()
+			.select('*, creator:id_creator(name), contracted:id_contratado(name)')
 			.eq('id_creator', profile.id);
 		return { contracts: contracts, profile: profile };
 	}

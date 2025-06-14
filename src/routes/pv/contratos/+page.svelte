@@ -4,7 +4,7 @@
 	import Contract from '../../components/Contract.svelte';
 
 	let { data } = $props();
-	let { contracts } = $derived(data);
+	let { contracts, profile } = $derived(data);
 	$inspect(contracts);
 </script>
 

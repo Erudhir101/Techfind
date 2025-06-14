@@ -4,34 +4,47 @@
 	import html2canvas from 'html2canvas-pro';
 	import { page } from '$app/stores';
 
-	const { contract = {} } = $props();
+	const {
+		contract = {
+			data_ini: '',
+			prazo: '',
+			objetivo: '',
+			valor: '',
+			assinatura_creator_hash: '',
+			contracted: { name: '' },
+			creator: { name: '' }
+		}
+	} = $props();
 
 	let contractData = $state({
-		data_ini: contract.data_ini || '',
-		prazo: contract.prazo || '',
-		objetivo: contract.objetivo || '',
-		valor: contract.valor || '',
+		data_ini: contract.data_ini,
+		prazo: contract.prazo,
+		objetivo: contract.objetivo,
+		valor: contract.valor,
 		contractor: {
-			name: 'TechFind Digital Technology LTDA',
+			name: contract.contracted?.name,
 			address: 'Rua Comercial, 123, São Paulo, SP',
-			registration: '12.345.678/0001-00'
+			type: '12.345.678/0001-00'
 		},
 		employee: {
-			name: 'João Silva',
+			name: contract.creator?.name,
 			address: 'Avenida Residencial, 456, São Paulo, SP',
-			id: '123.456.789-00'
+			type: '123.456.789-00'
 		},
 		signature: '',
-		signatureHash: contract.assinatura_hash || ''
+		signatureHash: contract.assinatura_creator_hash
 	});
 
 	let isValid = $derived(
 		contractData.data_ini && contractData.prazo && contractData.objetivo && contractData.valor
 	);
-	let isSigned = $state(false);
+	let isSigned = $state(contract.assinatura_creator_hash ? true : false);
 	let formattedValue = $state('');
 	let contractElement = $state();
 	let isLoading = $state(false);
+
+	$inspect('signed: ', isSigned, 'assinatura: ', contract.assinatura_creator_hash);
+	$inspect(contract);
 
 	$effect(() => {
 		if (contractData.valor) {
@@ -102,14 +115,14 @@
 						<strong>CONTRATANTE:</strong>
 						{contractData.contractor.name}<br />
 						Endereço: {contractData.contractor.address}<br />
-						CNPJ: {contractData.contractor.registration}
+						CNPJ: {contractData.contractor.type}
 					</p>
 
 					<p>
 						<strong>CONTRATADO:</strong>
 						{contractData.employee.name}<br />
 						Endereço: {contractData.employee.address}<br />
-						CPF: {contractData.employee.id}
+						CPF: {contractData.employee.type}
 					</p>
 				</div>
 			</section>
@@ -151,14 +164,14 @@
 				<h3>LOCAL, DATA E ASSINATURAS</h3>
 				<p class="location-date">São Paulo, {new Date().toLocaleDateString('pt-BR')}</p>
 
-				{#if isSigned}
+				{#if isSigned || contractData.signatureHash}
 					<div class="signature-area">
 						<div class="signature-line">
-							<p class="signature-name">{contractData.signature}</p>
+							<p class="signature-name">{contractData.contractor.name}</p>
 							<p class="signature-title">CONTRATADO</p>
 						</div>
 						<div class="signature-line">
-							<p class="signature-name">{contractData.contractor.name}</p>
+							<p class="signature-name">{contractData.employee.name}</p>
 							<p class="signature-title">CONTRATANTE</p>
 						</div>
 						<div class="signature-hash">
@@ -170,7 +183,7 @@
 		</div>
 	</div>
 
-	{#if !contract}
+	{#if !contract.id}
 		<form method="POST" action="?/create">
 			<div class="sidebar">
 				<h2>Detalhes do Contrato</h2>
