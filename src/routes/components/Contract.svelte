@@ -4,11 +4,13 @@
 	import html2canvas from 'html2canvas-pro';
 	import { page } from '$app/stores';
 
+	const { contract = {} } = $props();
+
 	let contractData = $state({
-		data_ini: '',
-		prazo: '',
-		objetivo: '',
-		valor: '',
+		data_ini: contract.data_ini || '',
+		prazo: contract.prazo || '',
+		objetivo: contract.objetivo || '',
+		valor: contract.valor || '',
 		contractor: {
 			name: 'TechFind Digital Technology LTDA',
 			address: 'Rua Comercial, 123, São Paulo, SP',
@@ -20,7 +22,7 @@
 			id: '123.456.789-00'
 		},
 		signature: '',
-		signatureHash: ''
+		signatureHash: contract.assinatura_hash || ''
 	});
 
 	let isValid = $derived(
@@ -168,63 +170,69 @@
 		</div>
 	</div>
 
-	<form method="POST" action="?/create">
-		<div class="sidebar">
-			<h2>Detalhes do Contrato</h2>
-			<div class="form-group">
-				<label for="data_ini">Data de Início</label>
-				<input type="date" name="data_ini" bind:value={contractData.data_ini} />
-			</div>
-			<div class="form-group">
-				<label for="prazo">Prazo (meses)</label>
-				<input type="number" name="prazo" bind:value={contractData.prazo} min="1" />
-			</div>
-			<div class="form-group">
-				<label for="objetivo">Objeto do Contrato</label>
-				<textarea
-					name="objetivo"
-					bind:value={contractData.objetivo}
-					rows="4"
-					placeholder="Descreva o objeto do contrato..."
-				></textarea>
-			</div>
-			<div class="form-group">
-				<label for="valor">Valor do Contrato (R$)</label>
-				<input
-					type="number"
-					name="valor"
-					bind:value={contractData.valor}
-					min="0"
-					step="0.01"
-					placeholder="0,00"
-				/>
-			</div>
-
-			{#if !isSigned}
-				<div class="signature-input">
-					<label for="assinatura">Assinatura Digital</label>
-					<input
-						type="text"
-						name="assinatura"
-						bind:value={contractData.signature}
-						placeholder="Digite seu nome completo como assinatura"
-					/>
-					<button onclick={handleSign} disabled={!isValid}>Assinar Contrato</button>
+	{#if !contract}
+		<form method="POST" action="?/create">
+			<div class="sidebar">
+				<h2>Detalhes do Contrato</h2>
+				<div class="form-group">
+					<label for="data_ini">Data de Início</label>
+					<input type="date" name="data_ini" bind:value={contractData.data_ini} />
 				</div>
-			{/if}
-			<input type="hidden" name="assinatura_hash" value={contractData.signatureHash} />
-			<input type="hidden" name="id_creator" value={$page.data.profile.id} />
+				<div class="form-group">
+					<label for="prazo">Prazo (meses)</label>
+					<input type="number" name="prazo" bind:value={contractData.prazo} min="1" />
+				</div>
+				<div class="form-group">
+					<label for="objetivo">Objeto do Contrato</label>
+					<textarea
+						name="objetivo"
+						bind:value={contractData.objetivo}
+						rows="4"
+						placeholder="Descreva o objeto do contrato..."
+					></textarea>
+				</div>
+				<div class="form-group">
+					<label for="valor">Valor do Contrato (R$)</label>
+					<input
+						type="number"
+						name="valor"
+						bind:value={contractData.valor}
+						min="0"
+						step="0.01"
+						placeholder="0,00"
+					/>
+				</div>
 
-			<div class="contract-actions">
-				<button class="action-button" onclick={downloadPDF} disabled={!isValid}>
-					Baixar PDF
-				</button>
-				<button type="submit" class="action-button submit-button" disabled={!isValid || !isSigned}>
-					Enviar Contrato
-				</button>
+				{#if !isSigned}
+					<div class="signature-input">
+						<label for="assinatura">Assinatura Digital</label>
+						<input
+							type="text"
+							name="assinatura"
+							bind:value={contractData.signature}
+							placeholder="Digite seu nome completo como assinatura"
+						/>
+						<button onclick={handleSign} disabled={!isValid}>Assinar Contrato</button>
+					</div>
+				{/if}
+				<input type="hidden" name="assinatura_hash" value={contractData.signatureHash} />
+				<input type="hidden" name="id_creator" value={$page.data.profile.id} />
+
+				<div class="contract-actions">
+					<button class="action-button" onclick={downloadPDF} disabled={!isValid}>
+						Baixar PDF
+					</button>
+					<button
+						type="submit"
+						class="action-button submit-button"
+						disabled={!isValid || !isSigned}
+					>
+						Enviar Contrato
+					</button>
+				</div>
 			</div>
-		</div>
-	</form>
+		</form>
+	{/if}
 </div>
 
 <style>

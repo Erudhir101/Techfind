@@ -3,7 +3,9 @@
 
 	let { data } = $props();
 	let buttons =
-		data.profile.type === 1 ? ['perfil', 'projetos'] : ['perfil', 'servicos', 'contratos'];
+		data.profile.type === 1
+			? ['perfil', 'projetos', 'notificacoes']
+			: ['perfil', 'servicos', 'contratos'];
 </script>
 
 <div class="flex flex-col items-center justify-center gap-28 py-16">
