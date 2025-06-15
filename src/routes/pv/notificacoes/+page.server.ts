@@ -1,71 +1,41 @@
-import { fail, type Actions } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import { redirect } from '@sveltejs/kit';
+import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals: { supabase, user } }) => {
 	if (user) {
-		const { data: profile } = await supabase
+		const { data: profile, error: authError } = await supabase
 			.from('profile')
 			.select()
 			.eq('id_auth', user.id)
 			.single();
-		const { data: contracts } = await supabase
-			.from('contracts')
-			.select()
-			.eq('id_creator', profile.id);
-		return { contracts: contracts, profile: profile };
+		if (authError) return;
+		const { data: notConts, error: notError } = await supabase
+			.from('notifications')
+			.select('*, contract:contracts(*, creator:id_creator(name), contracted:id_contratado(name))')
+			.eq('id_contratado', profile.id);
+		if (notError) return;
+		return { notConts: notConts, profile: profile };
 	}
 	return null;
 };
 
 export const actions: Actions = {
-	create: async ({ request, locals: { supabase } }) => {
+	assinar: async ({ request, locals: { supabase } }) => {
 		const formData = await request.formData();
-		// console.log('create: ', formData);
-
-		const data_ini = new Date(formData.get('data_ini') as string) as Date;
-		const prazo = parseInt(formData.get('prazo') as string);
-		const objetivo = formData.get('objetivo') as string;
-		const valor = parseFloat(formData.get('valor') as string);
-		const id_creator = formData.get('id_creator') as string;
-		const assinatura_hash = formData.get('assinatura_hash') as string;
-		const created_at = new Date() as Date;
-
-		// console.log(data_ini, prazo, objetivo, valor, id_creator, assinatura_hash);
-
+		const id_contract = formData.get('contract') as string;
+		const id_contratado = formData.get('contratado') as string;
+		const id_notification = formData.get('notification') as string;
 		try {
-			const { data: data, error: dbError } = await supabase.from('contracts').insert({
-				data_ini: data_ini,
-				prazo: prazo,
-				objetivo: objetivo,
-				valor: valor,
-				id_creator: id_creator,
-				assinatura_hash: assinatura_hash,
-				created_at: created_at
-			});
-
-			if (dbError) {
-				console.error('Erro ao salvar dados do contrato no banco:', dbError.message);
-				if (dbError.message.includes('violates row-level security policy')) {
-					return fail(403, {
-						success: false,
-						message:
-							'Erro de permissão: Você não tem autorização para criar este contrato ou os dados fornecidos violam as políticas de segurança.'
-					});
-				}
-				return fail(500, {
-					success: false,
-					message: `Erro ao salvar contrato: ${dbError.message}`
-				});
-			} else {
-				if (data) {
-					console.log('Contrato enviado com sucesso!', data);
-					return { success: true, message: 'Contrato enviado com sucesso!', contract: data[0] };
-				}
-				return fail(500, { success: false, message: 'Data está fazia' });
-			}
+			await supabase
+				.from('contracts')
+				.update({ id_contratado: id_contratado })
+				.eq('id', id_contract);
+			await supabase.from('notifications').delete().eq('id', id_notification);
 		} catch (error) {
-			console.error('Erro inesperado durante o envio:', error);
-			return fail(500, { success: false, message: 'Ocorreu um erro inesperado no servidor.' });
+			console.error(error);
+			redirect(303, '/auth/error');
+		} finally {
+			redirect(303, '/pv');
 		}
 	}
 };

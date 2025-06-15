@@ -62,7 +62,6 @@ exemplo: texto de usuário: gostaria de profissionais que de tecnologia para a c
 			.split('-')
 			.map((value) => `tags.ilike.%${value.trim()}%`)
 			.join(', ');
-		console.log(tags);
 
 		const { data: usuarios } = await supabase
 			.from('profile')

@@ -1,14 +1,35 @@
 <script>
-	import { ChevronLeft } from '@lucide/svelte';
-	import { Button } from 'bits-ui';
+	import {
+		Check,
+		ChevronDown,
+		ChevronLeft,
+		ChevronUp,
+		NotepadText,
+		UserPen,
+		X
+	} from '@lucide/svelte';
+	import { Button, Combobox, Dialog } from 'bits-ui';
+	import Loading from '../../components/Loading.svelte';
+	import { enhance } from '$app/forms';
 
-	let usuario = $props();
+	let { data } = $props();
+	let loading = $state(false);
+	let searchValue = $state('');
+
+	const filteredContracts = $derived(
+		searchValue === ''
+			? data?.contracts
+			: data?.contracts.filter((contract) =>
+					contract.objetivo.toLowerCase().includes(searchValue.toLowerCase())
+				)
+	);
+	$inspect(data);
 
 	let provider = {
-		name: usuario?.data?.usuario?.name || 'Nome desconhecido',
-		title: usuario?.data?.usuario?.caract || 'Título desconhecido',
-		description: usuario?.data?.usuario?.desc || 'Descrição não fornecida',
-		expertise: usuario?.data?.usuario?.tags?.split('-') || [],
+		name: data?.usuario?.name || 'Nome desconhecido',
+		title: data?.usuario?.caract || 'Título desconhecido',
+		description: data?.usuario?.desc || 'Descrição não fornecida',
+		expertise: data?.usuario?.tags?.split('-') || [],
 		completedProjects: 156,
 		activeContracts: 12,
 		satisfactionRate: 98,
@@ -28,7 +49,7 @@
 
 <Button.Root
 	href="../pv/pesquisa"
-	class="bg-principal-1 hover:bg-principal-4 ml-4 mt-4 inline-block rounded-full border-2 border-black shadow hover:border-black/80"
+	class="bg-principal-1 hover:bg-principal-4 mt-4 ml-4 inline-block rounded-full border-2 border-black shadow hover:border-black/80"
 >
 	<ChevronLeft class="size-10 stroke-1 hover:stroke-black/80" />
 </Button.Root>
@@ -54,10 +75,122 @@
 				</div>
 				<p class="title">{provider.title}</p>
 			</div>
-			<Button.Root
-				class="bg-principal-4 hover:bg-principal-3 rounded-md border-none px-4 py-4 font-semibold transition-colors duration-300"
-				>Requirir o Serviço</Button.Root
-			>
+			<Dialog.Root>
+				<Dialog.Trigger
+					class="bg-principal-5 hover:bg-principal-3 inline-flex items-center justify-center gap-2 rounded-lg px-5 py-4 font-semibold whitespace-nowrap text-black shadow-sm transition-colors duration-300 active:scale-[0.95]"
+				>
+					<UserPen /> Requerir o Serviço
+				</Dialog.Trigger>
+				<Dialog.Portal>
+					<Dialog.Overlay class="fixed inset-0 z-50 bg-black/80" />
+					<Dialog.Content
+						class="bg-principal-1 fixed top-[50%] left-[50%] z-50 flex w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] flex-col gap-8 rounded-lg border p-5 shadow-sm outline-hidden sm:max-w-[490px] md:w-full"
+					>
+						<Dialog.Title class="flex w-full items-center justify-center tracking-tight">
+							<div class="flex flex-col items-center justify-between">
+								<h2 class="text-xl font-semibold">Requerimento do Serviço</h2>
+							</div>
+						</Dialog.Title>
+						<div class="text-center text-lg font-semibold italic">
+							gostaria de requerer o serviço para o usuário "{provider.name}"
+						</div>
+						<Dialog.Close
+							class="focus-visible:ring-foreground focus-visible:ring-offset-background absolute top-5 right-5 rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden active:scale-[0.98]"
+						>
+							<X class="hover:text-principal-4 size-6 text-black" />
+						</Dialog.Close>
+						<form
+							method="POST"
+							action="?/notification"
+							class="flex w-full flex-col gap-10"
+							use:enhance={() => {
+								loading = true;
+								return async ({ update }) => {
+									await update();
+									loading = false;
+								};
+							}}
+						>
+							<Combobox.Root
+								type="single"
+								name="contract"
+								onOpenChange={(o) => {
+									if (!o) searchValue = '';
+								}}
+							>
+								<div class="relative self-center">
+									<NotepadText
+										class="absolute start-3 top-1/2 size-6 -translate-y-1/2 text-black"
+									/>
+									<Combobox.Input
+										oninput={(e) => (searchValue = e.currentTarget.value)}
+										class="inline-flex h-12 w-[296px] touch-none truncate rounded-sm border bg-white px-11 text-base transition-colors placeholder:text-black/50 focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:text-sm"
+										placeholder="Escolha um Contrato"
+										aria-label="Escolha um Contrato"
+									/>
+									<Combobox.Trigger
+										class="absolute top-1/2 right-1 size-6 -translate-y-1/2 touch-none"
+									>
+										<ChevronDown class="size-6 text-black" />
+									</Combobox.Trigger>
+								</div>
+								<Combobox.Portal>
+									<Combobox.Content
+										class="z-50 h-96 max-h-[var(--bits-combobox-content-available-height)] w-[var(--bits-combobox-anchor-width)] min-w-[var(--bits-combobox-anchor-width)] rounded-xl border bg-white px-1 py-3 outline-hidden select-none data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1"
+										sideOffset={10}
+									>
+										<Combobox.ScrollUpButton class="flex w-full items-center justify-center py-1">
+											<ChevronUp class="size-3" />
+										</Combobox.ScrollUpButton>
+										<Combobox.Viewport class="p-1">
+											{#each filteredContracts as contract, i (i + contract.objetivo)}
+												<Combobox.Item
+													class="flex h-10 w-full items-center rounded-md py-3 pr-1.5 pl-5 text-sm capitalize outline-hidden transition-colors duration-150 select-none hover:bg-zinc-400"
+													value={contract.id}
+													label={contract.objetivo}
+												>
+													{#snippet children({ selected })}
+														{contract.objetivo}
+														{#if selected}
+															<div class="ml-auto">
+																<Check />
+															</div>
+														{/if}
+													{/snippet}
+												</Combobox.Item>
+											{:else}
+												<span class="block px-5 py-2 text-sm text-principal-4">
+													Nenhum resultado Encontrado. Por Favor Tente Novamente!
+												</span>
+											{/each}
+										</Combobox.Viewport>
+										<Combobox.ScrollDownButton class="flex w-full items-center justify-center py-1">
+											<ChevronDown class="size-3" />
+										</Combobox.ScrollDownButton>
+									</Combobox.Content>
+								</Combobox.Portal>
+							</Combobox.Root>
+							<input type="hidden" name="id_contratado" value={data?.usuario?.id} />
+							<button
+								type="submit"
+								disabled={loading}
+								class="bg-principal-4 hover:bg-principal-3 flex flex-1 justify-center gap-4 rounded-md px-8 py-4 font-semibold shadow transition-colors duration-300"
+							>
+								{#if !loading}
+									Sim
+								{:else}
+									<Loading />
+								{/if}
+							</button>
+							<Dialog.Close
+								class="-mt-5 flex flex-1 justify-center gap-4 rounded-md bg-red-600 px-8 py-4 font-semibold shadow transition-colors duration-300 hover:bg-red-400"
+							>
+								Cancelar
+							</Dialog.Close>
+						</form>
+					</Dialog.Content>
+				</Dialog.Portal>
+			</Dialog.Root>
 		</div>
 
 		<p class="description">{provider.description}</p>
