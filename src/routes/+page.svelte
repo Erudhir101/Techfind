@@ -7,6 +7,7 @@
 	import Planos from './components/Planos.svelte';
 	import Section from './components/Section.svelte';
 	import Support from './components/Support.svelte';
+	import FloatingHelpButton from './components/FloatingHelpButton.svelte';
 </script>
 
 <Header />
@@ -16,3 +17,4 @@
 <Planos />
 <Support />
 <Footer />
+<FloatingHelpButton />

@@ -1,17 +1,15 @@
 <script lang="ts">
 	import logo from '$lib/images/logolaran.svg';
-	import { slide, fade } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 	import Dialog from './Dialog.svelte';
-	import { AlignJustify, HelpCircle, X } from '@lucide/svelte';
+	import { AlignJustify } from '@lucide/svelte';
 	import { Collapsible } from 'bits-ui';
 	import { onMount } from 'svelte';
-	import HelpCenter from './help-center/HelpCenter.svelte';
 
 	let size = $state(0);
 	let isOpen = $state(false);
 	let isMenu = $derived(size >= 1216 ? true : false);
 	let activeSection = $state('início');
-	let showHelpCenter = $state(false);
 
 	const list = [
 		{ name: 'início', href: '/', id: '' },
@@ -62,15 +60,6 @@
 			window.removeEventListener('scroll', handleScroll);
 		};
 	});
-
-	function toggleHelpCenter() {
-		showHelpCenter = !showHelpCenter;
-		if (showHelpCenter) {
-			document.body.style.overflow = 'hidden';
-		} else {
-			document.body.style.overflow = '';
-		}
-	}
 </script>
 
 {#snippet Modal()}
@@ -97,15 +86,6 @@
 			{/each}
 		</ul>
 		<div class="flex gap-4">
-			<button
-				type="button"
-				onclick={toggleHelpCenter}
-				class="hover:bg-principal-4 group flex items-center gap-2 rounded-xl border-2 border-principal-4 bg-transparent px-4 py-2 font-bold text-principal-4 transition-all duration-300 hover:text-white"
-				aria-label="Abrir Central de Ajuda"
-			>
-				<HelpCircle size={20} />
-				<span class="hidden lg:inline">Ajuda</span>
-			</button>
 			<Dialog />
 		</div>
 	</nav>
@@ -147,15 +127,6 @@
 								{/each}
 							</ul>
 							<div class="flex w-full flex-wrap justify-center gap-4 md:w-auto">
-								<button
-									type="button"
-									onclick={toggleHelpCenter}
-									class="hover:bg-principal-4 group flex items-center gap-2 rounded-xl border-2 border-principal-4 bg-transparent px-4 py-2 font-bold text-principal-4 transition-all duration-300 hover:text-white"
-									aria-label="Abrir Central de Ajuda"
-								>
-									<HelpCircle size={20} />
-									<span>Ajuda</span>
-								</button>
 								<Dialog />
 							</div>
 						</div>
@@ -173,35 +144,3 @@
 		{@render ModalMobile()}
 	{/if}
 </header>
-
-<!-- Modal da Central de Ajuda -->
-{#if showHelpCenter}
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-	<div
-		class="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 p-4 backdrop-blur-sm"
-		transition:fade={{ duration: 200 }}
-		onclick={(e) => {
-			if (e.target === e.currentTarget) toggleHelpCenter();
-		}}
-		role="dialog"
-		aria-modal="true"
-		aria-labelledby="help-center-title"
-		tabindex="-1"
-	>
-		<div
-			class="relative my-8 w-full max-w-7xl rounded-2xl bg-white shadow-2xl"
-			transition:fade={{ duration: 300, delay: 100 }}
-		>
-			<button
-				type="button"
-				onclick={toggleHelpCenter}
-				class="hover:bg-principal-4 absolute right-4 top-4 z-10 rounded-full bg-gray-100 p-2 text-gray-600 transition-all duration-200 hover:text-white"
-				aria-label="Fechar Central de Ajuda"
-			>
-				<X size={24} />
-			</button>
-			<HelpCenter />
-		</div>
-	</div>
-{/if}
