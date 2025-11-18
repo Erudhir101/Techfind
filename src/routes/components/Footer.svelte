@@ -1,5 +1,10 @@
-<script>
-	import { Copyright } from '@lucide/svelte';
+<script lang="ts">
+	import { Copyright, HelpCircle } from '@lucide/svelte';
+	import { fade } from 'svelte/transition';
+	import HelpCenter from './help-center/HelpCenter.svelte';
+
+	let showHelpCenter = $state(false);
+
 	const socialIcons =
 		'flex items-center justify-center size-12 bg-white p-1 rounded-xl shadow-sm pointer hover:shadow-principal-4 transition-all duration-150 ease-in';
 	const socials = [
@@ -22,14 +27,33 @@
 			}
 		}
 	];
+
+	function toggleHelpCenter() {
+		showHelpCenter = !showHelpCenter;
+		if (showHelpCenter) {
+			document.body.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = '';
+		}
+	}
 </script>
 
-<footer class="relative flex h-32">
-	<div class="flex w-full items-center justify-between px-12">
+<footer class="relative flex min-h-32 flex-col">
+	<div class="flex w-full flex-wrap items-center justify-between gap-4 px-4 py-6 md:px-12">
 		<div class="flex items-center gap-4">
 			<Copyright size={20} />
 			<span class="font-medium text-black"> 2024 TechFind </span>
 		</div>
+
+		<button
+			type="button"
+			onclick={toggleHelpCenter}
+			class="hover:bg-principal-4 group flex items-center gap-2 rounded-xl border-2 border-principal-4 bg-transparent px-4 py-2 font-bold text-principal-4 transition-all duration-300 hover:text-white"
+		>
+			<HelpCircle size={20} />
+			<span>Central de Ajuda</span>
+		</button>
+
 		<div class="flex items-center justify-around gap-5">
 			{#each socials as social}
 				<a aria-label="social icon" class={socialIcons} href={social.href} target="_blank">
@@ -41,6 +65,49 @@
 		</div>
 	</div>
 </footer>
+
+<!-- Modal da Central de Ajuda -->
+{#if showHelpCenter}
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+	<div
+		class="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 p-4 backdrop-blur-sm"
+		transition:fade={{ duration: 200 }}
+		onclick={(e) => {
+			if (e.target === e.currentTarget) toggleHelpCenter();
+		}}
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="help-center-title"
+		tabindex="-1"
+	>
+		<div
+			class="relative my-8 w-full max-w-7xl rounded-2xl bg-white shadow-2xl"
+			transition:fade={{ duration: 300, delay: 100 }}
+		>
+			<button
+				type="button"
+				onclick={toggleHelpCenter}
+				class="hover:bg-principal-4 absolute right-4 top-4 z-10 rounded-full bg-gray-100 p-2 text-gray-600 transition-all duration-200 hover:text-white"
+				aria-label="Fechar Central de Ajuda"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg
+				>
+			</button>
+			<HelpCenter />
+		</div>
+	</div>
+{/if}
 
 <style>
 	footer {
